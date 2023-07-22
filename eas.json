@@ -1,0 +1,26 @@
+{
+    "build": {
+        "development": {
+            "distribution": "internal",
+            "android": {
+                "gradleCommand": ":app:assembleRelease",
+                "buildType": "apk",
+                "env": {
+                    "CI": "true"
+                },
+                "applicationArchivePath": "android/app/build/outputs/apk/release/app-release.apk"
+            }
+        },
+        "production": {
+            "distribution": "internal",
+            "android": {
+                "gradleCommand": ":app:assembleRelease",
+                "buildType": "apk",
+                "env": {
+                    "CI": "true"
+                },
+                "applicationArchivePath": "android/app/build/outputs/apk/release/app-release.apk"
+            }
+        }
+    }
+}
