@@ -15,6 +15,7 @@ import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
+import { CONTACT_SCREEN } from "../../navigation/routeNames";
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -108,7 +109,7 @@ const Enrolment = ({ navigation }) => {
       return;
     }
     updateUserInfo({ name, surname });
-    navigation.navigate("Contact");
+    navigation.navigate(CONTACT_SCREEN);
   }, [selectedId, companyName, activity, name, surname]);
 
   return (

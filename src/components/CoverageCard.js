@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { COLORS } from "../utils/data";
 import { getRandomNumber, isIphone } from "../utils";
+import { COVERAGE_SCREEN } from "../navigation/routeNames";
 
 const CoverageCard = ({
   selectedPack,
@@ -19,7 +20,7 @@ const CoverageCard = ({
 }) => {
   const handleNav = () => {
     handleSelect();
-    navigation.navigate("Coverage", { selected: id, packID: selectedPack });
+    navigation.navigate(COVERAGE_SCREEN, { selected: id, packID: selectedPack });
   };
 
   return (
@@ -31,7 +32,7 @@ const CoverageCard = ({
       <Text adjustsFontSizeToFit style={styles.text}>
         {name}
       </Text>
-      <Image source={icon} resizeMode="cover" style={styles.img} />
+      <Image source={icon} resizeMode="contain" style={styles.img} />
       <View style={{ marginVertical: 10 }}>
         {coverage.map((cov, index) => (
           <Text

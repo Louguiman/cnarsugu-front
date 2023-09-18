@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import * as classicStyles from "../../utils/Styles";
 import { TERMS_AND_CONDITIONS } from "../../utils/data";
+import { APP_STACK_SCREENS } from "../../navigation/routeNames";
 
 // const{}
 const Header = ({ navigation }) => {
@@ -28,7 +29,10 @@ const Header = ({ navigation }) => {
         ]}
       >
         <AntDesign name="arrowleft" size={28} color="white" />
-        <Text adjustsFontSizeToFit style={styles.btnText}> Retour</Text>
+        <Text adjustsFontSizeToFit style={styles.btnText}>
+          {" "}
+          Retour
+        </Text>
       </TouchableOpacity>
       {/* <Text adjustsFontSizeToFit style={styles.headerText}>Contrat d'Utilisation</Text> */}
     </View>
@@ -38,11 +42,13 @@ const Header = ({ navigation }) => {
 const Footer = ({ navigation }) => (
   <View style={styles.footer}>
     <TouchableOpacity
-      onPress={() => navigation.replace("App")}
+      onPress={() => navigation.replace(APP_STACK_SCREENS)}
       activeOpacity={0.7}
       style={styles.btnStart}
     >
-      <Text adjustsFontSizeToFit style={styles.btnText}>Suivant</Text>
+      <Text adjustsFontSizeToFit style={styles.btnText}>
+        Suivant
+      </Text>
       <AntDesign name="arrowright" size={28} color="white" />
     </TouchableOpacity>
   </View>
@@ -51,7 +57,14 @@ const Footer = ({ navigation }) => (
 const Terms = ({ navigation }) => {
   return (
     <ImageBackground
-      style={[classicStyles.bgContainer, StyleSheet.absoluteFill]}
+      style={[
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        StyleSheet.absoluteFill,
+      ]}
       resizeMode="cover"
       source={require("../../../assets/bg-on1.png")}
     >
@@ -64,13 +77,21 @@ const Terms = ({ navigation }) => {
             contentContainerStyle={styles.content}
           >
             <View style={styles.contentHeader}>
-              <Text adjustsFontSizeToFit style={styles.title}>{TERMS_AND_CONDITIONS.title}</Text>
+              <Text adjustsFontSizeToFit style={styles.title}>
+                {TERMS_AND_CONDITIONS.title}
+              </Text>
             </View>
-            <Text adjustsFontSizeToFit style={styles.body}>{TERMS_AND_CONDITIONS.desc}</Text>
+            <Text adjustsFontSizeToFit style={styles.body}>
+              {TERMS_AND_CONDITIONS.desc}
+            </Text>
             {TERMS_AND_CONDITIONS.content.map((item) => (
               <React.Fragment key={item.id}>
-                <Text adjustsFontSizeToFit style={styles.contractTitle}>{item.title}</Text>
-                <Text adjustsFontSizeToFit style={styles.contractDesc}>{item.desc}</Text>
+                <Text adjustsFontSizeToFit style={styles.contractTitle}>
+                  {item.title}
+                </Text>
+                <Text adjustsFontSizeToFit style={styles.contractDesc}>
+                  {item.desc}
+                </Text>
               </React.Fragment>
             ))}
             {/* <RenderContract contract={TERMS_AND_CONDITIONS.content} /> */}
@@ -152,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FFFF",
     borderRadius: 4,
-    elevation:4
+    elevation: 4,
   },
   contentFooter: {
     maxHeight: 80,

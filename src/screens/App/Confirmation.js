@@ -6,15 +6,54 @@ import {
   Image,
   Alert,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import { height } from "../../utils/Styles";
 import { isIphone } from "../../utils";
+import { useStoreState } from "easy-peasy";
+import axios from "axios";
+import { ActivityIndicator } from "react-native";
+import { STEP1_SCREEN } from "../../navigation/routeNames";
 
 const Confirmation = ({ navigation }) => {
+  const { insurance, userInfo } = useStoreState((state) => state);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+    const body = {
+      insurance: insurance.selectedPack.title,
+      coverage: `${insurance.selectedCoverage.category} ${insurance.selectedCoverage.type}`,
+      price: insurance.selectedCoverage.price,
+      name: userInfo.name,
+      surname: userInfo.surname,
+      vehicleID: userInfo?.carteGrise,
+      phoneNumber: userInfo?.phoneNumber,
+    };
+    console.log("data: ", body);
+    axios
+      .post("http://10.0.2.2:3000/api/subscription", body)
+      .then((res) => {
+        console.log("res :", res);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleSubmit();
+
+    return () => {
+      setIsLoading(true);
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.banner}>
@@ -26,29 +65,49 @@ const Confirmation = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.content}>
-        <Image
-          style={{
-            width: 200,
-            height: 200,
-            resizeMode: "contain",
-            alignSelf: "center",
-            marginBottom: 40,
-          }}
-          source={require("../../../assets/check.png")}
-        />
-        <Text adjustsFontSizeToFit style={styles.subHeader}>
-          Félicitations, votre souscription a été prise en compte. Un de nos
-          agents vous contactera pour la suite.{" "}
-          {`
+        {isLoading ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <ActivityIndicator />
+            <Text adjustsFontSizeToFit style={styles.subHeader}>
+              Votre demande est en cours de traitement.
+              {`
           `}
-          Merci pour votre confiance!
-        </Text>
+              Veuillez patienter!
+            </Text>
+          </View>
+        ) : (
+          <>
+            <Image
+              style={{
+                width: 200,
+                height: 200,
+                resizeMode: "contain",
+                alignSelf: "center",
+                marginBottom: 40,
+              }}
+              source={require("../../../assets/check.png")}
+            />
+            <Text adjustsFontSizeToFit style={styles.subHeader}>
+              Félicitations, votre souscription a été prise en compte. Un de nos
+              agents vous contactera pour la suite.{" "}
+              {`
+          `}
+              Merci pour votre confiance!
+            </Text>
+          </>
+        )}
       </View>
       <View style={styles.footer}>
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.nextBtn}
-          onPress={() => navigation.navigate("Step1")}
+          onPress={() => navigation.navigate(STEP1_SCREEN)}
         >
           <Text adjustsFontSizeToFit style={styles.btnText}>
             Retour à l'Accueil
@@ -118,7 +177,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: "#FFF",
     textTransform: "uppercase",
-    fontSize: isIphone?14:16,
+    fontSize: isIphone ? 14 : 16,
     fontWeight: "500",
     letterSpacing: 1,
   },

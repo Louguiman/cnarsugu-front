@@ -4,16 +4,14 @@
     "slug": "cnar-sugu",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/log.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "packagerOpts": {
       "config": {
         "minify": true,
@@ -27,7 +25,7 @@
     "android": {
       "hermesEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/log.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.louguiman.cnarsugu"

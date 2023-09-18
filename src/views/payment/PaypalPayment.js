@@ -4,9 +4,9 @@ import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 
 const PaypalPayment = () => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState("");
   return (
-    <React.Fragment>
+    <View style={{ flex: 1 }}>
       <TextInput
         label="Adresse mail"
         value={email}
@@ -23,7 +23,7 @@ const PaypalPayment = () => {
           },
         }}
       />
-    </React.Fragment>
+    </View>
   );
 };
 

@@ -4,6 +4,7 @@ import { store } from "../store/global";
 //Screens
 import App from "./App";
 import Auth from "./Auth";
+import { APP_STACK_SCREENS } from "./routeNames";
 
 const Stack = createNativeStackNavigator();
 const RootStack = () => {
@@ -14,7 +15,7 @@ const RootStack = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Auth" component={Auth} />
-        <Stack.Screen name="App" component={App} />
+        <Stack.Screen name={APP_STACK_SCREENS} component={App} />
       </Stack.Navigator>
     </StoreProvider>
   );

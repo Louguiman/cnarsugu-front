@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import storage from "./storage";
+// import storage from "./storage";
 var Base64 = (function () {
   var map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
   return {
@@ -66,4 +66,8 @@ export function getRandomNumber(max) {
 
 const isIphone = Platform.OS == "ios";
 
-export { Base64, storage, isIphone };
+export {
+  Base64,
+  // storage,
+  isIphone,
+};

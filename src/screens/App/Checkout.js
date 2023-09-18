@@ -16,6 +16,7 @@ import PaypalPayment from "../../views/payment/PaypalPayment";
 import CreditCardPayment from "../../views/payment/CreditCardPayment";
 import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
 import { isIphone } from "../../utils";
+import Layout from "../../components/layout/Layout";
 
 const DATA = [
   {
@@ -128,23 +129,34 @@ const Checkout = ({ navigation }) => {
         keyboardShouldPersistTaps={"handled"}
       >
         <Header navigation={navigation} />
-        <View style={styles.banner}>
-          <Text adjustsFontSizeToFit style={styles.headerText}>
-            Paiement
-          </Text>
-          <Text adjustsFontSizeToFit style={styles.subHeader}>
-            Veuillez choisir une méthode de paiement.
-          </Text>
-          <FlatList
-            data={DATA}
-            horizontal
-            contentContainerStyle={{ height: 80, marginTop: 8 }}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            extraData={selectedId}
-          />
-        </View>
-        <View style={styles.content}>{renderPaymentComponent(selectedId)}</View>
+        <Layout
+          left={
+            <View style={styles.banner}>
+              <Text adjustsFontSizeToFit style={styles.headerText}>
+                Paiement
+              </Text>
+              <Text adjustsFontSizeToFit style={styles.subHeader}>
+                Veuillez choisir une méthode de paiement.
+              </Text>
+              <FlatList
+                data={DATA}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ height: 80, marginTop: 8 }}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                extraData={selectedId}
+              />
+            </View>
+          }
+          right={
+            <View style={styles.content}>
+              {renderPaymentComponent(selectedId)}
+            </View>
+          }
+          rightStyle={{ justifyContent: "center", alignItems: "center" }}
+        />
+
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Confirmation")}
@@ -181,12 +193,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   content: {
-    flex: 6,
+    flex: 1,
     padding: 20,
-    paddingTop: 0,
+    marginTop: 200,
   },
   footer: {
-    flex: 1,
+    flex: 0.2,
     justifyContent: "flex-end",
     padding: 10,
     alignItems: "flex-end",

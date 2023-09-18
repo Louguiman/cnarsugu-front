@@ -96,7 +96,14 @@ const Step2 = ({ navigation, route }) => {
 
   return (
     <ImageBackground
-      style={[classicStyles.bgContainer, StyleSheet.absoluteFill]}
+      style={[
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        StyleSheet.absoluteFill,
+      ]}
       resizeMode="cover"
       source={require("../../../assets/bg-on1.png")}
     >

@@ -15,6 +15,7 @@ import { height, width } from "../../utils/Styles";
 import * as classicStyles from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone } from "../../utils";
+import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
 
 const Header = ({ navigation, name, icon, category }) => {
   return (
@@ -34,7 +35,7 @@ const Header = ({ navigation, name, icon, category }) => {
         style={{
           position: "absolute",
           top: -20,
-          height:100,
+          height: 100,
           width: 100,
           right: 4,
           zIndex: 100,
@@ -57,7 +58,7 @@ const Footer = ({ navigation, price }) => (
       </Text>
     </View>
     <TouchableOpacity
-      onPress={() => navigation.navigate("Enrolment")}
+      onPress={() => navigation.navigate(ENROLMENT_SCREEN)}
       activeOpacity={0.7}
       style={styles.btnSubscribe}
     >
@@ -84,8 +85,11 @@ const Coverage = ({ route, navigation }) => {
   return (
     <ImageBackground
       style={[
-        classicStyles.bgContainer,
-        { flex: 1 },
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
         //  { width: width, height: height }
       ]}
       resizeMode="cover"
@@ -223,7 +227,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
     letterSpacing: 1,
-    color: "#FFF",
+    color: "#DC0123",
   },
   caption: {
     fontWeight: "400",
@@ -235,9 +239,9 @@ const styles = StyleSheet.create({
   },
   covContainer: {
     width: "90%",
-    height: 30,
+    // minHeight: 30,
     justifyContent: "center",
-    padding: 4,
+    padding: 1,
     marginLeft: 8,
   },
   itemText: {
@@ -249,8 +253,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
   },
   img: {
-    width:  height/7,
-    height:  height/7,
+    width: height / 7,
+    height: height / 7,
     position: "absolute",
     right: 10,
     top: 80,

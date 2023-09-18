@@ -7,7 +7,7 @@ const MobileMoneyPayment = () => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
 
   return (
-    <React.Fragment>
+    <View style={{ flex: 1 }}>
       <TextInput
         label="Numero de Téléphone"
         value={phoneNumber}
@@ -24,7 +24,7 @@ const MobileMoneyPayment = () => {
           },
         }}
       />
-    </React.Fragment>
+    </View>
   );
 };
 

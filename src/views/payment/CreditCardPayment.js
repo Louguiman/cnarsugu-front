@@ -10,7 +10,7 @@ const CreditCardPayment = () => {
   const [cardName, setcardName] = useState("");
 
   return (
-    <React.Fragment>
+    <View style={{ flex: 1 }}>
       <TextInput
         label="Numero de carte"
         value={cardNo}
@@ -81,7 +81,7 @@ const CreditCardPayment = () => {
           },
         }}
       />
-    </React.Fragment>
+    </View>
   );
 };
 

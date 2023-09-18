@@ -2,23 +2,44 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Surface } from "@react-native-material/core";
 import { isIphone } from "../utils";
+import { PRODUCT_SCREEN, STEP2_SCREEN } from "../navigation/routeNames";
+import getRandomColor from "../utils/getRandomColor";
+const Pack = ({
+  id,
+  name,
+  icon,
+  color,
+  desc,
+  navigation,
+  handleSelect,
+  type,
+}) => {
+  const onCardPress = () => {
+    handleSelect();
+    if (type == "package") {
+      navigation.navigate(STEP2_SCREEN, { selected: id });
+    } else {
+      navigation.navigate(PRODUCT_SCREEN, { selected: id });
+    }
+  };
 
-const Pack = ({ id, name, icon, color, desc, navigation, handleSelect }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      style={styles.card}
-      onPress={() => {
-        handleSelect();
-        navigation.navigate("Step2", { selected: id });
-      }}
+      style={[styles.card, { backgroundColor: getRandomColor(desc) }]}
+      onPress={onCardPress}
     >
       <View style={[styles.pillContainer, { backgroundColor: color }]}>
         <Text adjustsFontSizeToFit style={styles.pillText}>
-          Package
+          {type}
         </Text>
       </View>
-      <Text adjustsFontSizeToFit numberOfLines={2} ellipsizeMode="clip" style={styles.text}>
+      <Text
+        adjustsFontSizeToFit
+        numberOfLines={2}
+        ellipsizeMode="clip"
+        style={styles.text}
+      >
         {name}
       </Text>
       <Text adjustsFontSizeToFit style={styles.textDesc}>
@@ -34,10 +55,11 @@ export default Pack;
 const styles = StyleSheet.create({
   card: {
     // flexDirection: "row",
-    width: "100%",
+    // width: "100%",
+    minWidth: 400,
     minHeight: 180,
     backgroundColor: "#FFF",
-    marginVertical: 8,
+    marginVertical: 10,
     borderRadius: 8,
     padding: 10,
     alignItems: "flex-start",

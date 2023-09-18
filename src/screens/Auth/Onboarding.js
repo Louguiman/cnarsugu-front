@@ -10,11 +10,19 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import * as classicStyles from "../../utils/Styles";
+import { TERMS_AND_CONDITIONS } from "../../navigation/routeNames";
 
 const Onboarding = ({ navigation }) => {
   return (
     <ImageBackground
-      style={[classicStyles.bgContainer, StyleSheet.absoluteFill]}
+      style={[
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        StyleSheet.absoluteFill,
+      ]}
       resizeMode="cover"
       source={require("../../../assets/bg-on1.png")}
     >
@@ -32,8 +40,12 @@ const Onboarding = ({ navigation }) => {
         />
 
         <View style={{ flex: 7, paddingHorizontal: 10, paddingTop: 40 }}>
-          <Text adjustsFontSizeToFit style={styles.headerText}>Bienvenue {"\n"}sur</Text>
-          <Text adjustsFontSizeToFit style={styles.title}>CNAR SUGU !</Text>
+          <Text adjustsFontSizeToFit style={styles.headerText}>
+            Bienvenue {"\n"}sur
+          </Text>
+          <Text adjustsFontSizeToFit style={styles.title}>
+            CNAR SUGU !
+          </Text>
         </View>
         <View
           style={{ flex: 3, justifyContent: "flex-end", alignItems: "center" }}
@@ -42,11 +54,13 @@ const Onboarding = ({ navigation }) => {
             Annoncez la couleur {"\n"}soyez Bleu!
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Terms")}
+            onPress={() => navigation.navigate(TERMS_AND_CONDITIONS)}
             activeOpacity={0.7}
             style={styles.btnStart}
           >
-            <Text adjustsFontSizeToFit style={styles.btnText}>Démarrer</Text>
+            <Text adjustsFontSizeToFit style={styles.btnText}>
+              Démarrer
+            </Text>
             <AntDesign name="arrowright" size={24} color="white" />
           </TouchableOpacity>
         </View>
@@ -112,9 +126,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textTransform: "uppercase",
     letterSpacing: 1.2,
-    fontSize:10,
+    fontSize: 10,
     // position:'absolute',
-    bottom: classicStyles.height/50,
+    bottom: classicStyles.height / 50,
     right: -100,
     zIndex: 1000,
   },

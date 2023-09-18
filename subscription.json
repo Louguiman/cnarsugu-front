@@ -1,0 +1,21 @@
+{
+  "insurance": {
+    "selectedCoverage": {
+      "category": "Bars & Clubs",
+      "coverage": [],
+      "description": "Assurance multirisque complète pour les bars et les clubs branchés. Protégez votre établissement, vos clients et votre réputation avec une couverture fiable et adaptée.",
+      "icon": 10,
+      "id": 2,
+      "price": "200 000 FCFA",
+      "type": "Multirisque"
+    },
+    "selectedPack": {
+      "color": "#029D40",
+      "desc": "Protégez vos investissements en souscrivant à notre assurance multirisque PME/PMI.",
+      "icon": 4,
+      "id": 2,
+      "title": "MultiRisque PME/PMI"
+    }
+  },
+  "userInfo": { "carteGrise": "VXGSYBCA", "name": "Madou", "surname": "Chaka" }
+}

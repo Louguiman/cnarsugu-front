@@ -13,6 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
 
 const Header = ({ navigation }) => {
   return (
@@ -54,7 +55,7 @@ const VehicleDetails = ({ navigation }) => {
     }
     updateUserInfo({ carteGrise: vehicleNo });
 
-    navigation.navigate("Checkout");
+    navigation.navigate(CHECKOUT_SCREEN);
   };
 
   return (
@@ -66,8 +67,14 @@ const VehicleDetails = ({ navigation }) => {
       >
         <Header navigation={navigation} />
         <View style={styles.banner}>
-          <Text adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.headerText}>Vous y êtes presque!</Text>
-          <Text adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.subHeader}>
+          <Text
+            adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.headerText}
+          >
+            Vous y êtes presque!
+          </Text>
+          <Text
+            adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.subHeader}
+          >
             Nous aurons besoin de la carte grise du véhicule.
           </Text>
         </View>
@@ -94,7 +101,11 @@ const VehicleDetails = ({ navigation }) => {
             style={styles.nextBtn}
             onPress={handleNext}
           >
-            <Text adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.btnText}>Suivant</Text>
+            <Text
+              adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.btnText}
+            >
+              Suivant
+            </Text>
             <View style={styles.btnIconBox}>
               <AntDesign name="arrowright" size={32} color="white" />
             </View>

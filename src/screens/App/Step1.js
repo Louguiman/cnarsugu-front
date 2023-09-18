@@ -31,9 +31,12 @@ const Step1 = ({ navigation }) => {
   return (
     <ImageBackground
       style={[
-        classicStyles.bgContainer,
+        {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        },
         StyleSheet.absoluteFill,
-        { width: classicStyles.width, height: classicStyles.height },
       ]}
       resizeMode="cover"
       source={require("../../../assets/bg-on1.png")}
@@ -50,7 +53,7 @@ const Step1 = ({ navigation }) => {
             zIndex: 100,
           }}
           resizeMode="contain"
-          source={require("../../../assets/logo.png")}
+          source={require("../../../assets/logocnar.png")}
         />
         <View
           style={{

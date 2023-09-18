@@ -4,17 +4,26 @@ import * as SplashScreen from "expo-splash-screen";
 
 import RootStack from "./src/navigation";
 import React, { useState, useEffect, useCallback } from "react";
+import {
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  useFonts,
+} from "@expo-google-fonts/dev";
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  let [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+  });
 
   useEffect(() => {
     async function prepare() {
       try {
         // Pre-load fonts, make any API calls you need to do here
         // await Font.loadAsync(Entypo.font);
-        // Artificially delay for two seconds to simulate a slow loading
+        // Artificially delay for two seconds to simulate a slow loawding
         // experience. Please remove this if you copy and paste the code!
         await new Promise((resolve) => setTimeout(resolve, 10));
       } catch (e) {
@@ -29,7 +38,7 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    if (fontsLoaded && appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
       // `setAppIsReady`, then we may see a blank screen while the app is
       // loading its initial state and rendering its first pixels. So instead,
@@ -37,7 +46,7 @@ export default function App() {
       // performed layout.
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady]);
+  }, [appIsReady, fontsLoaded]);
 
   if (!appIsReady) {
     return null;
@@ -49,8 +58,6 @@ export default function App() {
 
       <StatusBar style="inverted" />
       <RootStack />
-      {/* <Toast config={toastConfig} position="bottom" bottomOffset={20} /> */}
-      {/* </SafeAreaView> */}
     </NavigationContainer>
   );
 }
