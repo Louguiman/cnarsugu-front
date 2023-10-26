@@ -1,4 +1,11 @@
-import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -12,13 +19,13 @@ import { useStoreActions } from "easy-peasy";
 const Header = () => {
   return (
     <View style={styles.header}>
-      <Text adjustsFontSizeToFit numberOfLines={1} style={styles.btnText}>
+      <Text  numberOfLines={1} style={styles.btnText}>
         Nos Formules
       </Text>
-      <Text adjustsFontSizeToFit numberOfLines={2} style={styles.btnText}>
+      <Text  numberOfLines={2} style={styles.btnText}>
         d'assurance
       </Text>
-      <Text adjustsFontSizeToFit numberOfLines={2} style={styles.btnText}>
+      <Text  numberOfLines={2} style={styles.btnText}>
         en ligne
       </Text>
     </View>
@@ -33,8 +40,6 @@ const Step1 = ({ navigation }) => {
       style={[
         {
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
         },
         StyleSheet.absoluteFill,
       ]}
@@ -46,7 +51,7 @@ const Step1 = ({ navigation }) => {
         <Image
           style={{
             position: "absolute",
-            top: classicStyles.height / 18,
+            top: classicStyles.height / 40,
             height: classicStyles.width / 2.4,
             width: classicStyles.width / 2.4,
             right: -4,
@@ -55,13 +60,15 @@ const Step1 = ({ navigation }) => {
           resizeMode="contain"
           source={require("../../../assets/logocnar.png")}
         />
-        <View
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
           style={{
-            flex: 10,
-            justifyContent: "space-around",
-            alignItems: "center",
-            padding: 10,
-            paddingVertical: 80,
+            flex: 0.8,
+            margunBottom:50,
+            padding: 4,
+            paddingVertical: 10,
           }}
         >
           {InsurancePacks.map((item) => {
@@ -78,6 +85,7 @@ const Step1 = ({ navigation }) => {
                 icon={item.icon}
                 navigation={navigation}
                 handleSelect={handleSelect}
+                type={item.type}
               />
             );
           })}
@@ -96,7 +104,7 @@ const Step1 = ({ navigation }) => {
               excellence
             </Text>
           </Text>
-        </View>
+        </ScrollView>
         {/* <Footer navigation={navigation} /> */}
       </SafeAreaView>
     </ImageBackground>
@@ -108,12 +116,10 @@ export default Step1;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
-    // backgroundColor: "#FFF",
   },
   header: {
-    marginTop: 20,
-    flex: 1,
+    marginTop: 10,
+    flex: 0.2,
   },
   content: {
     // flex: 10,

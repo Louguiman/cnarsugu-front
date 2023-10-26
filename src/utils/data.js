@@ -1,6 +1,6 @@
 export const TERMS_AND_CONDITIONS = {
   title: "Contrat d'utilisation de l'application mobile",
-  desc: 'Ce contrat d\'utilisation (le "Contrat") est établi entre l\'utilisateur (l\'"Utilisateur") et [Nom de la société](la "Société"), responsable de l\'application mobile nommée [Nom de l\'application] (l\'"Application"). En acceptant les termes de ce Contrat, l\'Utilisateur accepte de se conformer à toutes les conditions énoncées ci-dessous.',
+  desc: 'Ce contrat d\'utilisation (le "Contrat") est établi entre l\'utilisateur (l\'"Utilisateur") et "Les Assurances Bleues" (la "Société"), responsable de l\'application mobile nommée "cnarsugu" (l\'"Application"). En acceptant les termes de ce Contrat, l\'Utilisateur accepte de se conformer à toutes les conditions énoncées ci-dessous.',
   content: [
     {
       id: 2,
@@ -346,7 +346,7 @@ const COVERAGES_AUTO = [
     id: 13,
     description:
       "Une protection pour les véhicules de gamme 15 à 23 CV. Couvrez-vous contre les responsabilités civiles, les dommages causés par des tiers, les incendies, les poursuites judiciaires, et bénéficiez de l'assistance en cas de besoin.",
-    category: "Fourchette 15 à 23 CVCV",
+    category: "Fourchette 15 à 23 CV",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -417,7 +417,7 @@ const COVERAGES_AUTO = [
     id: 17,
     description:
       "Une protection pour les véhicules de gamme 24 CV & plus. Couvrez-vous contre les responsabilités civiles, les dommages causés par des tiers, les incendies, les poursuites judiciaires, et bénéficiez de l'assistance en cas de besoin.",
-    category: "Fourchette 24 CV & plus",
+    category: `Fourchette 24 CV & plus`,
   },
   {
     type: "Formule Tiers Essentiel",
@@ -492,24 +492,6 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour protéger votre restaurant contre les imprévus et garantir la tranquillité d'esprit de votre établissement.",
     icon: require("../../assets/icons/coverages/cutlery.png"),
-  },
-  {
-    id: 2,
-
-    type: "Multirisque",
-    category: "Bars & Clubs",
-    coverage: [
-      "Incendie et Événements assimilés",
-      "Accidents aux Appareils Électriques",
-      "Dégâts des Eaux",
-      "Bris des Glaces",
-      "Vol par effraction",
-      "Responsabilité civile",
-    ],
-    price: "200 000 FCFA",
-    description:
-      "Assurance multirisque complète pour les bars et les clubs branchés. Protégez votre établissement, vos clients et votre réputation avec une couverture fiable et adaptée.",
-    icon: require("../../assets/icons/coverages/cocktail.png"),
   },
   {
     id: 3,
@@ -662,6 +644,38 @@ const COVERAGES_MULTI = [
     description:
       "Protégez votre clinique en souscrivant à notre multirisque CLINIQUES.",
     icon: require("../../assets/icons/coverages/clinic1.png"),
+  },
+  {
+    id: 2,
+
+    type: "Multirisque",
+    category: "Bars & Clubs",
+    coverage: [
+      "Incendie et Événements assimilés",
+      "Accidents aux Appareils Électriques",
+      "Dégâts des Eaux",
+      "Bris des Glaces",
+      "Vol par effraction",
+      "Responsabilité civile",
+    ],
+    price: "200 000 FCFA",
+    description:
+      "Assurance multirisque complète pour les bars et les clubs branchés. Protégez votre établissement, vos clients et votre réputation avec une couverture fiable et adaptée.",
+    icon: require("../../assets/icons/coverages/cocktail.png"),
+  },
+  {
+    id: 12,
+
+    type: "Multirisque",
+    category: "Offre sur Mesure",
+    coverage: [
+      "Offre soumise à des conditions",
+      "et selon les besoins du client",
+    ],
+    price: "Demande de Devis",
+    description:
+      "Au besoin, il est également possible de proposer au client une couverture sur mesure",
+    icon: require("../../assets/icons/coverages/percentIcon.png"),
   },
 ];
 

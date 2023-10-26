@@ -32,7 +32,6 @@ const Confirmation = ({ navigation }) => {
       vehicleID: userInfo?.carteGrise,
       phoneNumber: userInfo?.phoneNumber,
     };
-    console.log("data: ", body);
     axios
       .post("http://10.0.2.2:3000/api/subscription", body)
       .then((res) => {
@@ -119,7 +118,7 @@ const Confirmation = ({ navigation }) => {
       </View>
       <Image
         style={height < 650 ? styles.imgBgXs : styles.imgBg}
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </SafeAreaView>
   );

@@ -10,7 +10,10 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import * as classicStyles from "../../utils/Styles";
-import { TERMS_AND_CONDITIONS } from "../../navigation/routeNames";
+import {
+  TERMS_AND_CONDITIONS,
+  TERMS_AND_CONDITIONS_SCREEN,
+} from "../../navigation/routeNames";
 
 const Onboarding = ({ navigation }) => {
   return (
@@ -18,8 +21,6 @@ const Onboarding = ({ navigation }) => {
       style={[
         {
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
         },
         StyleSheet.absoluteFill,
       ]}
@@ -36,15 +37,12 @@ const Onboarding = ({ navigation }) => {
             alignSelf: "center",
           }}
           resizeMode="contain"
-          source={require("../../../assets/logo.png")}
+          source={require("../../../assets/logocnar.png")}
         />
 
         <View style={{ flex: 7, paddingHorizontal: 10, paddingTop: 40 }}>
           <Text adjustsFontSizeToFit style={styles.headerText}>
             Bienvenue {"\n"}sur
-          </Text>
-          <Text adjustsFontSizeToFit style={styles.title}>
-            CNAR SUGU !
           </Text>
         </View>
         <View
@@ -54,7 +52,7 @@ const Onboarding = ({ navigation }) => {
             Annoncez la couleur {"\n"}soyez Bleu!
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate(TERMS_AND_CONDITIONS)}
+            onPress={() => navigation.navigate(TERMS_AND_CONDITIONS_SCREEN)}
             activeOpacity={0.7}
             style={styles.btnStart}
           >
@@ -105,15 +103,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "70%",
     height: 60,
-    backgroundColor: "black",
-    borderColor: "#D3D3D3",
+    backgroundColor: "#F8F104",
+    borderColor: "#000",
     borderRadius: 8,
     borderWidth: 1,
     elevation: 4,
     marginBottom: 20,
   },
   btnText: {
-    color: "#FFF",
+    color: "#000",
     textAlign: "center",
     textTransform: "uppercase",
     fontSize: 18,

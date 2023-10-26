@@ -74,7 +74,10 @@ const CoverageNameContainer = ({ name, category }) => {
   return (
     <Text
       adjustsFontSizeToFitallowFontScaling
-      style={[styles.headerText, { textAlign: "center", fontSize: 28, maxWidth:350 }]}
+      style={[
+        styles.headerText,
+        { textAlign: "center", fontSize: 28, maxWidth: 350 },
+      ]}
     >
       {name === "Multirisque" ? category : name}
     </Text>
@@ -87,8 +90,6 @@ const Product = ({ route, navigation }) => {
     InsurancePacks[selected - 1]
   );
 
-  console.log("selected  : ", selected);
-  console.log("selectedProductCoverage  : ", selectedProductCoverage);
   return (
     <ImageBackground
       style={[

@@ -20,7 +20,6 @@ import { STEP1_SCREEN } from "../../navigation/routeNames";
 const ConfirmationDevis = ({ navigation }) => {
   const { insurance, userInfo } = useStoreState((state) => state);
   const [isLoading, setIsLoading] = useState(true);
-  console.log("insurance: ", insurance);
   const handleSubmit = () => {
     setIsLoading(true);
     const body = {
@@ -115,7 +114,7 @@ const ConfirmationDevis = ({ navigation }) => {
       </View>
       <Image
         style={height < 650 ? styles.imgBgXs : styles.imgBg}
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </SafeAreaView>
   );

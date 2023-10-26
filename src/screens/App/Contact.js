@@ -16,8 +16,10 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
 import {
   CHECKOUT_SCREEN,
+  DEVIS_SCREEN,
   VEHICLE_DETAILS_SCREEN,
 } from "../../navigation/routeNames";
+import { height } from "../../utils/Styles";
 
 const Header = ({ navigation }) => {
   return (
@@ -39,7 +41,7 @@ const Header = ({ navigation }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
@@ -50,6 +52,9 @@ const Contact = ({ navigation }) => {
 
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const insurancePack = useStoreState((state) => state.insurance.selectedPack);
+  const coveragePack = useStoreState(
+    (state) => state.insurance.selectedCoverage
+  );
 
   const handleNext = () => {
     if (!phoneNumber) {
@@ -61,9 +66,14 @@ const Contact = ({ navigation }) => {
     }
 
     updateUserInfo({ phoneNumber });
-
+    if (coveragePack?.category === "Offre sur Mesure") {
+      navigation.navigate(DEVIS_SCREEN);
+      return;
+    }
     insurancePack.id === 1
       ? navigation.navigate(VEHICLE_DETAILS_SCREEN)
+      : insurancePack.id > 2
+      ? navigation.navigate(DEVIS_SCREEN)
       : navigation.navigate(CHECKOUT_SCREEN);
   };
 
@@ -75,52 +85,45 @@ const Contact = ({ navigation }) => {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <Header navigation={navigation} />
-        <Layout
-          left={
-            <View style={styles.banner}>
-              <Text adjustsFontSizeToFit style={styles.headerText}>
-                Informations Personnelles
-              </Text>
-              <Text adjustsFontSizeToFit style={styles.subHeader}>
-                Veuillez renseigner les champs suivants qui serviront à procéder
-                à votre souscription.
-              </Text>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  style={styles.imgBg}
-                  source={require("../../../assets/contact.png")}
-                />
-              </View>
-            </View>
-          }
-          right={
-            <View style={styles.content}>
-              <TextInput
-                label="Numero de Téléphone"
-                value={phoneNumber}
-                keyboardType="phone-pad"
-                onChangeText={(text) => setPhoneNumber(text)}
-                style={{ marginVertical: 8 }}
-                labelStyle={{ color: "#ffffff" }}
-                theme={{
-                  ...defaultTheme,
-                  colors: {
-                    ...defaultTheme.colors,
-                    primary: "#00ff00", // color when focused
-                    accent: COLORS[0], // color when not focused
-                  },
-                }}
-              />
-            </View>
-          }
-        />
-
+        <View style={styles.banner}>
+          <Text adjustsFontSizeToFit style={styles.headerText}>
+            Informations Personnelles
+          </Text>
+          <Text adjustsFontSizeToFit style={styles.subHeader}>
+            Veuillez renseigner les champs suivants qui serviront à procéder à
+            votre souscription.
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              style={styles.imgBg}
+              source={require("../../../assets/contact.png")}
+            />
+          </View>
+        </View>
+        <View style={styles.content}>
+          <TextInput
+            label="Numero de Téléphone"
+            value={phoneNumber}
+            keyboardType="phone-pad"
+            onChangeText={(text) => setPhoneNumber(text)}
+            style={{ marginVertical: 8 }}
+            labelStyle={{ color: "#ffffff" }}
+            theme={{
+              ...defaultTheme,
+              colors: {
+                ...defaultTheme.colors,
+                primary: "#00ff00", // color when focused
+                accent: COLORS[0], // color when not focused
+              },
+            }}
+          />
+        </View>
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.8}
@@ -147,10 +150,12 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 10,
   },
-  banner: { marginVertical: 10, padding: 8 },
+  banner: {
+    marginVertical: 10,
+    padding: 8,
+  },
   content: {
     padding: 20,
-    paddingTop: 200,
     marginVertical: 10,
   },
   footer: {
@@ -209,13 +214,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   imgBg: {
-    width: 350,
-    height: 350,
-    resizeMode: "contain",
-    // position: "absolute",
-    // bottom: 80,
-    // left: -50,
-    marginTop: 150,
+    position: "absolute",
+    bottom: -height + 300,
+    left: -20,
     zIndex: -10,
+    width: 280,
+    height: 280,
+    resizeMode: "contain",
   },
 });

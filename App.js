@@ -13,10 +13,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular,
-    Montserrat_500Medium,
-  });
+  // let [fontsLoaded] = useFonts({
+  //   Montserrat_400Regular,
+  //   Montserrat_500Medium,
+  // });
 
   useEffect(() => {
     async function prepare() {
@@ -38,7 +38,7 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded && appIsReady) {
+    if (appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
       // `setAppIsReady`, then we may see a blank screen while the app is
       // loading its initial state and rendering its first pixels. So instead,
@@ -46,7 +46,7 @@ export default function App() {
       // performed layout.
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady, fontsLoaded]);
+  }, [appIsReady]);
 
   if (!appIsReady) {
     return null;

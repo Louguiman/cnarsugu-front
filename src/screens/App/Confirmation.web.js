@@ -116,7 +116,7 @@ const Confirmation = ({ navigation }) => {
       </View>
       <Image
         style={height < 650 ? styles.imgBgXs : styles.imgBg}
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </SafeAreaView>
   );

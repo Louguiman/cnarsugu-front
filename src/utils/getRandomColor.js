@@ -23,7 +23,7 @@ export function getRandomColorFromTenthCHar(name) {
   var g = (num >> 8) & 255;
   var b = num & 255;
   //character: firstAlphabet.toUpperCase(),
-  const backgroundColor = "rgba(" + r + "," + g + "," + b + ",0.7)";
+  const backgroundColor = "rgba(" + r + "," + g + "," + b + ",0.9)";
 
   const textColor = getContrastingTextColor(backgroundColor);
 

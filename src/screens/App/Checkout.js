@@ -79,7 +79,7 @@ const Header = ({ navigation }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
@@ -129,33 +129,26 @@ const Checkout = ({ navigation }) => {
         keyboardShouldPersistTaps={"handled"}
       >
         <Header navigation={navigation} />
-        <Layout
-          left={
-            <View style={styles.banner}>
-              <Text adjustsFontSizeToFit style={styles.headerText}>
-                Paiement
-              </Text>
-              <Text adjustsFontSizeToFit style={styles.subHeader}>
-                Veuillez choisir une méthode de paiement.
-              </Text>
-              <FlatList
-                data={DATA}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ height: 80, marginTop: 8 }}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
-              />
-            </View>
-          }
-          right={
-            <View style={styles.content}>
+        <View style={styles.banner}>
+          <Text adjustsFontSizeToFit style={styles.headerText}>
+            Paiement
+          </Text>
+          <Text adjustsFontSizeToFit style={styles.subHeader}>
+            Veuillez choisir une méthode de paiement.
+          </Text>
+          <FlatList
+            data={DATA}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ height: 80, marginTop: 8 }}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            extraData={selectedId}
+          />
+        </View>
+        <View style={styles.content}>
               {renderPaymentComponent(selectedId)}
             </View>
-          }
-          rightStyle={{ justifyContent: "center", alignItems: "center" }}
-        />
 
         <View style={styles.footer}>
           <TouchableOpacity
@@ -185,7 +178,7 @@ export default Checkout;
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#001220", paddingTop: 10 },
   header: {
-    flex: 1.8,
+    flex: 1,
   },
   banner: {
     flex: 2,
@@ -195,7 +188,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-    marginTop: 200,
+    marginTop: 20,
   },
   footer: {
     flex: 0.2,

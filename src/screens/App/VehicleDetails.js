@@ -1,13 +1,18 @@
+import React, { useEffect, useMemo, useRef } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Image,
+  // Image,
   Alert,
   ScrollView,
+  Button,
 } from "react-native";
-import React from "react";
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { TextInput, defaultTheme } from "@react-native-material/core";
@@ -35,18 +40,69 @@ const Header = ({ navigation }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
 };
 
 const VehicleDetails = ({ navigation }) => {
+  const bottomSheetRef = useRef(null);
   const [vehicleNo, setVehicleNo] = React.useState("");
+  const [image, setImage] = React.useState(null);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
 
+  useEffect(() => {
+    getPermissionAsync();
+  }, []);
+
+  useEffect(() => {
+    image && handleClosePress();
+    return () => {};
+  }, [image]);
+
+  const snapPoints = useMemo(() => ["15%", "50%"], []);
+  const getPermissionAsync = async () => {
+    if (Platform.OS !== "web") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "Please allow access to your camera roll."
+        );
+      }
+    }
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   const handleNext = () => {
-    if (!vehicleNo) {
+    if (!image) {
       Alert.alert(
         "Informations Incompletes",
         "Veuillez renseigner les champs obligatoires"
@@ -58,6 +114,9 @@ const VehicleDetails = ({ navigation }) => {
     navigation.navigate(CHECKOUT_SCREEN);
   };
 
+  const handleClosePress = () => bottomSheetRef.current.close();
+  const handleOpenPress = () => bottomSheetRef.current.snapToIndex(0);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -68,18 +127,20 @@ const VehicleDetails = ({ navigation }) => {
         <Header navigation={navigation} />
         <View style={styles.banner}>
           <Text
-            adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.headerText}
+            adjustsFontSizeToFitadjustsFontSizeToFit
+            style={styles.headerText}
           >
             Vous y êtes presque!
           </Text>
           <Text
-            adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.subHeader}
+            adjustsFontSizeToFitadjustsFontSizeToFit
+            style={styles.subHeader}
           >
             Nous aurons besoin de la carte grise du véhicule.
           </Text>
         </View>
         <View style={styles.content}>
-          <TextInput
+          {/* <TextInput
             label="Carte Grise"
             value={vehicleNo}
             onChangeText={(text) => setVehicleNo(text)}
@@ -93,29 +154,79 @@ const VehicleDetails = ({ navigation }) => {
                 accent: COLORS[0], // color when not focused
               },
             }}
+          /> */}
+          {image && (
+            <Image
+              style={{
+                width: 200,
+                height: 200,
+                alignSelf: "center",
+                borderRadius: 4,
+                marginVertical: 10,
+              }}
+              source={{ uri: image }}
+            />
+          )}
+          <Button
+            title="Télécharger ma carte à grisE"
+            onPress={handleOpenPress}
           />
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.nextBtn}
-            onPress={handleNext}
-          >
-            <Text
-              adjustsFontSizeToFitadjustsFontSizeToFitstyle={styles.btnText}
+          {image && (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.nextBtn}
+              onPress={handleNext}
             >
-              Suivant
-            </Text>
-            <View style={styles.btnIconBox}>
-              <AntDesign name="arrowright" size={32} color="white" />
-            </View>
-          </TouchableOpacity>
+              <Text
+                adjustsFontSizeToFitadjustsFontSizeToFit
+                style={styles.btnText}
+              >
+                Suivant
+              </Text>
+              <View style={styles.btnIconBox}>
+                <AntDesign name="arrowright" size={32} color="white" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <Image
           style={styles.imgBg}
           source={require("../../../assets/car2.png")}
         />
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.quickBtn}
+            activeOpacity={0.6}
+            onPress={takePhoto}
+          >
+            <AntDesign name="camerao" size={48} color="black" />
+            <Text style={styles.quickBtnText}>Prendre une photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.quickBtn}
+            activeOpacity={0.6}
+            onPress={pickImage}
+          >
+            <AntDesign name="picture" size={48} color="black" />
+            <Text style={styles.quickBtnText}>Choisir une image</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
@@ -193,8 +304,13 @@ const styles = StyleSheet.create({
     height: 280,
     resizeMode: "contain",
     position: "absolute",
-    bottom: 90,
+    bottom: 10,
     left: 10,
     zIndex: -10,
+  },
+  quickBtn: {
+    height: 80,
+    justifyContent: "space-around",
+    alignItems: "center",
   },
 });

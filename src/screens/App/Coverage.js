@@ -5,14 +5,12 @@ import {
   View,
   TouchableOpacity,
   Image,
-  FlatList,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { COVERAGES } from "../../utils/data";
+import { COVERAGES, InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
-import * as classicStyles from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
@@ -41,7 +39,7 @@ const Header = ({ navigation, name, icon, category }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
@@ -87,8 +85,6 @@ const Coverage = ({ route, navigation }) => {
       style={[
         {
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
         },
         //  { width: width, height: height }
       ]}
@@ -99,16 +95,16 @@ const Coverage = ({ route, navigation }) => {
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 180 }}>
           <Header
             navigation={navigation}
-            name={selectedCoverage.type}
-            icon={selectedCoverage.icon}
-            category={selectedCoverage.category}
+            name={selectedCoverage?.type}
+            icon={selectedCoverage?.icon}
+            category={selectedCoverage?.category}
           />
           <View style={styles.card}>
             <Text adjustsFontSizeToFitallowFontScaling style={styles.title1}>
               Description
             </Text>
             <Text adjustsFontSizeToFitallowFontScaling style={styles.desc}>
-              {selectedCoverage.description}
+              {selectedCoverage?.description}
             </Text>
           </View>
           <View style={styles.listHeader}>
@@ -120,7 +116,7 @@ const Coverage = ({ route, navigation }) => {
               Les Garanties
             </Text>
           </View>
-          {selectedCoverage.coverage.map((item, index) => (
+          {selectedCoverage?.coverage.map((item, index) => (
             <CoverageItem key={index} item={item} />
           ))}
           <Footer navigation={navigation} price={selectedCoverage.price} />

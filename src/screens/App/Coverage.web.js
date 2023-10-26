@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  FlatList,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";

@@ -11,11 +11,37 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 
-import * as classicStyles from "../../utils/Styles";
 import { COLORS, COVERAGES } from "../../utils/data";
 import CoverageCard from "../../components/CoverageCard";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
+
+const DATA = [
+  {
+    id: 1,
+    title: "Tout",
+  },
+  {
+    id: 2,
+    title: "3 à 6 CV",
+  },
+  {
+    id: 3,
+    title: "7 à 10 CV",
+  },
+  {
+    id: 4,
+    title: "11 à 14 CV",
+  },
+  {
+    id: 5,
+    title: "15 à 23 CV",
+  },
+  {
+    id: 6,
+    title: "24 CV & plus",
+  },
+];
 
 const Header = ({ navigation }) => {
   return (
@@ -27,16 +53,11 @@ const Header = ({ navigation }) => {
       >
         <AntDesign name="arrowleft" size={48} color="white" />
       </TouchableOpacity>
-      <Text
-        adjustsFontSizeToFit
-        numberOfLines={3}
-        ellipsizeMode="tail"
-        style={styles.headerText}
-      >
+      <Text numberOfLines={3} ellipsizeMode="tail" style={styles.headerText}>
         choisissez{" "}
       </Text>
       <Text
-        adjustsFontSizeToFit
+        // adjustsFontSizeToFit
         numberOfLines={3}
         ellipsizeMode="tail"
         style={styles.headerText}
@@ -45,7 +66,7 @@ const Header = ({ navigation }) => {
       </Text>
 
       <Text
-        adjustsFontSizeToFit
+        // adjustsFontSizeToFit
         numberOfLines={3}
         ellipsizeMode="tail"
         style={styles.headerText}
@@ -56,8 +77,27 @@ const Header = ({ navigation }) => {
   );
 };
 
+const Item = ({
+  item,
+  onPress,
+  backgroundColor,
+  textColor,
+  borderWidth,
+  elevation,
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={[styles.item, backgroundColor, borderWidth, elevation]}
+  >
+    <Text adjustsFontSizeToFit style={[styles.filterTitle, textColor]}>
+      {item.title}
+    </Text>
+  </TouchableOpacity>
+);
+
 const Step2 = ({ navigation, route }) => {
   const { selected } = route.params;
+  const [selectedFilterId, setSelectedFilterId] = React.useState(1);
   const [coverages, setCoverages] = useState([]);
   const updateCoverage = useStoreActions((actions) => actions.updateCoverage);
 
@@ -69,7 +109,25 @@ const Step2 = ({ navigation, route }) => {
     };
   }, [route]);
 
-  const renderItem = ({ item, index }) => {
+  useEffect(() => {
+    // let currentIndex
+    if (!selectedFilterId) return;
+    else if (selectedFilterId === 1)
+      setCoverages(COVERAGES[route.params.selected - 1]);
+    else {
+      const selectedFilter = DATA.find(
+        (filter) => filter.id === selectedFilterId
+      );
+      const filteredCoverages = COVERAGES[route.params.selected - 1].filter(
+        (cov) => cov.category.includes(selectedFilter.title)
+      );
+      setCoverages(filteredCoverages);
+    }
+    // currentIndex
+    return () => {};
+  }, [selectedFilterId]);
+
+  const renderCoverageItem = ({ item, index }) => {
     const pillColor = COLORS[index % COLORS.length];
     const textColor = index % COLORS.length === 2 ? "black" : "white";
     const handleSelect = () => {
@@ -94,13 +152,30 @@ const Step2 = ({ navigation, route }) => {
     );
   };
 
+  const renderFilterItem = ({ item }) => {
+    const isSelected = item.id === selectedFilterId;
+    const backgroundColor = !isSelected ? "transparent" : COLORS[2];
+    const color = isSelected ? "black" : "black";
+    const borderWidth = isSelected ? 1 : 1;
+    const elevation = isSelected ? 4 : 0;
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedFilterId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+        borderWidth={{ borderWidth }}
+        elevation={{ elevation }}
+      />
+    );
+  };
+
   return (
     <ImageBackground
       style={[
         {
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
         },
         StyleSheet.absoluteFill,
       ]}
@@ -112,22 +187,38 @@ const Step2 = ({ navigation, route }) => {
         <Image
           style={{
             position: "absolute",
-            top: classicStyles.height / 18,
-            height: classicStyles.width / 2.4,
-            width: classicStyles.width / 2.4,
+            top: 90,
+            height: 100,
+            width: 180,
             right: 4,
             zIndex: 100,
           }}
           resizeMode="contain"
-          source={require("../../../assets/logo.png")}
+          source={require("../../../assets/logocnar.png")}
         />
+        {route.params.selected === 1 && (
+          <View style={{ flex: 0.15 }}>
+            <FlatList
+              data={DATA}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ width: "100%" }}
+              contentContainerStyle={{
+                alignItems: "center",
+              }}
+              renderItem={renderFilterItem}
+              keyExtractor={(item) => item.id}
+              extraData={selectedFilterId}
+            />
+          </View>
+        )}
         <FlatList
           data={coverages}
-          style={{ flex: 10, width: "100%" }}
+          style={{ flex: 0.8 }}
           contentContainerStyle={{
             padding: 10,
           }}
-          renderItem={renderItem}
+          renderItem={renderCoverageItem}
           keyExtractor={(item) => item.id}
         />
       </SafeAreaView>
@@ -143,8 +234,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   header: {
-    flex: 0.2,
-    marginBottom: 25,
+    flex: 0.25,
+    marginBottom: 2,
   },
   content: {
     flexGrow: 1,
@@ -186,6 +277,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 1,
     marginRight: 8,
+  },
+  item: {
+    padding: 8,
+    marginVertical: 10,
+    marginHorizontal: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
+    borderRadius: 8,
+    height: 50,
+  },
+  filterTitle: {
+    fontSize: isIphone ? 12 : 14,
   },
 
   title: {

@@ -1,8 +1,9 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import { COLORS } from "../utils/data";
 import { getRandomNumber, isIphone } from "../utils";
 import { COVERAGE_SCREEN } from "../navigation/routeNames";
+import { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
 
 const CoverageCard = ({
   selectedPack,
@@ -18,18 +19,26 @@ const CoverageCard = ({
   navigation,
   handleSelect,
 }) => {
+  const { backgroundColor, textColor } = useMemo(
+    () => getRandomColorFromTenthCHar(name),
+    []
+  );
+
   const handleNav = () => {
     handleSelect();
-    navigation.navigate(COVERAGE_SCREEN, { selected: id, packID: selectedPack });
+    navigation.navigate(COVERAGE_SCREEN, {
+      selected: id,
+      packID: selectedPack,
+    });
   };
 
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={styles.card}
+      style={[styles.card, { backgroundColor }]}
       onPress={handleNav}
     >
-      <Text adjustsFontSizeToFit style={styles.text}>
+      <Text adjustsFontSizeToFit style={[styles.text, { color: textColor }]}>
         {name}
       </Text>
       <Image source={icon} resizeMode="contain" style={styles.img} />
@@ -38,7 +47,7 @@ const CoverageCard = ({
           <Text
             key={`cov-${index}`}
             adjustsFontSizeToFitkey={`cov-${index}`}
-            style={styles.textDesc}
+            style={[styles.textDesc, { color: textColor }]}
           >
             {cov}
           </Text>

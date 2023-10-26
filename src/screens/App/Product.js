@@ -5,16 +5,15 @@ import {
   View,
   TouchableOpacity,
   Image,
-  FlatList,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { COVERAGES } from "../../utils/data";
+import { InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
-import * as classicStyles from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone } from "../../utils";
+import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
 
 const Header = ({ navigation, name, icon, category }) => {
   return (
@@ -40,7 +39,7 @@ const Header = ({ navigation, name, icon, category }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
@@ -49,15 +48,12 @@ const Header = ({ navigation, name, icon, category }) => {
 const Footer = ({ navigation, price }) => (
   <View style={styles.footer}>
     <View style={{ justifyContent: "space-evenly" }}>
-      <Text adjustsFontSizeToFit style={styles.priceTag}>
-        {price}
-      </Text>
       <Text adjustsFontSizeToFit style={styles.caption}>
-        prix ttc
+        Obtenez votre devis !
       </Text>
     </View>
     <TouchableOpacity
-      onPress={() => navigation.navigate("Enrolment")}
+      onPress={() => navigation.navigate(ENROLMENT_SCREEN)}
       activeOpacity={0.7}
       style={styles.btnSubscribe}
     >
@@ -78,7 +74,7 @@ const CoverageItem = ({ item }) => (
 const Product = ({ route, navigation }) => {
   const { selected } = route.params;
   const [selectedProductCoverage, setselectedProductCoverage] = useState(
-    COVERAGES[selected + 1]
+    InsurancePacks[selected - 1]
   );
 
   return (
@@ -98,7 +94,7 @@ const Product = ({ route, navigation }) => {
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 180 }}>
           <Header
             navigation={navigation}
-            name={selectedProductCoverage.type}
+            name={selectedProductCoverage.title}
             icon={selectedProductCoverage.icon}
             category={selectedProductCoverage.category}
           />
@@ -107,7 +103,7 @@ const Product = ({ route, navigation }) => {
               Description
             </Text>
             <Text adjustsFontSizeToFitallowFontScaling style={styles.desc}>
-              {selectedProductCoverage.description}
+              {selectedProductCoverage.desc}
             </Text>
           </View>
           <View style={styles.listHeader}>
@@ -124,7 +120,7 @@ const Product = ({ route, navigation }) => {
           ))}
           <Footer
             navigation={navigation}
-            price={selectedProductCoverage.price}
+            price={selectedProductCoverage?.price}
           />
         </ScrollView>
       </SafeAreaView>
@@ -177,6 +173,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     elevation: 4,
+    width:'100%'
   },
   headerText: {
     color: "#FFF",

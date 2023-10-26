@@ -36,7 +36,7 @@ const Header = ({ navigation }) => {
           zIndex: 100,
         }}
         resizeMode="contain"
-        source={require("../../../assets/logo.png")}
+        source={require("../../../assets/logocnar.png")}
       />
     </View>
   );
@@ -76,7 +76,6 @@ const Enrolment = ({ navigation }) => {
   const [selectedId, setSelectedId] = React.useState(null);
   const [companyName, setCompanyName] = React.useState("");
   const [activity, setActivity] = useState("");
-  console.log("selectedId : ", selectedId);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
 
   const renderItem = ({ item }) => {

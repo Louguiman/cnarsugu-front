@@ -22,7 +22,7 @@ const Pack = ({
   type,
 }) => {
   const { backgroundColor, textColor } = getRandomColorFromTenthCHar(desc);
-  console.log(`back ${name}: `, backgroundColor, " / ", textColor);
+
   const onCardPress = () => {
     handleSelect();
     if (type == "package") {
@@ -47,14 +47,11 @@ const Pack = ({
         adjustsFontSizeToFit
         numberOfLines={2}
         ellipsizeMode="clip"
-        style={[styles.text, { color: textColor }]}
+        style={[styles.text, { color: "#FFF" }]}
       >
         {name}
       </Text>
-      <Text
-        adjustsFontSizeToFit
-        style={[styles.textDesc, { color: textColor }]}
-      >
+      <Text adjustsFontSizeToFit style={[styles.textDesc, { color: "#FFFF" }]}>
         {desc}
       </Text>
       <Image source={icon} resizeMode="cover" style={styles.img} />
