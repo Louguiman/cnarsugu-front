@@ -15,6 +15,33 @@ import CoverageCard from "../../components/CoverageCard";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
 
+const DATA = [
+  {
+    id: 1,
+    title: "Tout",
+  },
+  {
+    id: 2,
+    title: "3 à 6 CV",
+  },
+  {
+    id: 3,
+    title: "7 à 10 CV",
+  },
+  {
+    id: 4,
+    title: "11 à 14 CV",
+  },
+  {
+    id: 5,
+    title: "15 à 23 CV",
+  },
+  {
+    id: 6,
+    title: "24 CV & plus",
+  },
+];
+
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -44,8 +71,27 @@ const Header = ({ navigation }) => {
   );
 };
 
+const Item = ({
+  item,
+  onPress,
+  backgroundColor,
+  textColor,
+  borderWidth,
+  elevation,
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={[styles.item, backgroundColor, borderWidth, elevation]}
+  >
+    <Text adjustsFontSizeToFit style={[styles.filterTitle, textColor]}>
+      {item.title}
+    </Text>
+  </TouchableOpacity>
+);
+
 const Step2 = ({ navigation, route }) => {
   const { selected } = route.params;
+  const [selectedFilterId, setSelectedFilterId] = useState(1);
   const [coverages, setCoverages] = useState([]);
   const [Banner, setBanner] = useState({});
   const updateCoverage = useStoreActions((actions) => actions.updateCoverage);
@@ -58,6 +104,24 @@ const Step2 = ({ navigation, route }) => {
       setBanner({});
     };
   }, [route]);
+
+  useEffect(() => {
+    // let currentIndex
+    if (!selectedFilterId) return;
+    else if (selectedFilterId === 1)
+      setCoverages(COVERAGES[route.params.selected - 1]);
+    else {
+      const selectedFilter = DATA.find(
+        (filter) => filter.id === selectedFilterId
+      );
+      const filteredCoverages = COVERAGES[route.params.selected - 1].filter(
+        (cov) => cov.category.includes(selectedFilter.title)
+      );
+      setCoverages(filteredCoverages);
+    }
+    // currentIndex
+    return () => {};
+  }, [selectedFilterId]);
 
   const renderItem = ({ item, index }) => {
     const pillColor = COLORS[index % COLORS.length];
@@ -80,6 +144,25 @@ const Step2 = ({ navigation, route }) => {
         pillBgColor={pillColor}
         pillTextColor={textColor}
         handleSelect={handleSelect}
+      />
+    );
+  };
+
+  const renderFilterItem = ({ item }) => {
+    const isSelected = item.id === selectedFilterId;
+    const backgroundColor = !isSelected ? "transparent" : COLORS[2];
+    const color = isSelected ? "black" : "black";
+    const borderWidth = isSelected ? 1 : 1;
+    const elevation = isSelected ? 4 : 0;
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedFilterId(item.id)}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+        borderWidth={{ borderWidth }}
+        elevation={{ elevation }}
       />
     );
   };
@@ -128,11 +211,29 @@ const Step2 = ({ navigation, route }) => {
               {Banner && Banner.title}
             </Text>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            {route.params.selected === 1 && (
+              <View style={{ flex: 0.15 }}>
+                <FlatList
+                  data={DATA}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: "100%" }}
+                  contentContainerStyle={{
+                    marginLeft:20,
+                    alignItems: "center",
+                  }}
+                  renderItem={renderFilterItem}
+                  keyExtractor={(item) => item.id}
+                  extraData={selectedFilterId}
+                />
+              </View>
+            )}
             <FlatList
               data={coverages}
               style={{ flex: 1, width: "80%" }}
               contentContainerStyle={{
+                marginLeft: 50,
                 padding: 10,
               }}
               renderItem={renderItem}
@@ -231,13 +332,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  contractTitle: {
-    fontWeight: "500",
-    fontSize: 18,
-    marginBottom: 4,
+  item: {
+    padding: 8,
+    marginVertical: 10,
+    marginHorizontal: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
+    borderRadius: 8,
+    height: 50,
   },
-  contractDesc: {
-    fontSize: 15,
-    marginBottom: 4,
+  filterTitle: {
+    fontSize: isIphone ? 12 : 14,
   },
 });

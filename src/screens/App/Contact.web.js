@@ -51,6 +51,9 @@ const Contact = ({ navigation }) => {
 
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const insurancePack = useStoreState((state) => state.insurance.selectedPack);
+  const coveragePack = useStoreState(
+    (state) => state.insurance.selectedCoverage
+  );
 
   const handleNext = () => {
     if (!phoneNumber) {
@@ -62,7 +65,10 @@ const Contact = ({ navigation }) => {
     }
 
     updateUserInfo({ phoneNumber });
-
+    if (coveragePack?.category === "Offre sur Mesure") {
+      navigation.navigate(DEVIS_SCREEN);
+      return;
+    }
     insurancePack.id === 1
       ? navigation.navigate(VEHICLE_DETAILS_SCREEN)
       : insurancePack.id > 2

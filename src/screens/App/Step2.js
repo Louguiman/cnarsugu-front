@@ -321,13 +321,4 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  contractTitle: {
-    fontWeight: "500",
-    fontSize: 18,
-    marginBottom: 4,
-  },
-  contractDesc: {
-    fontSize: 15,
-    marginBottom: 4,
-  },
 });

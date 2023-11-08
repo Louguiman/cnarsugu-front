@@ -29,7 +29,10 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={VEHICLE_DETAILS_SCREEN}
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name={STEP1_SCREEN} component={Step1} />
       <Stack.Screen name={STEP2_SCREEN} component={Step2} />
       <Stack.Screen name={COVERAGE_SCREEN} component={Coverage} />

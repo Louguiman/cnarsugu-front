@@ -7,9 +7,7 @@ import {
   PRODUCT_SCREEN,
   STEP2_SCREEN,
 } from "../navigation/routeNames";
-import getRandomColor, {
-  getRandomColorFromTenthCHar,
-} from "../utils/getRandomColor";
+import { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
 
 const Pack = ({
   id,
@@ -43,14 +41,32 @@ const Pack = ({
           {type}
         </Text>
       </View>
-      <Text
-        adjustsFontSizeToFit
-        numberOfLines={2}
-        ellipsizeMode="clip"
-        style={[styles.text, { color: "#FFF" }]}
-      >
-        {name}
-      </Text>
+      {id === 2 ? (
+        <Text
+          adjustsFontSizeToFit
+          // numberOfLines={4}
+          ellipsizeMode="clip"
+          style={[styles.text, { color: "#FFF" }]}
+        >
+          {name.split(" ")[0]}
+          <Text
+            adjustsFontSizeToFit
+            style={[styles.text, { color: "#FF2400", fontWeight: "500" }]}
+          >
+            {" "}
+            {name.split(" ")[1]}
+          </Text>
+        </Text>
+      ) : (
+        <Text
+          adjustsFontSizeToFit
+          // numberOfLines={4}
+          ellipsizeMode="clip"
+          style={[styles.text, { color: "#FFF" }]}
+        >
+          {name}
+        </Text>
+      )}
       <Text adjustsFontSizeToFit style={[styles.textDesc, { color: "#FFFF" }]}>
         {desc}
       </Text>

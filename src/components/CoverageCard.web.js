@@ -1,9 +1,11 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import { COLORS } from "../utils/data";
 import { getRandomNumber, isIphone } from "../utils";
 import { COVERAGE_SCREEN } from "../navigation/routeNames";
-import getRandomColor, { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
+import getRandomColor, {
+  getRandomColorFromTenthCHar,
+} from "../utils/getRandomColor";
 
 const CoverageCard = ({
   selectedPack,
@@ -19,7 +21,10 @@ const CoverageCard = ({
   navigation,
   handleSelect,
 }) => {
-  const { backgroundColor, textColor } = getRandomColorFromTenthCHar(category);
+  const { backgroundColor, textColor } = useMemo(
+    () => getRandomColorFromTenthCHar(name),
+    []
+  );
 
   const handleNav = () => {
     handleSelect();
