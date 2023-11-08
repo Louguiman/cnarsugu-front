@@ -30,7 +30,6 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <Stack.Navigator
-      initialRouteName={VEHICLE_DETAILS_SCREEN}
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name={STEP1_SCREEN} component={Step1} />
