@@ -40,27 +40,19 @@ const CoverageCard = ({
       style={[styles.card, { backgroundColor }]}
       onPress={handleNav}
     >
-      <Text adjustsFontSizeToFit style={[styles.text, { color: textColor }]}>
-        {name}
+      <Text  style={[styles.text, { color: textColor }]}>
+        {category}
       </Text>
       <Image source={icon} resizeMode="contain" style={styles.img} />
       <View style={{ marginVertical: 10 }}>
-        {coverage.map((cov, index) => (
-          <Text
-            key={`cov-${index}`}
-            adjustsFontSizeToFitkey={`cov-${index}`}
-            style={[styles.textDesc, { color: textColor }]}
-          >
-            {cov}
-          </Text>
-        ))}
+        <Text style={[styles.textDesc, { color: textColor }]}></Text>
       </View>
       <View style={[styles.pillContainer, { backgroundColor: pillBgColor }]}>
         <Text
           adjustsFontSizeToFit
           style={[styles.pillText, { color: pillTextColor }]}
         >
-          {category}
+          {name}
         </Text>
       </View>
     </TouchableOpacity>
@@ -71,7 +63,7 @@ export default CoverageCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: "100%",
+    width: "90%",
     minHeight: 200,
     backgroundColor: "#FFF",
     marginVertical: 15,
@@ -91,7 +83,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   text: {
-    fontSize: isIphone ? 14 : 16,
+    fontSize: isIphone ? 16 : 48,
     fontWeight: "400",
     maxWidth: 220,
     textTransform: "uppercase",
@@ -103,19 +95,18 @@ const styles = StyleSheet.create({
     right: 10,
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     position: "absolute",
-    right: 8,
-    top: 10,
-    bottom: 0,
+    alignSelf: "center",
+    right:20
   },
   pillContainer: {
     padding: 8,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    right: 8,
+    left: 18,
     bottom: 0,
     elevation: 4,
     borderTopLeftRadius: 8,

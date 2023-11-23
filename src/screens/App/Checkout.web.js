@@ -18,29 +18,7 @@ import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
 import { isIphone } from "../../utils";
 import Layout from "../../components/layout/Layout";
 import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
-
-const DATA = [
-  {
-    id: 5,
-    title: "Carte Bancaire",
-  },
-  {
-    id: 2,
-    title: "Orange Money",
-  },
-  {
-    id: 3,
-    title: "Moov Money",
-  },
-  {
-    id: 4,
-    title: "Wave",
-  },
-  {
-    id: 1,
-    title: "Paypal",
-  },
-];
+import { PAYMENT_METHOD_DATA } from "../../utils/constants";
 
 const Item = ({
   item,
@@ -140,7 +118,7 @@ const Checkout = ({ navigation }) => {
                 Veuillez choisir une méthode de paiement.
               </Text>
               <FlatList
-                data={DATA}
+                data={PAYMENT_METHOD_DATA}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ height: 80, marginTop: 8 }}

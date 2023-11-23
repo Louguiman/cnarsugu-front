@@ -3,8 +3,7 @@ import React from "react";
 import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 
-const MobileMoneyPayment = () => {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+const MobileMoneyPayment = ({ phoneNumber, onNumberChange }) => {
 
   return (
     <View style={{ flex: 1 }}>
@@ -12,7 +11,7 @@ const MobileMoneyPayment = () => {
         label="Numero de Téléphone"
         value={phoneNumber}
         keyboardType="phone-pad"
-        onChangeText={(text) => setPhoneNumber(text)}
+        onChangeText={onNumberChange}
         style={{ marginVertical: 8 }}
         labelStyle={{ color: "#ffffff" }}
         theme={{

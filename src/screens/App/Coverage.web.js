@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COVERAGES } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
@@ -83,9 +84,20 @@ const CoverageNameContainer = ({ name, category }) => {
 
 const Coverage = ({ route, navigation }) => {
   const { selected, packID } = route.params;
-  const [selectedCoverage, setselectedCoverage] = useState(
-    COVERAGES[packID - 1][selected - 1]
-  );
+  const [selectedCoverage, setselectedCoverage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  console.log("selected: ", selected, "Pack: ", packID);
+  console.log("selected: ", selectedCoverage);
+
+  useEffect(() => {
+    const data = COVERAGES[packID - 1].find((cover) => cover.id === selected);
+    console.log("data matched: ", data);
+    if (data) setselectedCoverage(data);
+    else setIsError(true);
+    return () => {
+      setselectedCoverage(null);
+    };
+  }, [selected]);
 
   return (
     <ImageBackground
@@ -99,60 +111,84 @@ const Coverage = ({ route, navigation }) => {
     >
       <SafeAreaView style={styles.container}>
         <Header navigation={navigation} />
-        <View style={{ flex: 1, flexDirection: "row" }}>
+        {!isError && !selectedCoverage ? (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Image
-              source={selectedCoverage.icon}
-              style={{
-                width: 300,
-                height: 300,
-                marginBottom: 20,
-              }}
-              resizeMode="contain"
-            />
-            <CoverageNameContainer
-              name={selectedCoverage.type}
-              category={selectedCoverage.category}
-            />
+            <ActivityIndicator size={"large"} color={"blue"} />
           </View>
+        ) : !selectedCoverage && isError ? (
           <View
-            style={{ flex: 1, padding: 10, paddingLeft: 8, paddingBottom: 0 }}
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <ScrollView
-              contentContainerStyle={{
-                flexGrow: 1,
-                paddingBottom: 180,
+            <Text>An error occured, Please Retry Later...</Text>
+          </View>
+        ) : (
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <View style={styles.card}>
-                <Text
-                  adjustsFontSizeToFitallowFontScaling
-                  style={styles.title1}
-                >
-                  Description
-                </Text>
-                <Text adjustsFontSizeToFitallowFontScaling style={styles.desc}>
-                  {selectedCoverage.description}
-                </Text>
-              </View>
-              <View style={styles.listHeader}>
-                <AntDesign name="appstore-o" size={22} color="white" />
-                <Text
-                  adjustsFontSizeToFit
-                  style={[styles.title1, { marginLeft: 8, color: "#000" }]}
-                >
-                  Les Garanties
-                </Text>
-              </View>
-              {selectedCoverage.coverage.map((item, index) => (
-                <CoverageItem key={index} item={item} />
-              ))}
-              <Footer navigation={navigation} price={selectedCoverage.price} />
-            </ScrollView>
+              <Image
+                source={selectedCoverage.icon}
+                style={{
+                  width: 300,
+                  height: 300,
+                  marginBottom: 20,
+                }}
+                resizeMode="contain"
+              />
+              <CoverageNameContainer
+                name={selectedCoverage.type}
+                category={selectedCoverage.category}
+              />
+            </View>
+            <View
+              style={{ flex: 1, padding: 10, paddingLeft: 8, paddingBottom: 0 }}
+            >
+              <ScrollView
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  paddingBottom: 180,
+                }}
+              >
+                <View style={styles.card}>
+                  <Text
+                    adjustsFontSizeToFitallowFontScaling
+                    style={styles.title1}
+                  >
+                    Description
+                  </Text>
+                  <Text
+                    adjustsFontSizeToFitallowFontScaling
+                    style={styles.desc}
+                  >
+                    {selectedCoverage.description}
+                  </Text>
+                </View>
+                <View style={styles.listHeader}>
+                  <AntDesign name="appstore-o" size={22} color="white" />
+                  <Text
+                    adjustsFontSizeToFit
+                    style={[styles.title1, { marginLeft: 8, color: "#000" }]}
+                  >
+                    Les Garanties
+                  </Text>
+                </View>
+                {selectedCoverage.coverage.map((item, index) => (
+                  <CoverageItem key={index} item={item} />
+                ))}
+                <Footer
+                  navigation={navigation}
+                  price={selectedCoverage.price}
+                />
+              </ScrollView>
+            </View>
           </View>
-        </View>
+        )}
       </SafeAreaView>
     </ImageBackground>
   );

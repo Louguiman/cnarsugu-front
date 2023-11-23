@@ -16,30 +16,19 @@ import PaypalPayment from "../../views/payment/PaypalPayment";
 import CreditCardPayment from "../../views/payment/CreditCardPayment";
 import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
 import { isIphone } from "../../utils";
-import Layout from "../../components/layout/Layout";
-
-const DATA = [
-  {
-    id: 5,
-    title: "Carte Bancaire",
-  },
-  {
-    id: 2,
-    title: "Orange Money",
-  },
-  {
-    id: 3,
-    title: "Moov Money",
-  },
-  {
-    id: 4,
-    title: "Wave",
-  },
-  {
-    id: 1,
-    title: "Paypal",
-  },
-];
+import {
+  AGENCY_CODE,
+  LOGIN_AGENT,
+  PASSWORD_AGENT,
+  PAYMENT_METHOD_DATA,
+  RECIPIENT_EMAIL,
+  RECIPIENT_FIRST_NAME,
+  RECIPIENT_LAST_NAME,
+  RECIPIENT_NUMBER,
+  getIdFromClient,
+  paymentCallbackUrl,
+} from "../../utils/constants";
+import axios from "axios";
 
 const Item = ({
   item,
@@ -85,23 +74,30 @@ const Header = ({ navigation }) => {
   );
 };
 
-const renderPaymentComponent = (selectedOption) => {
-  switch (selectedOption) {
-    case 5:
-      return <CreditCardPayment />;
-    case 1:
-      return <PaypalPayment />;
-    case 2:
-    case 3:
-    case 4:
-      return <MobileMoneyPayment />;
-    default:
-      return null;
-  }
-};
-
 const Checkout = ({ navigation }) => {
   const [selectedId, setSelectedId] = React.useState(null);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+
+  const onNumberChange = (text) => setPhoneNumber(text);
+  const renderPaymentComponent = (selectedOption) => {
+    switch (selectedOption) {
+      case 5:
+        return <CreditCardPayment />;
+      case 1:
+        return <PaypalPayment />;
+      case 2:
+      case 3:
+      case 4:
+        return (
+          <MobileMoneyPayment
+            onNumberChange={onNumberChange}
+            phoneNumber={phoneNumber}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   const renderItem = ({ item }) => {
     const isSelected = item.id === selectedId;
@@ -121,6 +117,43 @@ const Checkout = ({ navigation }) => {
       />
     );
   };
+
+  const onSubmit = () => {
+    const service = PAYMENT_METHOD_DATA.find(
+      (service) => service.id === selectedId
+    );
+    const payload = {
+      idFromClient: getIdFromClient(),
+      additionnalInfos: {
+        recipientEmail: RECIPIENT_EMAIL,
+        recipientFirstName: RECIPIENT_FIRST_NAME,
+        recipientLastName: RECIPIENT_LAST_NAME,
+        destinataire: phoneNumber,
+      },
+      amount: 100,
+      callback: paymentCallbackUrl,
+      recipientNumber: RECIPIENT_NUMBER,
+      serviceCode: service.serviceCode,
+    };
+
+    console.log("payment data: ", payload);
+    axios
+      .post(
+        `https://apidist.gutouch.net/apidist/sec/touchpayapi/v1/agency_code=${AGENCY_CODE}
+    /transaction?loginAgent=${LOGIN_AGENT}
+    &passwordAgent=${PASSWORD_AGENT} `,
+        payload
+      )
+      .then((res) => {
+        console.log("response payment ", res);
+        navigation.navigate("Confirmation");
+      })
+      .catch((e) => {
+        console.log("error occured during payment ", e.response);
+        console.log(e.response.data);
+        console.log(e.response.status);
+      });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -137,7 +170,7 @@ const Checkout = ({ navigation }) => {
             Veuillez choisir une méthode de paiement.
           </Text>
           <FlatList
-            data={DATA}
+            data={PAYMENT_METHOD_DATA}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ height: 80, marginTop: 8 }}
@@ -146,13 +179,11 @@ const Checkout = ({ navigation }) => {
             extraData={selectedId}
           />
         </View>
-        <View style={styles.content}>
-              {renderPaymentComponent(selectedId)}
-            </View>
+        <View style={styles.content}>{renderPaymentComponent(selectedId)}</View>
 
         <View style={styles.footer}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Confirmation")}
+            onPress={onSubmit}
             activeOpacity={0.6}
             style={styles.nextBtn}
           >

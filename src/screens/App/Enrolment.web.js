@@ -14,9 +14,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import { isIphone } from "../../utils";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
 import { CONTACT_SCREEN } from "../../navigation/routeNames";
+import { SERVICE_CLIENT_TYPES } from "../../utils/constants";
 
 const Header = ({ navigation }) => {
   return (
@@ -43,16 +44,6 @@ const Header = ({ navigation }) => {
     </View>
   );
 };
-const DATA = [
-  {
-    id: 1,
-    title: "Particuliers",
-  },
-  {
-    id: 2,
-    title: "Entreprise",
-  },
-];
 
 const Item = ({
   item,
@@ -77,8 +68,25 @@ const Enrolment = ({ navigation }) => {
   const [surname, setSurname] = React.useState("");
   const [selectedId, setSelectedId] = React.useState(1);
   const [companyName, setCompanyName] = React.useState("");
+  const [address, setAddress] = useState("");
   const [activity, setActivity] = useState("");
+  const [owner, setOwner] = useState("");
+
+  const {
+    insurance: { selectedCoverage },
+  } = useStoreState((state) => state);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+
+  const clientTypes = useMemo(() => {
+    const typesList = [];
+    if (selectedCoverage.clientType === 1)
+      typesList.push(SERVICE_CLIENT_TYPES[0]);
+    else if (selectedCoverage.clientType === 2)
+      typesList.push(SERVICE_CLIENT_TYPES[1]);
+    else typesList.push(...SERVICE_CLIENT_TYPES);
+    setSelectedId(typesList[0].id);
+    return typesList;
+  }, [selectedCoverage]);
 
   const renderItem = ({ item }) => {
     const isSelected = item.id === selectedId;
@@ -101,7 +109,7 @@ const Enrolment = ({ navigation }) => {
   const handleNext = useCallback(() => {
     if (
       (selectedId === 1 && (!name || !surname)) ||
-      (selectedId === 2 && (!companyName || !activity))
+      (selectedId === 2 && (!companyName || !address))
     ) {
       Alert.alert(
         "Informations Incompletes",
@@ -111,8 +119,16 @@ const Enrolment = ({ navigation }) => {
     }
     updateUserInfo({ name, surname });
     navigation.navigate(CONTACT_SCREEN);
-  }, [selectedId, companyName, activity, name, surname]);
+  }, [selectedId, companyName, address, name, surname]);
 
+  const isActivityField = useMemo(
+    () => (selectedCoverage?.extraFields?.includes("activity") ? true : false),
+    [selectedCoverage]
+  );
+  const isShopField = useMemo(
+    () => (selectedCoverage?.extraFields?.includes("shop") ? true : false),
+    [selectedCoverage]
+  );
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -148,7 +164,7 @@ const Enrolment = ({ navigation }) => {
           right={
             <View style={styles.content}>
               <FlatList
-                data={DATA}
+                data={clientTypes}
                 horizontal
                 contentContainerStyle={{ height: 80, marginTop: 8 }}
                 renderItem={renderItem}
@@ -186,11 +202,27 @@ const Enrolment = ({ navigation }) => {
                       },
                     }}
                   />
+                  {isActivityField && (
+                    <TextInput
+                      label="Activité"
+                      value={activity}
+                      style={{ marginVertical: 8 }}
+                      onChangeText={(text) => setActivity(text)}
+                      theme={{
+                        ...defaultTheme,
+                        colors: {
+                          ...defaultTheme.colors,
+                          primary: "#ff0000", // color when focused
+                          accent: "#00ff00", // color when not focused
+                        },
+                      }}
+                    />
+                  )}
                 </>
               ) : selectedId === 2 ? (
                 <>
                   <TextInput
-                    label="Nom de la Société"
+                    label={`Nom de la ${isShopField ? "Boutique" : "Société"}`}
                     value={companyName}
                     onChangeText={(text) => setCompanyName(text)}
                     style={{ marginVertical: 8 }}
@@ -204,11 +236,43 @@ const Enrolment = ({ navigation }) => {
                       },
                     }}
                   />
+                  {isShopField && (
+                    <TextInput
+                      label="Nom du Propriétaire"
+                      value={owner}
+                      style={{ marginVertical: 8 }}
+                      onChangeText={(text) => setOwner(text)}
+                      theme={{
+                        ...defaultTheme,
+                        colors: {
+                          ...defaultTheme.colors,
+                          primary: "#ff0000", // color when focused
+                          accent: "#00ff00", // color when not focused
+                        },
+                      }}
+                    />
+                  )}
+                  {isActivityField && (
+                    <TextInput
+                      label="Activité"
+                      value={activity}
+                      style={{ marginVertical: 8 }}
+                      onChangeText={(text) => setActivity(text)}
+                      theme={{
+                        ...defaultTheme,
+                        colors: {
+                          ...defaultTheme.colors,
+                          primary: "#ff0000", // color when focused
+                          accent: "#00ff00", // color when not focused
+                        },
+                      }}
+                    />
+                  )}
                   <TextInput
-                    label="Activité Professionnelle"
-                    value={activity}
+                    label="Addresse"
+                    value={address}
                     style={{ marginVertical: 8 }}
-                    onChangeText={(text) => setActivity(text)}
+                    onChangeText={(text) => setAddress(text)}
                     theme={{
                       ...defaultTheme,
                       colors: {

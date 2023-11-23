@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useMemo } from "react";
-import { COLORS } from "../utils/data";
-import { getRandomNumber, isIphone } from "../utils";
+import { isIphone } from "../utils";
 import { COVERAGE_SCREEN } from "../navigation/routeNames";
 import { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
 
