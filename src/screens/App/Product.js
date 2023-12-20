@@ -12,7 +12,7 @@ import { InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
-import { isIphone } from "../../utils";
+import { isIphone, openUrlExternal } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
 
 const Header = ({ navigation, name, icon, category }) => {
@@ -99,7 +99,7 @@ const Product = ({ route, navigation }) => {
             category={selectedProductCoverage.category}
           />
           <View style={styles.card}>
-            <Text adjustsFontSizeToFitallowFontScaling style={styles.title1}>
+            <Text adjustsFontSizeToFit allowFontScaling style={styles.title1}>
               Description
             </Text>
             <Text adjustsFontSizeToFitallowFontScaling style={styles.desc}>
@@ -118,11 +118,24 @@ const Product = ({ route, navigation }) => {
           {selectedProductCoverage.coverage.map((item, index) => (
             <CoverageItem key={index} item={item} />
           ))}
-          <Footer
-            navigation={navigation}
-            price={selectedProductCoverage?.price}
-          />
+          {selectedProductCoverage?.title === "RC SColaire" ? (
+            <TouchableOpacity
+              onPress={() =>
+                openUrlExternal(selectedProductCoverage.coverageLink)
+              }
+            >
+              <Text
+                style={{ paddingLeft: 20, textDecorationLine: "underline" }}
+              >
+                Retrouvez la liste des garanties en faisant un clic ici
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </ScrollView>
+        <Footer
+          navigation={navigation}
+          price={selectedProductCoverage?.price}
+        />
       </SafeAreaView>
     </ImageBackground>
   );
@@ -173,7 +186,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     elevation: 4,
-    width:'100%'
+    width: "100%",
   },
   headerText: {
     color: "#FFF",

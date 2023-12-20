@@ -17,8 +17,11 @@ import Layout from "../../components/layout/Layout";
 import {
   CHECKOUT_SCREEN,
   DEVIS_SCREEN,
+  TRANSPORTATION_DETAILS_SCREEN,
+  TRAVEL_DETAILS_SCREEN,
   VEHICLE_DETAILS_SCREEN,
 } from "../../navigation/routeNames";
+import { height } from "../../utils/Styles";
 
 const Header = ({ navigation }) => {
   return (
@@ -65,10 +68,22 @@ const Contact = ({ navigation }) => {
     }
 
     updateUserInfo({ phoneNumber });
-    if (coveragePack?.category === "Offre sur Mesure") {
-      navigation.navigate(DEVIS_SCREEN);
+    if (insurancePack.title == "Assurance Assistance Voyage") {
+      navigation.navigate(TRAVEL_DETAILS_SCREEN);
       return;
     }
+    if (insurancePack.title == "Assurance Transport de marchandises") {
+      navigation.navigate(TRANSPORTATION_DETAILS_SCREEN);
+      return;
+    }
+
+    if (coveragePack !== null) {
+      if (coveragePack?.category === "Offre sur Mesure") {
+        navigation.navigate(DEVIS_SCREEN);
+        return;
+      }
+    }
+
     insurancePack.id === 1
       ? navigation.navigate(VEHICLE_DETAILS_SCREEN)
       : insurancePack.id > 2

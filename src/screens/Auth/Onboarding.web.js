@@ -25,9 +25,9 @@ const Onboarding = ({ navigation }) => {
           // alignItems: "center",
           // justifyContent: "center",
         },
-        StyleSheet.absoluteFill,
       ]}
       resizeMode="cover"
+      resizeMethod="scale"
       source={require("../../../assets/bg.jpg")}
     >
       <SafeAreaView style={styles.container}>

@@ -82,6 +82,7 @@ export const InsurancePacks = [
     desc: "Pour tous vos déplacements à l’étranger, Bénéficiez en cas d’urgence d’une assistance médicale et d’une prise en charge des frais liés aux pertes des documents d’identité (passeport, permis de conduire, carte d’identité), des bagages, rapatriement de corps, frais et honoraires d’avocats, etc.",
     icon: require("../../assets/icons/travel.png"),
     type: "Produit",
+    clientType: 1,
     color: COLORS[0],
     coverage: [
       "Les garanties sont minutieusement choisies en fonction des besoins et du profil du prospect.",
@@ -90,7 +91,7 @@ export const InsurancePacks = [
   },
   {
     id: 5,
-    title: "Assurance Transport de marchandises ",
+    title: "Assurance Transport de marchandises",
     desc: "Ne vous souciez plus du transport domestique  de vos marchandises selon la garantie souscrite.",
     icon: require("../../assets/icons/transport.png"),
     type: "Produit",
@@ -124,6 +125,7 @@ export const InsurancePacks = [
       "Combinaison spéciale de la Responsabilité Civile et l’Individuelle Accidents Corporels (IAC)",
     ],
     bg: require("../../assets/carsbg.png"),
+    coverageLink: "https://cnarsugu.com/warranty/rcscolaire.pdf",
   },
 ];
 
@@ -142,6 +144,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie de base de votre véhicule de 3 à 6 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin.",
     category: "Fourchette 3 à 6 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -158,6 +161,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule Tiers Essentiel de votre véhicule de 3 à 6 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin et prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré.",
     category: "Fourchette 3 à 6 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Etendu",
@@ -194,6 +198,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule confort de votre véhicule de 3 à 6 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge du préjudice corporel subi par le conducteur et les passagers du véhicule assuré ; sont garantis les frais des accessoires volés. Couverture des dommages causés aux pare-brise, aux glaces latérales, et à la lunette arrière.",
     category: "Fourchette 3 à 6 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
 
   {
@@ -210,6 +215,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie de base de votre véhicule de 7 à 10 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin.",
     category: "Fourchette 7 à 10 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -226,6 +232,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule Tiers Essentiel de votre véhicule de 7 à 10 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin et prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré.",
     category: "Fourchette 7 à 10 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Etendu",
@@ -242,6 +249,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie étendue de votre véhicule de 7 à 10 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré et des frais des accessoires volés.",
     category: "Fourchette 7 à 10 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Confort",
@@ -261,6 +269,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule confort de votre véhicule de 7 à 10 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge du préjudice corporel subi par le conducteur et les passagers du véhicule assuré ; sont garantis les frais des accessoires volés. Couverture des dommages causés aux pare-brise, aux glaces latérales, et à la lunette arrière.",
     category: "Fourchette 7 à 10 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers",
@@ -276,6 +285,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie de base de votre véhicule de 11 à 14 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin.",
     category: "Fourchette 11 à 14 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -292,6 +302,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule Tiers Essentiel de votre véhicule de 11 à 14 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin et prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré.",
     category: "Fourchette 11 à 14 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Etendu",
@@ -308,6 +319,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie étendue de votre véhicule de 11 à 14 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré et des frais des accessoires volés.",
     category: "Fourchette 11 à 14 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Confort",
@@ -327,6 +339,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule confort de votre véhicule de 11 à 14 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge du préjudice corporel subi par le conducteur et les passagers du véhicule assuré ; sont garantis les frais des accessoires volés. Couverture des dommages causés aux pare-brise, aux glaces latérales, et à la lunette arrière.",
     category: "Fourchette 11 à 14 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers",
@@ -342,6 +355,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie de base de votre véhicule de 15 à 23 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin.",
     category: "Fourchette 15 à 23 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -358,6 +372,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule Tiers Essentiel de votre véhicule de 15 à 23CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin et prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré.",
     category: "Fourchette 15 à 23 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Etendu",
@@ -374,6 +389,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie étendue de votre véhicule de 15 à 23 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré et des frais des accessoires volés.",
     category: "Fourchette 15 à 23 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Confort",
@@ -393,6 +409,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule confort de votre véhicule de 15 à 23 CV. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge du préjudice corporel subi par le conducteur et les passagers du véhicule assuré ; sont garantis les frais des accessoires volés. Couverture des dommages causés aux pare-brise, aux glaces latérales, et à la lunette arrière.",
     category: "Fourchette 15 à 23 CV",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
 
   {
@@ -409,6 +426,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie de base de votre véhicule de 24 CV & plus. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin.",
     category: `Fourchette 24 CV & plus`,
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Essentiel",
@@ -425,6 +443,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule Tiers Essentiel de votre véhicule de 24 CV & plus. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin et prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré.",
     category: "Fourchette 24 CV & plus",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Etendu",
@@ -441,6 +460,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la garantie étendue de votre véhicule de 24 CV & plus. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge gratuite du préjudice corporel subi par le conducteur du véhicule assuré et des frais des accessoires volés.",
     category: "Fourchette 24 CV & plus",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
   {
     type: "Formule Tiers Confort",
@@ -460,6 +480,7 @@ const COVERAGES_AUTO = [
     description:
       "Protégez votre patrimoine en cas de dommages causés aux tiers grâce à la formule confort de votre véhicule de 24 CV & plus. Bénéficiez gratuitement des frais de poursuite judiciaire liés à votre défense suite à un sinistre couvert et de toute réclamation d’indemnité à votre profit auprès d’une compagnie responsable. Assistance offerte au besoin ; prise en charge du préjudice corporel subi par le conducteur et les passagers du véhicule assuré ; sont garantis les frais des accessoires volés. Couverture des dommages causés aux pare-brise, aux glaces latérales, et à la lunette arrière.",
     category: "Fourchette 24 CV & plus",
+    coverageLink: "https://cnarsugu.com/warranty/auto.pdf",
   },
 ];
 
@@ -481,8 +502,8 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour protéger votre restaurant contre les imprévus et garantir la tranquillité d'esprit de votre établissement.",
     icon: require("../../assets/icons/coverages/cutlery.png"),
+    coverageLink: "https://cnarsugu.com/warranty/restaurant.pdf",
   },
-
   {
     id: 4,
     type: "Multirisque",
@@ -500,7 +521,9 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour les agences de voyage. Protégez vos clients, vos employés et votre entreprise des incidents imprévus et profitez d'une tranquillité d'esprit totale.",
     icon: require("../../assets/icons/coverages/travel.png"),
+    coverageLink: "https://cnarsugu.com/warranty/travelagency.pdf",
   },
+
   {
     id: 5,
     type: "Multirisque",
@@ -518,6 +541,7 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour les commerces alimentaires. Garantissez la continuité de votre activité et la sécurité de vos produits avec une couverture adaptée à vos besoins spécifiques.",
     icon: require("../../assets/icons/coverages/grocery-cart.png"),
+    coverageLink: "https://cnarsugu.com/warranty/alimentation.pdf",
   },
   {
     id: 6,
@@ -537,6 +561,7 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour les boulangeries. Protégez votre commerce, votre équipement et votre réputation en cas d'incidents inattendus. Offrez à vos clients la confiance d'une boulangerie bien protégée.",
     icon: require("../../assets/icons/coverages/breads.png"),
+    coverageLink: "https://cnarsugu.com/warranty/boulangerie.pdf",
   },
   {
     id: 7,
@@ -556,6 +581,7 @@ const COVERAGES_MULTI = [
       "Assurance multirisque complète pour protéger votre habitation. Dormez sur vos deux oreilles en sachant que votre foyer et vos biens sont couverts par une protection complète et fiable. Offrez à votre famille une maison en toute sécurité.",
     icon: require("../../assets/icons/coverages/house.png"),
     extraFields: ["activity"],
+    coverageLink: "https://cnarsugu.com/warranty/mrh.pdf",
   },
   {
     id: 8,
@@ -575,6 +601,7 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour les pharmacies. Protégez vos médicaments, votre matériel et votre établissement contre les risques potentiels et assurez la sécurité de vos patients. Garantissez une pharmacie bien protégée et rassurez vos clients.",
     icon: require("../../assets/icons/coverages/pharmacymain.png"),
+    coverageLink: "https://cnarsugu.com/warranty/pharmacie.pdf",
   },
   {
     id: 9,
@@ -594,6 +621,7 @@ const COVERAGES_MULTI = [
     description:
       "Assurance multirisque complète pour les boutiques. Protégez votre commerce, vos produits et votre activité contre les incidents inattendus. Offrez à vos clients une expérience d'achat en toute sécurité.",
     icon: require("../../assets/icons/coverages/retailer.png"),
+    coverageLink: "https://cnarsugu.com/warranty/boutique.pdf",
   },
   {
     id: 10,
@@ -612,10 +640,10 @@ const COVERAGES_MULTI = [
     description:
       "Protégez votre clinique en souscrivant à notre multirisque CLINIQUES.",
     icon: require("../../assets/icons/coverages/clinic1.png"),
+    coverageLink: "https://cnarsugu.com/warranty/clinique.pdf",
   },
   {
     id: 11,
-
     type: "Multirisque",
     category: "Bars & Clubs",
     coverage: [
@@ -632,6 +660,7 @@ const COVERAGES_MULTI = [
       "Assurance multirisque complète pour les bars et les clubs branchés. Protégez votre établissement, vos clients et votre réputation avec une couverture fiable et adaptée.",
     icon: require("../../assets/icons/coverages/cocktail.png"),
     extraFields: ["activity"],
+    coverageLink: "https://cnarsugu.com/warranty/bars.pdf",
   },
   {
     id: 3,
@@ -651,6 +680,7 @@ const COVERAGES_MULTI = [
       "Assurance multirisque complète pour les hôtels et les appartements meublés. Offrez à vos clients un séjour en toute sécurité en protégeant votre établissement des risques courants.",
     icon: require("../../assets/icons/coverages/hotel.png"),
     extraFields: ["activity"],
+    coverageLink: "https://cnarsugu.com/warranty/hotels.pdf",
   },
   {
     id: 12,

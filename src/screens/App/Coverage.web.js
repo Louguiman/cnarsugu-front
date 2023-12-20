@@ -9,12 +9,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { COVERAGES } from "../../utils/data";
+import { COVERAGES, InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
+import * as Linking from "expo-linking";
 
 const Header = ({ navigation }) => {
   return (
@@ -99,6 +100,12 @@ const Coverage = ({ route, navigation }) => {
     };
   }, [selected]);
 
+  if (!selectedCoverage)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator color={"blue"} size={"large"} />
+      </View>
+    );
   return (
     <ImageBackground
       style={[
@@ -157,13 +164,15 @@ const Coverage = ({ route, navigation }) => {
               >
                 <View style={styles.card}>
                   <Text
-                    adjustsFontSizeToFitallowFontScaling
+                    adjustsFontSizeToFit
+                    allowFontScaling
                     style={styles.title1}
                   >
                     Description
                   </Text>
                   <Text
-                    adjustsFontSizeToFitallowFontScaling
+                    adjustsFontSizeToFit
+                    allowFontScaling
                     style={styles.desc}
                   >
                     {selectedCoverage.description}
@@ -181,11 +190,27 @@ const Coverage = ({ route, navigation }) => {
                 {selectedCoverage.coverage.map((item, index) => (
                   <CoverageItem key={index} item={item} />
                 ))}
-                <Footer
-                  navigation={navigation}
-                  price={selectedCoverage.price}
-                />
+
+                {selectedCoverage?.type === "Multirisque" ||
+                selectedCoverage?.type.includes("Formule") ? (
+                  <TouchableOpacity
+                    style={{ marginTop: 20 }}
+                    onPress={() => {
+                      Linking.openURL(selectedCoverage.coverageLink);
+                    }}
+                  >
+                    <Text
+                      style={{
+                        paddingLeft: 40,
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      Retrouvez la liste des garanties en faisant un clic ici{" "}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
               </ScrollView>
+              <Footer navigation={navigation} price={selectedCoverage.price} />
             </View>
           </View>
         )}

@@ -37,27 +37,17 @@ const CoverageCard = ({
       style={[styles.card, { backgroundColor }]}
       onPress={handleNav}
     >
-      <Text adjustsFontSizeToFit style={[styles.text, { color: textColor }]}>
-        {name}
-      </Text>
+      <Text style={[styles.text, { color: textColor }]}>{category}</Text>
       <Image source={icon} resizeMode="contain" style={styles.img} />
       <View style={{ marginVertical: 10 }}>
-        {coverage.map((cov, index) => (
-          <Text
-            key={`cov-${index}`}
-            adjustsFontSizeToFitkey={`cov-${index}`}
-            style={[styles.textDesc, { color: textColor }]}
-          >
-            {cov}
-          </Text>
-        ))}
+        <Text style={[styles.textDesc, { color: textColor }]}></Text>
       </View>
       <View style={[styles.pillContainer, { backgroundColor: pillBgColor }]}>
         <Text
           adjustsFontSizeToFit
           style={[styles.pillText, { color: pillTextColor }]}
         >
-          {category}
+          {name}
         </Text>
       </View>
     </TouchableOpacity>
@@ -92,20 +82,19 @@ const styles = StyleSheet.create({
     right: 10,
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     position: "absolute",
-    right: 8,
-    top: 10,
-    bottom: 0,
+    right: 20,
+    alignSelf: "center",
   },
   pillContainer: {
     padding: 8,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    right: 8,
-    bottom: 0,
+    left: 8,
+    bottom:0,
     elevation: 4,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,

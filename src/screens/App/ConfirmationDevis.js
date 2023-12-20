@@ -13,28 +13,27 @@ import { COLORS } from "../../utils/data";
 import { height } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreState } from "easy-peasy";
-import axios from "axios";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
+import { submitSubscription } from "../../utils/queries";
 
-const ConfirmationDevis = ({ navigation }) => {
+const Confirmation = ({ navigation }) => {
   const { insurance, userInfo } = useStoreState((state) => state);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   const handleSubmit = () => {
     setIsLoading(true);
     const body = {
       insurance: insurance.selectedPack.title,
-      coverage: `${insurance.selectedCoverage.category} ${insurance.selectedCoverage.type}`,
-      price: insurance.selectedCoverage.price,
+      coverage: `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`,
+      price: insurance?.selectedCoverage?.price,
       name: userInfo.name,
       surname: userInfo.surname,
-      vehicleID: userInfo?.carteGrise,
       phoneNumber: userInfo?.phoneNumber,
     };
-    console.log("data: ", body);
-    axios
-      .post("http://10.0.2.2:3000/api/subscription", body)
+    submitSubscription(body)
       .then((res) => {
         console.log("res :", res);
       })
@@ -54,6 +53,14 @@ const ConfirmationDevis = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    handleSubmit();
+
+    return () => {
+      setIsLoading(true);
+    };
+  }, [refreshPage]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.banner}>
@@ -69,11 +76,11 @@ const ConfirmationDevis = ({ navigation }) => {
           <View
             style={{
               flex: 1,
-              justifyContent: "space-around",
+              justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <ActivityIndicator />
+            <ActivityIndicator size={"large"} />
             <Text adjustsFontSizeToFit style={styles.subHeader}>
               Votre demande est en cours de traitement.
               {`
@@ -94,11 +101,12 @@ const ConfirmationDevis = ({ navigation }) => {
               source={require("../../../assets/check.png")}
             />
             <Text adjustsFontSizeToFit style={styles.subHeader}>
-              Félicitations, votre souscription a été prise en compte. Un de nos
-              agents vous contactera pour la suite.{" "}
+              Félicitations, votre souscription a été prise en compte, merci de
+              confirmer votre payement en mettant votre code secret via le SMS
+              reçu. Un de nos agents vous contactera.
               {`
           `}
-              Merci pour votre confiance!
+              Merci pour la confiance!
             </Text>
           </>
         )}
@@ -121,11 +129,21 @@ const ConfirmationDevis = ({ navigation }) => {
         style={height < 650 ? styles.imgBgXs : styles.imgBg}
         source={require("../../../assets/logocnar.png")}
       />
+      <View
+        style={{ marginBottom: 10, position: "absolute", left: 10, bottom: 10 }}
+      >
+        <Text adjustsFontSizeToFit style={styles.contactText}>
+          Call Center:
+        </Text>
+        <Text adjustsFontSizeToFit style={styles.contactText}>
+          (+ 223) 20 23 57 57
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
 
-export default ConfirmationDevis;
+export default Confirmation;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#001220" },
@@ -164,6 +182,13 @@ const styles = StyleSheet.create({
   subHeader: {
     fontWeight: "300",
     fontSize: 18,
+    color: "#FFF",
+    letterSpacing: 0.8,
+    marginLeft: 4,
+  },
+  contactText: {
+    fontWeight: "300",
+    fontSize: 14,
     color: "#FFF",
     letterSpacing: 0.8,
     marginLeft: 4,

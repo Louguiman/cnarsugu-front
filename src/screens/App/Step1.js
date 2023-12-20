@@ -5,6 +5,7 @@ import {
   View,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,22 +13,32 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as classicStyles from "../../utils/Styles";
 import { InsurancePacks } from "../../utils/data";
 import Pack from "../../components/Pack";
-import { isIphone } from "../../utils";
+import { isIphone, makePhoneCall } from "../../utils";
 import { useStoreActions } from "easy-peasy";
+import { MaterialIcons } from "@expo/vector-icons";
 
-// const{}
 const Header = () => {
   return (
     <View style={styles.header}>
-      <Text  numberOfLines={1} style={styles.btnText}>
-        Nos Formules
-      </Text>
-      <Text  numberOfLines={2} style={styles.btnText}>
-        d'assurance
-      </Text>
-      <Text  numberOfLines={2} style={styles.btnText}>
-        en ligne
-      </Text>
+      <Text style={styles.btnText}>Nos Formules</Text>
+      <Text style={styles.btnText}>d'assurance</Text>
+      <Text style={styles.btnText}>en ligne</Text>
+      <TouchableOpacity
+        onPress={() => makePhoneCall("0022320235757")}
+        style={{
+          marginBottom: 10,
+          position: "relative",
+          left: 5,
+          top: 10,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <MaterialIcons name="support-agent" size={20} color="black" />
+        <Text adjustsFontSizeToFit style={styles.contactText}>
+          (+ 223) 20 23 57 57
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -66,7 +77,7 @@ const Step1 = ({ navigation }) => {
           }}
           style={{
             flex: 0.8,
-            margunBottom:50,
+            margunBottom: 50,
             padding: 4,
             paddingVertical: 10,
           }}
@@ -90,20 +101,7 @@ const Step1 = ({ navigation }) => {
             );
           })}
 
-          <Text adjustsFontSizeToFit style={styles.slogan}>
-            L'espace{" "}
-            <Text
-              adjustsFontSizeToFitadjustsFontSizeToFit
-              style={styles.sloganAccent}
-            >
-              d'assurance
-            </Text>{" "}
-            {"\n"}
-            par{" "}
-            <Text adjustsFontSizeToFit style={styles.sloganAccent}>
-              excellence
-            </Text>
-          </Text>
+          {/* <Text style={styles.slogan}>L'espace </Text> */}
         </ScrollView>
         {/* <Footer navigation={navigation} /> */}
       </SafeAreaView>
@@ -120,6 +118,20 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 10,
     flex: 0.2,
+  },
+  subHeader: {
+    fontWeight: "300",
+    fontSize: 18,
+    color: "#FFF",
+    letterSpacing: 0.8,
+    marginLeft: 4,
+  },
+  contactText: {
+    fontWeight: "300",
+    fontSize: isIphone ? 10 : 12,
+    color: "lightgrey",
+    letterSpacing: 0.8,
+    marginLeft: 4,
   },
   content: {
     // flex: 10,

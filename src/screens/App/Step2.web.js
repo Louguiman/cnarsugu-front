@@ -172,8 +172,6 @@ const Step2 = ({ navigation, route }) => {
       style={[
         {
           flex: 1,
-          // alignItems: "center",
-          // justifyContent: "center",
         },
         StyleSheet.absoluteFill,
       ]}

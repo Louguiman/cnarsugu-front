@@ -6,29 +6,21 @@ import {
   FlatList,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import PaypalPayment from "../../views/payment/PaypalPayment";
 import CreditCardPayment from "../../views/payment/CreditCardPayment";
 import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
-import { isIphone } from "../../utils";
-import {
-  AGENCY_CODE,
-  LOGIN_AGENT,
-  PASSWORD_AGENT,
-  PAYMENT_METHOD_DATA,
-  RECIPIENT_EMAIL,
-  RECIPIENT_FIRST_NAME,
-  RECIPIENT_LAST_NAME,
-  RECIPIENT_NUMBER,
-  getIdFromClient,
-  paymentCallbackUrl,
-} from "../../utils/constants";
-import axios from "axios";
+import { isIphone, makePhoneCall } from "../../utils";
+import { PAYMENT_METHOD_DATA } from "../../utils/constants";
+import { useStoreState } from "easy-peasy";
+import { requestPayment } from "../../utils/queries";
+import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import Toast from "react-native-root-toast";
 
 const Item = ({
   item,
@@ -75,8 +67,10 @@ const Header = ({ navigation }) => {
 };
 
 const Checkout = ({ navigation }) => {
+  const { selectedCoverage } = useStoreState((state) => state.insurance);
   const [selectedId, setSelectedId] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onNumberChange = (text) => setPhoneNumber(text);
   const renderPaymentComponent = (selectedOption) => {
@@ -123,35 +117,36 @@ const Checkout = ({ navigation }) => {
       (service) => service.id === selectedId
     );
     const payload = {
-      idFromClient: getIdFromClient(),
-      additionnalInfos: {
-        recipientEmail: RECIPIENT_EMAIL,
-        recipientFirstName: RECIPIENT_FIRST_NAME,
-        recipientLastName: RECIPIENT_LAST_NAME,
-        destinataire: phoneNumber,
-      },
-      amount: 100,
-      callback: paymentCallbackUrl,
-      recipientNumber: RECIPIENT_NUMBER,
+      amount: selectedCoverage?.price,
+      phoneNumber,
       serviceCode: service.serviceCode,
     };
 
-    console.log("payment data: ", payload);
-    axios
-      .post(
-        `https://apidist.gutouch.net/apidist/sec/touchpayapi/v1/agency_code=${AGENCY_CODE}
-    /transaction?loginAgent=${LOGIN_AGENT}
-    &passwordAgent=${PASSWORD_AGENT} `,
-        payload
-      )
+    setIsLoading(true);
+    requestPayment(payload)
       .then((res) => {
-        console.log("response payment ", res);
-        navigation.navigate("Confirmation");
+        console.log("res : ", res);
+        if (res) {
+          if (res.status === 201) {
+            makePhoneCall(service.validationCall);
+            Toast.show(
+              "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
+              { duration: Toast.durations.LONG }
+            );
+            navigation.navigate(CONFIRMATION_SCREEN);
+          } else {
+            throw new Error("Verifies vos infos, et Re-essayez!");
+          }
+        }
       })
       .catch((e) => {
-        console.log("error occured during payment ", e.response);
-        console.log(e.response.data);
-        console.log(e.response.status);
+        console.log("error occured: ", e);
+        Toast.show(e.toString(), {
+          duration: Toast.durations.SHORT,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   return (
@@ -182,18 +177,22 @@ const Checkout = ({ navigation }) => {
         <View style={styles.content}>{renderPaymentComponent(selectedId)}</View>
 
         <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={onSubmit}
-            activeOpacity={0.6}
-            style={styles.nextBtn}
-          >
-            <Text adjustsFontSizeToFit style={styles.btnText}>
-              Suivant
-            </Text>
-            <View style={styles.btnIconBox}>
-              <AntDesign name="arrowright" size={32} color="white" />
-            </View>
-          </TouchableOpacity>
+          {isLoading ? (
+            <ActivityIndicator size={"large"} color={"blue"} />
+          ) : (
+            <TouchableOpacity
+              onPress={onSubmit}
+              activeOpacity={0.6}
+              style={styles.nextBtn}
+            >
+              <Text adjustsFontSizeToFit style={styles.btnText}>
+                Suivant
+              </Text>
+              <View style={styles.btnIconBox}>
+                <AntDesign name="arrowright" size={32} color="white" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <Image
           style={styles.imgBg}
@@ -212,14 +211,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   banner: {
-    flex: 2,
     padding: 8,
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
   },
   content: {
     flex: 1,
     padding: 20,
-    marginTop: 20,
   },
   footer: {
     flex: 0.2,

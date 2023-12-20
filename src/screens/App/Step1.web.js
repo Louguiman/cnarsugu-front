@@ -14,7 +14,7 @@ import { InsurancePacks } from "../../utils/data";
 import Pack from "../../components/Pack";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
-
+import { MaterialIcons } from "@expo/vector-icons";
 // const{}
 const Header = () => {
   return (
@@ -29,6 +29,21 @@ const Header = () => {
         <Text adjustsFontSizeToFit numberOfLines={2} style={styles.btnText}>
           en ligne
         </Text>
+        <View
+          style={{
+            marginBottom: 10,
+            position: "relative",
+            left: 5,
+            top: 10,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <MaterialIcons name="support-agent" size={20} color="black" />
+          <Text adjustsFontSizeToFit style={styles.contactText}>
+            (+ 223) 20 23 57 57
+          </Text>
+        </View>
       </View>
 
       <Image
@@ -92,14 +107,15 @@ const Step1 = ({ navigation }) => {
 
   return (
     <ImageBackground
+      source={require("../../../assets/bg-onWeb.png")}
+      imageStyle={{ resizeMode: "cover" }}
       style={[
         {
           flex: 1,
+          overflow: "hidden",
         },
         StyleSheet.absoluteFill,
       ]}
-      resizeMode="cover"
-      source={require("../../../assets/bg-onWeb.png")}
     >
       <SafeAreaView style={styles.container}>
         <Header />
@@ -145,13 +161,12 @@ const Step1 = ({ navigation }) => {
           )}
         />
         <Indicator scrollX={scrollX} />
-        <View style={{ flex: 1, alignItems: "flex-start", paddingLeft: 50 }}>
+        {/* spacer */}
+        <View style={{ flex: 1 }} />
+        <View style={{ position: "absolute", left: 0, bottom: 50 }}>
           <Text adjustsFontSizeToFit style={styles.slogan}>
             L'espace{" "}
-            <Text
-              adjustsFontSizeToFitadjustsFontSizeToFit
-              style={styles.sloganAccent}
-            >
+            <Text adjustsFontSizeToFit style={styles.sloganAccent}>
               d'assurance
             </Text>{" "}
             {"\n"}
@@ -182,6 +197,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+  },
+  subHeader: {
+    fontWeight: "300",
+    fontSize: 18,
+    color: "#FFF",
+    letterSpacing: 0.8,
+    marginLeft: 4,
+  },
+  contactText: {
+    fontWeight: "300",
+    fontSize: isIphone ? 10 : 12,
+    color: "lightgrey",
+    letterSpacing: 0.8,
+    marginLeft: 4,
   },
   content: {
     // flex: 10,

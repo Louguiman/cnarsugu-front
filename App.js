@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -9,6 +10,7 @@ import {
   Montserrat_500Medium,
   useFonts,
 } from "@expo-google-fonts/dev";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -53,11 +55,15 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      {/* <SafeAreaView style={{flex:1}}> */}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <RootSiblingParent>
+        <NavigationContainer onReady={onLayoutRootView}>
+          {/* <SafeAreaView style={{flex:1}}> */}
 
-      <StatusBar style="inverted" />
-      <RootStack />
-    </NavigationContainer>
+          <StatusBar style="inverted" />
+          <RootStack />
+        </NavigationContainer>
+      </RootSiblingParent>
+    </GestureHandlerRootView>
   );
 }

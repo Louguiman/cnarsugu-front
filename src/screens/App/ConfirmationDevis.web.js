@@ -13,26 +13,27 @@ import { COLORS } from "../../utils/data";
 import { height } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreState } from "easy-peasy";
-import axios from "axios";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
+import { submitSubscription } from "../../utils/queries";
 
 const ConfirmationDevis = ({ navigation }) => {
   const { insurance, userInfo } = useStoreState((state) => state);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
+
   const handleSubmit = () => {
     setIsLoading(true);
     const body = {
       insurance: insurance.selectedPack.title,
-      price: 0,
+      coverage: `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`,
+      price: insurance?.selectedCoverage?.price,
       name: userInfo.name,
       surname: userInfo.surname,
-      vehicleID: userInfo?.carteGrise,
       phoneNumber: userInfo?.phoneNumber,
     };
-    console.log("data: ", body);
-    axios
-      .post("http://10.0.2.2:3000/api/subscription", body)
+    submitSubscription(body)
       .then((res) => {
         console.log("res :", res);
       })
@@ -51,6 +52,14 @@ const ConfirmationDevis = ({ navigation }) => {
       setIsLoading(true);
     };
   }, []);
+
+  useEffect(() => {
+    handleSubmit();
+
+    return () => {
+      setIsLoading(true);
+    };
+  }, [refreshPage]);
 
   return (
     <SafeAreaView style={styles.container}>

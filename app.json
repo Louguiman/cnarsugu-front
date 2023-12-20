@@ -4,39 +4,45 @@
     "slug": "cnar-sugu",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/log.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
-    "packagerOpts": {
-      "config": {
-        "minify": true,
-        "isDebug": false
-      }
-    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.louguiman.cnarsugu"
     },
     "android": {
-      "hermesEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/log.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.louguiman.cnarsugu"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "webpack"
     },
     "extra": {
       "eas": {
         "projectId": "2e95510f-ef23-4d07-a3bb-e618a6612cef"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
   }
 }

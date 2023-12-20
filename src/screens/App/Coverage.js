@@ -6,14 +6,16 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COVERAGES, InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
-import { isIphone } from "../../utils";
+import { isIphone, openUrlExternal } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
+import * as Linking from "expo-linking";
 
 const Header = ({ navigation, name, icon, category }) => {
   return (
@@ -25,7 +27,7 @@ const Header = ({ navigation, name, icon, category }) => {
       >
         <AntDesign name="arrowleft" size={40} color="black" />
       </TouchableOpacity>
-      <Text adjustsFontSizeToFitallowFontScaling style={styles.headerText}>
+      <Text adjustsFontSizeToFit allowFontScaling style={styles.headerText}>
         {name === "Multirisque" ? category : name}
       </Text>
       <Image source={icon} resizeMode="contain" style={styles.img} />
@@ -76,17 +78,33 @@ const CoverageItem = ({ item }) => (
 
 const Coverage = ({ route, navigation }) => {
   const { selected, packID } = route.params;
-  const [selectedCoverage, setselectedCoverage] = useState(
-    COVERAGES[packID - 1][selected - 1]
-  );
+  const [selectedCoverage, setselectedCoverage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  console.log("selected: ", selected, "Pack: ", packID);
+  console.log("selected: ", selectedCoverage);
 
+  useEffect(() => {
+    const data = COVERAGES[packID - 1].find((cover) => cover.id === selected);
+    console.log("data matched: ", data);
+    if (data) setselectedCoverage(data);
+    else setIsError(true);
+    return () => {
+      setselectedCoverage(null);
+    };
+  }, [selected]);
+
+  if (!selectedCoverage)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator color={"blue"} size={"large"} />
+      </View>
+    );
   return (
     <ImageBackground
       style={[
         {
           flex: 1,
         },
-        //  { width: width, height: height }
       ]}
       resizeMode="cover"
       source={require("../../../assets/bg-on1.png")}
@@ -99,28 +117,69 @@ const Coverage = ({ route, navigation }) => {
             icon={selectedCoverage?.icon}
             category={selectedCoverage?.category}
           />
-          <View style={styles.card}>
-            <Text adjustsFontSizeToFitallowFontScaling style={styles.title1}>
-              Description
-            </Text>
-            <Text adjustsFontSizeToFitallowFontScaling style={styles.desc}>
-              {selectedCoverage?.description}
-            </Text>
-          </View>
-          <View style={styles.listHeader}>
-            <AntDesign name="appstore-o" size={22} color="white" />
-            <Text
-              adjustsFontSizeToFit
-              style={[styles.title1, { marginLeft: 8, color: "#000" }]}
+          {!isError && !selectedCoverage ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              Les Garanties
-            </Text>
-          </View>
-          {selectedCoverage?.coverage.map((item, index) => (
-            <CoverageItem key={index} item={item} />
-          ))}
-          <Footer navigation={navigation} price={selectedCoverage.price} />
+              <ActivityIndicator size={"large"} color={"blue"} />
+            </View>
+          ) : !selectedCoverage && isError ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>An error occured, Please Retry Later...</Text>
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <View style={styles.card}>
+                <Text
+                  adjustsFontSizeToFit
+                  allowFontScaling
+                  style={styles.title1}
+                >
+                  Description
+                </Text>
+                <Text adjustsFontSizeToFit allowFontScaling style={styles.desc}>
+                  {selectedCoverage?.description}
+                </Text>
+              </View>
+              <View style={styles.listHeader}>
+                <AntDesign name="appstore-o" size={22} color="white" />
+                <Text
+                  adjustsFontSizeToFit
+                  style={[styles.title1, { marginLeft: 8, color: "#000" }]}
+                >
+                  Les Garanties
+                </Text>
+              </View>
+              {selectedCoverage?.coverage.map((item, index) => (
+                <CoverageItem key={index} item={item} />
+              ))}
+
+              {selectedCoverage?.type === "Multirisque" ||
+              selectedCoverage?.type.includes("Formule") ? (
+                <TouchableOpacity
+                  onPress={() => openUrlExternal(selectedCoverage.coverageLink)}
+                >
+                  <Text
+                    style={{ paddingLeft: 20, textDecorationLine: "underline" }}
+                  >
+                    Retrouvez la liste des garanties en faisant un clic ici
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )}
         </ScrollView>
+        <Footer navigation={navigation} price={selectedCoverage.price} />
       </SafeAreaView>
     </ImageBackground>
   );

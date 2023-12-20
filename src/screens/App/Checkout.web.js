@@ -1,3 +1,4 @@
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,19 +7,21 @@ import {
   FlatList,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { TextInput, defaultTheme } from "@react-native-material/core";
+import { useStoreState } from "easy-peasy";
+import Toast from "react-native-root-toast";
 import { COLORS } from "../../utils/data";
 import PaypalPayment from "../../views/payment/PaypalPayment";
 import CreditCardPayment from "../../views/payment/CreditCardPayment";
 import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
 import { isIphone } from "../../utils";
 import Layout from "../../components/layout/Layout";
-import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
 import { PAYMENT_METHOD_DATA } from "../../utils/constants";
+import { requestPayment } from "../../utils/queries";
+import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
 
 const Item = ({
   item,
@@ -64,23 +67,33 @@ const Header = ({ navigation }) => {
   );
 };
 
-const renderPaymentComponent = (selectedOption) => {
-  switch (selectedOption) {
-    case 5:
-      return <CreditCardPayment />;
-    case 1:
-      return <PaypalPayment />;
-    case 2:
-    case 3:
-    case 4:
-      return <MobileMoneyPayment />;
-    default:
-      return null;
-  }
-};
-
 const Checkout = ({ navigation }) => {
+  const { selectedCoverage } = useStoreState((state) => state.insurance);
   const [selectedId, setSelectedId] = React.useState(null);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const onNumberChange = (text) => setPhoneNumber(text);
+
+  const renderPaymentComponent = (selectedOption) => {
+    switch (selectedOption) {
+      case 5:
+        return <CreditCardPayment />;
+      case 1:
+        return <PaypalPayment />;
+      case 2:
+      case 3:
+      case 4:
+        return (
+          <MobileMoneyPayment
+            onNumberChange={onNumberChange}
+            phoneNumber={phoneNumber}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   const renderItem = ({ item }) => {
     const isSelected = item.id === selectedId;
@@ -99,6 +112,43 @@ const Checkout = ({ navigation }) => {
         elevation={{ elevation }}
       />
     );
+  };
+
+  const onSubmit = () => {
+    const service = PAYMENT_METHOD_DATA.find(
+      (service) => service.id === selectedId
+    );
+    const payload = {
+      amount: selectedCoverage?.price,
+      phoneNumber,
+      serviceCode: service.serviceCode,
+    };
+
+    setIsLoading(true);
+    requestPayment(payload)
+      .then((res) => {
+        console.log("res : ", res);
+        if (res) {
+          if (res.status === 201) {
+            Toast.show(
+              "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
+              { duration: Toast.durations.LONG }
+            );
+            navigation.navigate(CONFIRMATION_SCREEN);
+          } else {
+            throw new Error("Verifies vos infos, et Re-essayez!");
+          }
+        }
+      })
+      .catch((e) => {
+        console.log("error occured: ", e);
+        Toast.show(e.toString(), {
+          duration: Toast.durations.SHORT,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -139,18 +189,22 @@ const Checkout = ({ navigation }) => {
         />
 
         <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(CONFIRMATION_SCREEN)}
-            activeOpacity={0.6}
-            style={styles.nextBtn}
-          >
-            <Text adjustsFontSizeToFit style={styles.btnText}>
-              Suivant
-            </Text>
-            <View style={styles.btnIconBox}>
-              <AntDesign name="arrowright" size={32} color="white" />
-            </View>
-          </TouchableOpacity>
+          {isLoading ? (
+            <ActivityIndicator size={"large"} color={"blue"} />
+          ) : (
+            <TouchableOpacity
+              onPress={onSubmit}
+              activeOpacity={0.6}
+              style={styles.nextBtn}
+            >
+              <Text adjustsFontSizeToFit style={styles.btnText}>
+                Suivant
+              </Text>
+              <View style={styles.btnIconBox}>
+                <AntDesign name="arrowright" size={32} color="white" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <Image
           style={styles.imgBg}

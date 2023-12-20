@@ -64,29 +64,38 @@ const Item = ({
 );
 
 const Enrolment = ({ navigation }) => {
+  const [clientTypes, setClientTypes] = useState(null);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
-  const [selectedId, setSelectedId] = React.useState(1);
+  const [selectedId, setSelectedId] = React.useState(null);
   const [companyName, setCompanyName] = React.useState("");
   const [address, setAddress] = useState("");
   const [activity, setActivity] = useState("");
   const [owner, setOwner] = useState("");
 
-  const {
-    insurance: { selectedCoverage },
-  } = useStoreState((state) => state);
+  const { insurance } = useStoreState((state) => state);
+  const { selectedCoverage, selectedPack } = insurance;
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
-
-  const clientTypes = useMemo(() => {
+  console.log("insurance: ", insurance);
+  console.log("client types: ", clientTypes);
+  useEffect(() => {
     const typesList = [];
-    if (selectedCoverage.clientType === 1)
-      typesList.push(SERVICE_CLIENT_TYPES[0]);
-    else if (selectedCoverage.clientType === 2)
+    if (selectedPack.type == "Produit") {
+      if (selectedPack.clientType) {
+        typesList.push(SERVICE_CLIENT_TYPES[selectedPack.clientType - 1]);
+      } else typesList.push(...SERVICE_CLIENT_TYPES);
+    } else if (selectedCoverage?.clientType === 1)
+      typesList?.push(SERVICE_CLIENT_TYPES[0]);
+    else if (selectedCoverage?.clientType === 2)
       typesList.push(SERVICE_CLIENT_TYPES[1]);
     else typesList.push(...SERVICE_CLIENT_TYPES);
     setSelectedId(typesList[0].id);
-    return typesList;
-  }, [selectedCoverage]);
+    setClientTypes(typesList);
+
+    return () => {
+      setClientTypes(null);
+    };
+  }, [selectedCoverage, selectedPack]);
 
   const renderItem = ({ item }) => {
     const isSelected = item.id === selectedId;
@@ -129,6 +138,7 @@ const Enrolment = ({ navigation }) => {
     () => (selectedCoverage?.extraFields?.includes("shop") ? true : false),
     [selectedCoverage]
   );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -269,7 +279,7 @@ const Enrolment = ({ navigation }) => {
                     />
                   )}
                   <TextInput
-                    label="Addresse"
+                    label="Adresse"
                     value={address}
                     style={{ marginVertical: 8 }}
                     onChangeText={(text) => setAddress(text)}

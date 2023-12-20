@@ -1,44 +1,15 @@
-// import axios from "axios";
+import axios from "axios";
 // import storage from "./";
 
-// export default axios.create({
-//   baseURL: "https://corpmali-backend.herokuapp.com/api/",
-// //   headers: {
-// //     "Content-Type": "Application/JSON",
-// //   },
-// });
+const apiUrl =
+  process.env.EXPO_PUBLIC_API_URL || "https://cnar-sugu-api.vercel.app/api";
+const apiKey =
+  process.env.EXPO_PUBLIC_API_KEY || "03e42c19-45d3-4bab-b5b2-d9b2eed04a62'";
 
-// export const storeDataObject = (storage_key, value) => {
-//   try {
-//     const jsonValue = JSON.stringify(value);
-//     storage.set(storage_key, jsonValue);
-//   } catch (e) {
-//     // saving error
-//   }
-// };
-
-// export const storeData = (storage_key, value) => {
-//   try {
-//     storage.set(storage_key, value);
-//   } catch (e) {
-//     // saving error
-//   }
-// };
-
-// export const getDataObject = (storage_key) => {
-//   try {
-//     const jsonValue = storage.getString(storage_key);
-//     if (!jsonValue) return false;
-//     return jsonValue != null ? JSON.parse(jsonValue) : null;
-//   } catch (e) {
-//     // error reading value
-//   }
-// };
-
-// export const removeValue = (storage_key) => {
-//   try {
-//     storage.delete(storage_key);
-//   } catch (e) {
-//     // remove error
-//   }
-// };
+export default axios.create({
+  baseURL: apiUrl,
+  headers: {
+    "Content-Type": "Application/JSON",
+    "x-api-key": apiKey,
+  },
+});

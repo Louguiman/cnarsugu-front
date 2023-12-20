@@ -13,4 +13,6 @@ export const CHECKOUT_SCREEN = "Checkout";
 export const CONFIRMATION_SCREEN = "Confirmation";
 export const DEVIS_SCREEN = "Confirmation Devis";
 export const VEHICLE_DETAILS_SCREEN = "information du vehicule";
+export const TRAVEL_DETAILS_SCREEN = "informations supplémentaires - voyage";
+export const TRANSPORTATION_DETAILS_SCREEN = "informations supplémentaires - transport";
 export const RECEIPT_SCREEN = "Receipt";

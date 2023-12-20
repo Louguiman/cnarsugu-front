@@ -1,4 +1,6 @@
 import { Platform } from "react-native";
+import * as Linking from "expo-linking";
+
 // import storage from "./storage";
 var Base64 = (function () {
   var map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
@@ -65,9 +67,20 @@ export function getRandomNumber(max) {
 }
 
 const isIphone = Platform.OS == "ios";
-
-export {
-  Base64,
-  // storage,
-  isIphone,
+const makePhoneCall = (number) => {
+  const link = `${isIphone ? "tel:" : "tel:"} ${number}`;
+  console.log("phone call", link);
+  Linking.openURL(link);
 };
+
+const openUrlExternal = async (url) => {
+  if (await Linking.canOpenURL(url)) {
+    if (Platform.OS == "web") {
+      window.open(url, "_blank");
+    } else {
+      Linking.openURL(url);
+    }
+  }
+};
+
+export { Base64, isIphone, makePhoneCall, openUrlExternal };

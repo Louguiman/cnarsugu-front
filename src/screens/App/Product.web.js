@@ -12,7 +12,7 @@ import { InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { height, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
-import { isIphone } from "../../utils";
+import { isIphone, openUrlExternal } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
 
 const Header = ({ navigation }) => {
@@ -152,11 +152,28 @@ const Product = ({ route, navigation }) => {
               {selectedProductCoverage.coverage.map((item, index) => (
                 <CoverageItem key={index} item={item} />
               ))}
-              <Footer
-                navigation={navigation}
-                price={selectedProductCoverage.price}
-              />
+              {selectedProductCoverage?.title === "RC SColaire" ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    openUrlExternal(selectedProductCoverage.coverageLink)
+                  }
+                >
+                  <Text
+                    style={{
+                      paddingLeft: 40,
+                      marginTop: 20,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Retrouvez la liste des garanties en faisant un clic ici
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
             </ScrollView>
+            <Footer
+              navigation={navigation}
+              price={selectedProductCoverage.price}
+            />
           </View>
         </View>
       </SafeAreaView>

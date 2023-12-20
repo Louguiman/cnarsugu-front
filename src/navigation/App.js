@@ -22,16 +22,18 @@ import {
   STEP1_SCREEN,
   STEP2_SCREEN,
   VEHICLE_DETAILS_SCREEN,
+  TRAVEL_DETAILS_SCREEN,
+  TRANSPORTATION_DETAILS_SCREEN,
 } from "./routeNames";
 import ConfirmationDevis from "../screens/App/ConfirmationDevis";
+import TravelDetails from "../screens/App/TravelDetails";
+import TransportationDetails from "../screens/App/TransportationDetails";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={STEP1_SCREEN} component={Step1} />
       <Stack.Screen name={STEP2_SCREEN} component={Step2} />
       <Stack.Screen name={COVERAGE_SCREEN} component={Coverage} />
@@ -41,6 +43,11 @@ const App = () => {
       <Stack.Screen name={CHECKOUT_SCREEN} component={Checkout} />
       <Stack.Screen name={CONFIRMATION_SCREEN} component={Confirmation} />
       <Stack.Screen name={VEHICLE_DETAILS_SCREEN} component={VehicleDetails} />
+      <Stack.Screen name={TRAVEL_DETAILS_SCREEN} component={TravelDetails} />
+      <Stack.Screen
+        name={TRANSPORTATION_DETAILS_SCREEN}
+        component={TransportationDetails}
+      />
       <Stack.Screen name={RECEIPT_SCREEN} component={Receipt} />
       <Stack.Screen name={DEVIS_SCREEN} component={ConfirmationDevis} />
     </Stack.Navigator>

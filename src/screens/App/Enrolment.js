@@ -14,8 +14,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { TextInput, defaultTheme } from "@react-native-material/core";
 import { COLORS } from "../../utils/data";
 import { isIphone } from "../../utils";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { SERVICE_CLIENT_TYPES } from "../../utils/constants";
 import { CONTACT_SCREEN } from "../../navigation/routeNames";
+
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -41,16 +43,6 @@ const Header = ({ navigation }) => {
     </View>
   );
 };
-const DATA = [
-  {
-    id: 1,
-    title: "Particuliers",
-  },
-  {
-    id: 2,
-    title: "Entreprise",
-  },
-];
 
 const Item = ({
   item,
@@ -71,12 +63,38 @@ const Item = ({
 );
 
 const Enrolment = ({ navigation }) => {
+  const [clientTypes, setClientTypes] = useState(null);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
   const [selectedId, setSelectedId] = React.useState(null);
   const [companyName, setCompanyName] = React.useState("");
+  const [address, setAddress] = useState("");
   const [activity, setActivity] = useState("");
+  const [owner, setOwner] = useState("");
+
+  const { insurance } = useStoreState((state) => state);
+  const { selectedCoverage, selectedPack } = insurance;
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  console.log("insurance: ", insurance);
+  console.log("client types: ", clientTypes);
+  useEffect(() => {
+    const typesList = [];
+    if (selectedPack.type == "Produit") {
+      if (selectedPack.clientType) {
+        typesList.push(SERVICE_CLIENT_TYPES[selectedPack.clientType - 1]);
+      } else typesList.push(...SERVICE_CLIENT_TYPES);
+    } else if (selectedCoverage?.clientType === 1)
+      typesList?.push(SERVICE_CLIENT_TYPES[0]);
+    else if (selectedCoverage?.clientType === 2)
+      typesList.push(SERVICE_CLIENT_TYPES[1]);
+    else typesList.push(...SERVICE_CLIENT_TYPES);
+    setSelectedId(typesList[0].id);
+    setClientTypes(typesList);
+
+    return () => {
+      setClientTypes(null);
+    };
+  }, [selectedCoverage, selectedPack]);
 
   const renderItem = ({ item }) => {
     const isSelected = item.id === selectedId;
@@ -99,7 +117,7 @@ const Enrolment = ({ navigation }) => {
   const handleNext = useCallback(() => {
     if (
       (selectedId === 1 && (!name || !surname)) ||
-      (selectedId === 2 && (!companyName || !activity))
+      (selectedId === 2 && (!companyName || !address))
     ) {
       Alert.alert(
         "Informations Incompletes",
@@ -109,7 +127,16 @@ const Enrolment = ({ navigation }) => {
     }
     updateUserInfo({ name, surname });
     navigation.navigate(CONTACT_SCREEN);
-  }, [selectedId, companyName, activity, name, surname]);
+  }, [selectedId, companyName, address, name, surname]);
+
+  const isActivityField = useMemo(
+    () => (selectedCoverage?.extraFields?.includes("activity") ? true : false),
+    [selectedCoverage]
+  );
+  const isShopField = useMemo(
+    () => (selectedCoverage?.extraFields?.includes("shop") ? true : false),
+    [selectedCoverage]
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -129,14 +156,16 @@ const Enrolment = ({ navigation }) => {
           </Text>
         </View>
         <View style={styles.content}>
-          <FlatList
-            data={DATA}
-            horizontal
-            contentContainerStyle={{ height: 80, marginTop: 8 }}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            extraData={selectedId}
-          />
+          {clientTypes && (
+            <FlatList
+              data={clientTypes}
+              horizontal
+              contentContainerStyle={{ height: 80, marginTop: 8 }}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              extraData={selectedId}
+            />
+          )}
           {selectedId === 1 ? (
             <>
               <TextInput
@@ -168,11 +197,27 @@ const Enrolment = ({ navigation }) => {
                   },
                 }}
               />
+              {isActivityField && (
+                <TextInput
+                  label="Activité"
+                  value={activity}
+                  style={{ marginVertical: 8 }}
+                  onChangeText={(text) => setActivity(text)}
+                  theme={{
+                    ...defaultTheme,
+                    colors: {
+                      ...defaultTheme.colors,
+                      primary: "#ff0000", // color when focused
+                      accent: "#00ff00", // color when not focused
+                    },
+                  }}
+                />
+              )}
             </>
           ) : selectedId === 2 ? (
             <>
               <TextInput
-                label="Nom de la Société"
+                label={`Nom de la ${isShopField ? "Boutique" : "Société"}`}
                 value={companyName}
                 onChangeText={(text) => setCompanyName(text)}
                 style={{ marginVertical: 8 }}
@@ -186,11 +231,43 @@ const Enrolment = ({ navigation }) => {
                   },
                 }}
               />
+              {isShopField && (
+                <TextInput
+                  label="Nom du Propriétaire"
+                  value={owner}
+                  style={{ marginVertical: 8 }}
+                  onChangeText={(text) => setOwner(text)}
+                  theme={{
+                    ...defaultTheme,
+                    colors: {
+                      ...defaultTheme.colors,
+                      primary: "#ff0000", // color when focused
+                      accent: "#00ff00", // color when not focused
+                    },
+                  }}
+                />
+              )}
+              {isActivityField && (
+                <TextInput
+                  label="Activité"
+                  value={activity}
+                  style={{ marginVertical: 8 }}
+                  onChangeText={(text) => setActivity(text)}
+                  theme={{
+                    ...defaultTheme,
+                    colors: {
+                      ...defaultTheme.colors,
+                      primary: "#ff0000", // color when focused
+                      accent: "#00ff00", // color when not focused
+                    },
+                  }}
+                />
+              )}
               <TextInput
-                label="Activité Professionnelle"
-                value={activity}
+                label="Adresse"
+                value={address}
                 style={{ marginVertical: 8 }}
-                onChangeText={(text) => setActivity(text)}
+                onChangeText={(text) => setAddress(text)}
                 theme={{
                   ...defaultTheme,
                   colors: {
@@ -217,10 +294,6 @@ const Enrolment = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
-        {/* <Image
-          style={styles.imgBg}
-          source={require("../../../assets/personalInfo.png")}
-        /> */}
       </ScrollView>
     </SafeAreaView>
   );

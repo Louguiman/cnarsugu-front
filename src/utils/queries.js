@@ -1,5 +1,5 @@
-import apiClient from "./httpclient";
 import axios from "axios";
+import apiClient from "./httpclient";
 
 export function authUser(data) {
   return axios("https://corpmali-backend.herokuapp.com/api/auth/signin", {
@@ -52,4 +52,12 @@ export function getClientsbyService() {
       "Content-type": "application/json; charset=UTF-8",
     },
   });
+}
+
+export async function submitSubscription(payload) {
+  return await apiClient.post("subscription", payload);
+}
+
+export async function requestPayment(payload) {
+  return await apiClient.post("payment", payload);
 }

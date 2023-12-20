@@ -6,7 +6,7 @@ import { COLORS } from "../../utils/data";
 const MobileMoneyPayment = ({ phoneNumber, onNumberChange }) => {
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop:10 }}>
       <TextInput
         label="Numero de Téléphone"
         value={phoneNumber}

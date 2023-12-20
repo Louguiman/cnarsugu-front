@@ -2,31 +2,37 @@ export const getIdFromClient = () => Date.now();
 
 export const PAYMENT_METHOD_DATA = [
   {
-    id: 5,
-    title: "Carte Bancaire",
-    serviceCode: "",
-  },
-  {
     id: 2,
     serviceCode: "ML_PAIEMENTMARCHAND_OM_TP",
     title: "Orange Money",
+    validationCall: "#144#37#",
   },
   {
     id: 3,
     serviceCode: "ML_PAIEMENTMARCHAND_MOOV_TP",
     title: "Moov Money",
+    validationCall: "#",
   },
   {
     id: 4,
     serviceCode: "ML_PAIEMENTWAVE_TP",
     title: "Wave",
+    validationCall: "#",
   },
   {
     id: 1,
     serviceCode: "ML_INIT_PAIEMENT_TP",
+    validationCall: "#",
     title: "TouchPoint",
   },
 ];
+
+//Removed payment by bank card
+// {
+//   id: 5,
+//   title: "Carte Bancaire",
+//   serviceCode: "",
+// },
 
 export const PAYMENT_DIGEST_USERNAME =
   "876e29d5802ec8025805a32c2cd3527d623566b536f9ff1c1453fcff3c7a9b48";
