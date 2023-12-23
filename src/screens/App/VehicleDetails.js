@@ -167,7 +167,7 @@ const VehicleDetails = ({ navigation }) => {
             />
           )}
           <Button
-            title="Télécharger ma carte à grisE"
+            title="Télécharger ma carte grise"
             onPress={handleOpenPress}
           />
         </View>

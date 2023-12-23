@@ -153,7 +153,7 @@ const VehicleDetails = ({ navigation }) => {
                 </View>
               )}
               <Button
-                title="Télécharger ma carte à grisE"
+                title="Télécharger ma carte grise"
                 onPress={pickImage}
                 style={{ marginTop: 20 }}
               />
