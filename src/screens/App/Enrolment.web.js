@@ -18,7 +18,8 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
 import { CONTACT_SCREEN } from "../../navigation/routeNames";
 import { SERVICE_CLIENT_TYPES } from "../../utils/constants";
-
+import { default as Responsive } from './Enrolment.js'
+import { isTablet } from "../../utils/Styles";
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -138,6 +139,8 @@ const Enrolment = ({ navigation }) => {
     () => (selectedCoverage?.extraFields?.includes("shop") ? true : false),
     [selectedCoverage]
   );
+
+  if (!isTablet) return <Responsive />
 
   return (
     <SafeAreaView style={styles.container}>

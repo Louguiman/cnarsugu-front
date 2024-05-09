@@ -21,7 +21,9 @@ import {
   TRAVEL_DETAILS_SCREEN,
   VEHICLE_DETAILS_SCREEN,
 } from "../../navigation/routeNames";
-import { height } from "../../utils/Styles";
+import { height, isTablet } from "../../utils/Styles";
+import { default as Responsive } from './Contact.js'
+import { useNavigation } from "@react-navigation/core";
 
 const Header = ({ navigation }) => {
   return (
@@ -49,8 +51,9 @@ const Header = ({ navigation }) => {
   );
 };
 
-const Contact = ({ navigation }) => {
+const Contact = ({ }) => {
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const navigation = useNavigation()
 
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const insurancePack = useStoreState((state) => state.insurance.selectedPack);
@@ -87,9 +90,11 @@ const Contact = ({ navigation }) => {
     insurancePack.id === 1
       ? navigation.navigate(VEHICLE_DETAILS_SCREEN)
       : insurancePack.id > 2
-      ? navigation.navigate(DEVIS_SCREEN)
-      : navigation.navigate(CHECKOUT_SCREEN);
+        ? navigation.navigate(DEVIS_SCREEN)
+        : navigation.navigate(CHECKOUT_SCREEN);
   };
+
+  if (!isTablet) return <Responsive navigation={navigation} />
 
   return (
     <SafeAreaView style={styles.container}>

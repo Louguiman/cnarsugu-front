@@ -17,6 +17,7 @@ import { isIphone } from "../../utils";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { SERVICE_CLIENT_TYPES } from "../../utils/constants";
 import { CONTACT_SCREEN } from "../../navigation/routeNames";
+import { useNavigation } from "@react-navigation/core";
 
 const Header = ({ navigation }) => {
   return (
@@ -62,7 +63,7 @@ const Item = ({
   </TouchableOpacity>
 );
 
-const Enrolment = ({ navigation }) => {
+const Enrolment = ({ }) => {
   const [clientTypes, setClientTypes] = useState(null);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -71,7 +72,7 @@ const Enrolment = ({ navigation }) => {
   const [address, setAddress] = useState("");
   const [activity, setActivity] = useState("");
   const [owner, setOwner] = useState("");
-
+  const navigation = useNavigation()
   const { insurance } = useStoreState((state) => state);
   const { selectedCoverage, selectedPack } = insurance;
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);

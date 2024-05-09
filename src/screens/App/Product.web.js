@@ -10,10 +10,11 @@ import {
 import React, { useState } from "react";
 import { InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { height, width } from "../../utils/Styles";
+import { height, isTablet, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone, openUrlExternal } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
+import { default as Responsive } from './Product.js'
 
 const Header = ({ navigation }) => {
   return (
@@ -90,6 +91,7 @@ const Product = ({ route, navigation }) => {
     InsurancePacks[selected - 1]
   );
 
+  if (!isTablet) return <Responsive route={route} navigation={navigation} />
   return (
     <ImageBackground
       style={[

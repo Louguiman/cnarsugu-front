@@ -8,6 +8,7 @@ import {
   STEP2_SCREEN,
 } from "../navigation/routeNames";
 import { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
+import { isTablet } from "../utils/Styles";
 
 const Pack = ({
   id,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     // flexDirection: "row",
     flex: 1,
     flexGrow: 1,
-    minWidth: 550,
+    minWidth:isTablet? 550:200,
     maxWidth: 700,
     minHeight: 250,
     backgroundColor: "#FFF",

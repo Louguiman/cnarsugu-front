@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { TERMS_AND_CONDITIONS } from "../../utils/data";
 import { APP_STACK_SCREENS } from "../../navigation/routeNames";
+import { isTablet } from "../../utils/Styles";
 
 // const{}
 const Header = ({ navigation }) => {
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     paddingBottom: 80,
-    marginHorizontal: 50,
+    marginHorizontal:isTablet? 50:10,
   },
   footer: {
     flex: 1,

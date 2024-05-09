@@ -1,3 +1,4 @@
+
 import { StatusBar } from "expo-status-bar";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { NavigationContainer } from "@react-navigation/native";

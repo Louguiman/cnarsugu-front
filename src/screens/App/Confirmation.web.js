@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
-import { height } from "../../utils/Styles";
+import { height, isTablet } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreState } from "easy-peasy";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { submitSubscription } from "../../utils/queries";
+import { default as Responsive } from './Confirmation.js'
 
 const Confirmation = ({ navigation }) => {
   const { insurance, userInfo } = useStoreState((state) => state);
@@ -53,6 +54,8 @@ const Confirmation = ({ navigation }) => {
       setIsLoading(true);
     };
   }, [refreshPage]);
+
+  if (!isTablet) return <Responsive navigation={navigation} />
 
   return (
     <SafeAreaView style={styles.container}>

@@ -15,6 +15,8 @@ import Pack from "../../components/Pack";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
 import { MaterialIcons } from "@expo/vector-icons";
+import { default as Responsive } from './Step1.js'
+
 // const{}
 const Header = () => {
   return (
@@ -50,10 +52,10 @@ const Header = () => {
         style={{
           position: "absolute",
           top: -25,
-          right: 15,
-          width: 250,
-          height: 100,
-          // alignSelf: "center",
+          right: classicStyles.isTablet ? 15 : -10,
+          right: classicStyles.isTablet ? 15 : 0,
+          width: classicStyles.isTablet ? 250 : 100,
+          height: classicStyles.isTablet ? 100 : 50,
         }}
         resizeMode="contain"
         source={require("../../../assets/logocnar.png")}
@@ -104,7 +106,7 @@ const Indicator = ({ scrollX }) => {
 const Step1 = ({ navigation }) => {
   const updateInsurance = useStoreActions((actions) => actions.updateInsurance);
   const scrollX = React.useRef(new Animated.Value(0)).current;
-
+  if (!classicStyles.isTablet) return <Responsive navigation={navigation} />
   return (
     <ImageBackground
       source={require("../../../assets/bg-onWeb.png")}
@@ -132,7 +134,7 @@ const Step1 = ({ navigation }) => {
             alignItems: "center",
           }}
           data={InsurancePacks}
-          numColumns={2}
+          numColumns={classicStyles.isTablet ? 2 : 1}
           renderItem={({ item }) => {
             const handleSelect = () => {
               updateInsurance(item);

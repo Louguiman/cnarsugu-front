@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "70%",
+    width:classicStyles.isTablet? "70%":"85%",
     height: 60,
     backgroundColor: "#F8F104",
     borderColor: "#000",

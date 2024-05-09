@@ -14,6 +14,8 @@ import { COLORS, COVERAGES, InsurancePacks } from "../../utils/data";
 import CoverageCard from "../../components/CoverageCard";
 import { isIphone } from "../../utils";
 import { useStoreActions } from "easy-peasy";
+import { isTablet } from "../../utils/Styles";
+import { default as Responsive } from './Step2.js'
 
 const DATA = [
   {
@@ -45,23 +47,23 @@ const DATA = [
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
           style={[styles.btnStart, { marginBottom: 0, marginLeft: 10 }]}
         >
-          <AntDesign name="arrowleft" size={48} color="white" />
+          <AntDesign name="arrowleft" size={isTablet ? 48 : 25} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerText}>choisissez votre couverture </Text>
       </View>
       <Image
         style={{
           position: "absolute",
-          top: -25,
-          right: 15,
-          width: 250,
-          height: 100,
+          top: isTablet ? -25 : 0,
+          right: isTablet ? 15 : 0,
+          width: isTablet ? 250 : 100,
+          height: isTablet ? 100 : 50,
           // alignSelf: "center",
         }}
         resizeMode="contain"
@@ -120,7 +122,7 @@ const Step2 = ({ navigation, route }) => {
       setCoverages(filteredCoverages);
     }
     // currentIndex
-    return () => {};
+    return () => { };
   }, [selectedFilterId]);
 
   const renderItem = ({ item, index }) => {
@@ -167,6 +169,7 @@ const Step2 = ({ navigation, route }) => {
     );
   };
 
+  if (!isTablet) return <Responsive navigation={navigation} route={route} />
   return (
     <ImageBackground
       style={[
@@ -176,15 +179,16 @@ const Step2 = ({ navigation, route }) => {
         StyleSheet.absoluteFill,
       ]}
       resizeMode="cover"
-      source={Banner && Banner.bg}
+      source={!isTablet ? require("../../../assets/bg-on1.png") : Banner && Banner.bg}
     >
       <SafeAreaView style={styles.container}>
         <Header navigation={navigation} />
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            {/* <Image
+        <View style={{ flex: 1, flexDirection: isTablet ? "row" : "column" }}>
+          {isTablet && (
+            <View
+              style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            >
+              {/* <Image
               style={{
                 width: 450,
                 height: 450,
@@ -192,23 +196,25 @@ const Step2 = ({ navigation, route }) => {
               resizeMode="contain"
               source={Banner && Banner.icon}
             /> */}
-            <Text
-              // numberOfLines={1}
-              textBreakStrategy="highQuality"
-              ellipsizeMode="clip"
-              style={[
-                styles.headerText,
-                {
-                  textAlign: "center",
-                  fontSize: 44,
-                  marginTop: 350,
-                  fontFamily: "Montserrat_500Medium",
-                },
-              ]}
-            >
-              {Banner && Banner.title}
-            </Text>
-          </View>
+              <Text
+                // numberOfLines={1}
+                textBreakStrategy="highQuality"
+                ellipsizeMode="clip"
+                style={[
+                  styles.headerText,
+                  {
+                    textAlign: "center",
+                    fontSize: 44,
+                    marginTop: 350,
+                    fontFamily: "Montserrat_500Medium",
+                  },
+                ]}
+              >
+                {Banner && Banner.title}
+              </Text>
+            </View>
+
+          )}
           <View style={{ flex: 1, alignItems: "center" }}>
             {route.params.selected === 1 && (
               <View style={{ flex: 0.15 }}>
@@ -218,7 +224,7 @@ const Step2 = ({ navigation, route }) => {
                   showsHorizontalScrollIndicator={false}
                   style={{ width: "100%" }}
                   contentContainerStyle={{
-                    marginLeft:20,
+                    marginLeft: isTablet ? 20 : 0,
                     alignItems: "center",
                   }}
                   renderItem={renderFilterItem}
@@ -229,9 +235,9 @@ const Step2 = ({ navigation, route }) => {
             )}
             <FlatList
               data={coverages}
-              style={{ flex: 1, width: "80%" }}
+              style={{ flex: 1, width: isTablet ? "80%" : "100%" }}
               contentContainerStyle={{
-                marginLeft: 50,
+                marginLeft: isTablet ? 50 : 0,
                 padding: 10,
               }}
               renderItem={renderItem}
@@ -282,7 +288,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textTransform: "uppercase",
     fontSize: isIphone ? 16 : 20,
-    width: 350,
+    width: isTablet ? 350 : '40%',
     fontWeight: "600",
     letterSpacing: 1,
     marginLeft: 15,

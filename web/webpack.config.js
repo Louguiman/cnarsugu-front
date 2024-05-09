@@ -1,5 +1,5 @@
 // web/webpack.config.js
-
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
 
@@ -25,7 +25,7 @@ const babelLoaderConfiguration = {
       // The 'metro-react-native-babel-preset' preset is recommended to match React Native's packager
       presets: ["module:metro-react-native-babel-preset"],
       // Re-write paths to import only the modules needed by the app
-      plugins: ["react-native-web"],
+      plugins: ["react-native-web", new NodePolyfillPlugin()],
     },
   },
 };
@@ -67,6 +67,7 @@ module.exports = {
     alias: {
       "react-native$": "react-native-web",
     },
+    fallback: { "crypto": require.resolve("crypto-browserify") },
     // If you're working on a multi-platform React Native app, web-specific
     // module implementations should be written in files using the extension
     // `.web.js`.

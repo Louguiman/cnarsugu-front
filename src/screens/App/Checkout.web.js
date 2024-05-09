@@ -22,6 +22,8 @@ import Layout from "../../components/layout/Layout";
 import { PAYMENT_METHOD_DATA } from "../../utils/constants";
 import { requestPayment } from "../../utils/queries";
 import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import { default as Responsive } from './Checkout.js'
+import { isTablet } from "../../utils/Styles.js";
 
 const Item = ({
   item,
@@ -150,6 +152,7 @@ const Checkout = ({ navigation }) => {
         setIsLoading(false);
       });
   };
+  if (!isTablet) return <Responsive navigation={navigation} />
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

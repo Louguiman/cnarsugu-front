@@ -16,12 +16,14 @@ import { useStoreState } from "easy-peasy";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { submitSubscription } from "../../utils/queries";
+import { useNavigation } from "@react-navigation/core";
 
-const Confirmation = ({ navigation }) => {
+const Confirmation = ({ }) => {
   const { insurance, userInfo } = useStoreState((state) => state);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const navigation = useNavigation()
 
   const handleSubmit = () => {
     setIsLoading(true);

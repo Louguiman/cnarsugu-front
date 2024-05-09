@@ -18,6 +18,8 @@ import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
 import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
+import { default as Responsive } from './VehicleDetails.js'
+import { isTablet } from "../../utils/Styles.js";
 
 const Header = ({ navigation }) => {
   return (
@@ -106,6 +108,7 @@ const VehicleDetails = ({ navigation }) => {
     navigation.navigate(CHECKOUT_SCREEN);
   };
 
+  if (!isTablet) return <Responsive navigation={navigation} />
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

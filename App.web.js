@@ -1,3 +1,4 @@
+
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
@@ -7,7 +8,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { isTablet } from "./src/utils/Styles";
 import { Platform } from "react-native";
 import NotAMobileScreen from "./src/screens/App/NotAMobileScreen";
-import {default as AppMobile} from './App.js'
+import { default as AppMobile } from './App.js'
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -47,7 +48,7 @@ export default function App() {
     return null;
   }
 
-   if (!isTablet && Platform.OS === "web") {
+  if (!isTablet && Platform.OS === "web") {
     return <AppMobile />;
   }
 

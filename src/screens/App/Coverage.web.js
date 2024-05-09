@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { COVERAGES, InsurancePacks } from "../../utils/data";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { height, width } from "../../utils/Styles";
+import { height, isTablet, width } from "../../utils/Styles";
 import { AntDesign } from "@expo/vector-icons";
 import { isIphone } from "../../utils";
 import { ENROLMENT_SCREEN } from "../../navigation/routeNames";
@@ -31,10 +31,9 @@ const Header = ({ navigation }) => {
         style={{
           position: "absolute",
           top: 0,
-          right: 15,
-          width: 250,
-          height: 100,
-          // alignSelf: "center",
+          right: isTablet ? 15 : 0,
+          width: isTablet ? 250 : 100,
+          height: isTablet ? 100 : 50,
         }}
         resizeMode="contain"
         source={require("../../../assets/logocnar.png")}
@@ -75,8 +74,8 @@ const CoverageItem = ({ item }) => (
 const CoverageNameContainer = ({ name, category }) => {
   return (
     <Text
-      adjustsFontSizeToFitallowFontScaling
-      style={[styles.headerText, { textAlign: "center", fontSize: 28 }]}
+      adjustsFontSizeToFit allowFontScaling
+      style={[styles.headerText, { textAlign: "center", fontSize: 28, maxWidth: !isTablet ? 150 : null }]}
     >
       {name === "Multirisque" ? category : name}
     </Text>
@@ -114,7 +113,7 @@ const Coverage = ({ route, navigation }) => {
         },
       ]}
       resizeMode="cover"
-      source={require("../../../assets/bg-onWeb.png")}
+      source={isTablet ? require("../../../assets/bg-onWeb.png") : require("../../../assets/bg-on1.png")}
     >
       <SafeAreaView style={styles.container}>
         <Header navigation={navigation} />
@@ -131,10 +130,11 @@ const Coverage = ({ route, navigation }) => {
             <Text>An error occured, Please Retry Later...</Text>
           </View>
         ) : (
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: 1, flexDirection: isTablet ? "row" : "column" }}>
             <View
               style={{
                 flex: 1,
+                flexDirection: isTablet ? "column" : "row-reverse",
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -142,8 +142,8 @@ const Coverage = ({ route, navigation }) => {
               <Image
                 source={selectedCoverage.icon}
                 style={{
-                  width: 300,
-                  height: 300,
+                  width: isTablet ? 300 : height / 7,
+                  height: isTablet ? 300 : height / 7,
                   marginBottom: 20,
                 }}
                 resizeMode="contain"
@@ -154,7 +154,7 @@ const Coverage = ({ route, navigation }) => {
               />
             </View>
             <View
-              style={{ flex: 1, padding: 10, paddingLeft: 8, paddingBottom: 0 }}
+              style={{ flex: isTablet ? 1 : 10, padding: 10, paddingLeft: 8, paddingBottom: 0 }}
             >
               <ScrollView
                 contentContainerStyle={{
@@ -192,7 +192,7 @@ const Coverage = ({ route, navigation }) => {
                 ))}
 
                 {selectedCoverage?.type === "Multirisque" ||
-                selectedCoverage?.type.includes("Formule") ? (
+                  selectedCoverage?.type.includes("Formule") ? (
                   <TouchableOpacity
                     style={{ marginTop: 20 }}
                     onPress={() => {
