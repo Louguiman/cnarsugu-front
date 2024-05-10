@@ -122,21 +122,21 @@ const VehicleDetails = ({ navigation }) => {
           left={
             <View style={styles.banner}>
               <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
+                adjustsFontSizeToFit
                 style={styles.headerText}
               >
                 Vous y êtes presque!
               </Text>
               <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
+                adjustsFontSizeToFit
                 style={styles.subHeader}
               >
                 Nous aurons besoin de la carte grise du véhicule.
               </Text>
-              <Image
+              {/* <Image
                 style={styles.imgBg}
                 source={require("../../../assets/car2.png")}
-              />
+              /> */}
             </View>
           }
           rightStyle={styles.content}
@@ -238,8 +238,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     position: "absolute",
-    bottom: 30,
-    right: 60,
+    bottom: 0,
+    right: 10,
   },
   btnText: {
     color: "#FFF",
@@ -261,10 +261,9 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
     resizeMode: "contain",
-    // position: "absolute",
-    // bottom: 80,
-    // left: -50,
-    marginTop: 150,
+    position: "absolute",
+    bottom: 80,
+    left: -50,
     zIndex: -10,
   },
   quickBtn: {

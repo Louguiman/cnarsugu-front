@@ -14,8 +14,8 @@ const Layout = ({
       <View
         style={[
           {
-            flex: 1,
-            padding: 10,
+            
+            padding: 10, flexShrink: 1,
           },
           leftStyle,
         ]}
@@ -25,7 +25,7 @@ const Layout = ({
       <View
         style={[
           {
-            flex: 1,
+            flex: 1, flexGrow: 1
           },
           rightStyle,
         ]}
