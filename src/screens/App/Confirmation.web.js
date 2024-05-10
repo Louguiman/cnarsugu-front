@@ -53,7 +53,7 @@ const Confirmation = ({ navigation }) => {
     return () => {
       setIsLoading(true);
     };
-  }, [refreshPage]);
+  }, [refreshPage]);  
 
   if (!isTablet) return <Responsive navigation={navigation} />
 

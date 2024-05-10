@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
+import { isTablet } from "../../utils/Styles";
 
 const Layout = ({
   left,
@@ -9,7 +10,7 @@ const Layout = ({
   isContentCentered = false,
 }) => {
   return (
-    <View style={{ flex: 1, flexDirection: "row" }}>
+    <View style={{ flex: 1, flexDirection: isTablet ? "row" : "column" }}>
       <View
         style={[
           {

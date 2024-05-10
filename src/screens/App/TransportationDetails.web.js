@@ -17,7 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
+import { CHECKOUT_SCREEN, CONFIRMATION_SCREEN } from "../../navigation/routeNames";
 import { default as Responsive } from './TransportationDetails.js'
 import { isTablet } from "../../utils/Styles.js";
 
@@ -106,7 +106,7 @@ const TransportationDetails = ({ navigation }) => {
 
     navigation.navigate(CONFIRMATION_SCREEN);
   };
-  if (!isTablet) return <Responsive navigation={navigation} />
+  // if (!isTablet) return <Responsive navigation={navigation} />
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

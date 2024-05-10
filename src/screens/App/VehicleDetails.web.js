@@ -8,6 +8,7 @@ import {
   ScrollView,
   Button,
   Image,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image as ExpoImage } from "expo-image";
@@ -35,9 +36,9 @@ const Header = ({ navigation }) => {
         style={{
           position: "absolute",
           top: -25,
-          right: -15,
-          width: 350,
-          height: 150,
+          right: isTablet ? 15 : 0,
+          width: isTablet ? 250 : 100,
+          height: isTablet ? 100 : 50,
           // alignSelf: "center",
         }}
         resizeMode="contain"
@@ -108,7 +109,7 @@ const VehicleDetails = ({ navigation }) => {
     navigation.navigate(CHECKOUT_SCREEN);
   };
 
-  if (!isTablet) return <Responsive navigation={navigation} />
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

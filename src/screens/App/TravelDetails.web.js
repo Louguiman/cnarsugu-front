@@ -8,6 +8,7 @@ import {
   ScrollView,
   Button,
   Image,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image as ExpoImage } from "expo-image";
@@ -17,7 +18,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
+import { CHECKOUT_SCREEN, CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import { default as Responsive } from './TravelDetails.js'
+import { isTablet } from "../../utils/Styles.js";
 
 const Header = ({ navigation }) => {
   return (
@@ -33,9 +36,9 @@ const Header = ({ navigation }) => {
         style={{
           position: "absolute",
           top: -25,
-          right: -15,
-          width: 350,
-          height: 150,
+          right: isTablet ? 15 : 0,
+          width: isTablet ? 250 : 100,
+          height: isTablet ? 100 : 50,
           // alignSelf: "center",
         }}
         resizeMode="contain"

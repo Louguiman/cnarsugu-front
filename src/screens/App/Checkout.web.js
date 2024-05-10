@@ -132,10 +132,10 @@ const Checkout = ({ navigation }) => {
         console.log("res : ", res);
         if (res) {
           if (res.status === 201) {
-            Toast.show(
-              "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
-              { duration: Toast.durations.LONG }
-            );
+            // Toast.show(
+            //   "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
+            //   { duration: Toast.durations.LONG }
+            // );
             navigation.navigate(CONFIRMATION_SCREEN);
           } else {
             throw new Error("Verifies vos infos, et Re-essayez!");
@@ -144,15 +144,15 @@ const Checkout = ({ navigation }) => {
       })
       .catch((e) => {
         console.log("error occured: ", e);
-        Toast.show(e.toString(), {
-          duration: Toast.durations.SHORT,
-        });
+        // Toast.show(e.toString(), {
+        //   duration: Toast.durations.SHORT,
+        // });
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-  if (!isTablet) return <Responsive navigation={navigation} />
+  // if (!isTablet) return <Responsive navigation={navigation} />
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
