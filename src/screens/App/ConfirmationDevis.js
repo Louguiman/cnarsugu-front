@@ -18,24 +18,34 @@ import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { submitSubscription } from "../../utils/queries";
 import { useNavigation } from "@react-navigation/core";
 
-const Confirmation = ({ }) => {
+const Confirmation = ({}) => {
   const { insurance, userInfo } = useStoreState((state) => state);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
     setIsLoading(true);
-    const body = {
-      insurance: insurance.selectedPack.title,
-      coverage: `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`,
-      price: insurance?.selectedCoverage?.price,
-      name: userInfo.name,
-      surname: userInfo.surname,
-      phoneNumber: userInfo?.phoneNumber,
-    };
-    submitSubscription(body)
+
+    // Assuming 'attachments' is an array of attachment files
+    const formData = new FormData();
+    formData.append("insurance", insurance.selectedPack.title);
+    formData.append(
+      "coverage",
+      `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`
+    );
+    formData.append("price", insurance?.selectedCoverage?.price);
+    formData.append("name", userInfo.name);
+    formData.append("surname", userInfo.surname);
+    formData.append("phoneNumber", userInfo?.phoneNumber);
+
+    // Append each attachment file to the formData
+    // attachments.forEach((attachment, index) => {
+    //   formData.append(`attachment${index + 1}`, attachment);
+    // });
+
+    submitSubscription(formData)
       .then((res) => {
         console.log("res :", res);
       })
