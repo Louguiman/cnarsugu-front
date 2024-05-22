@@ -27,15 +27,16 @@ const Confirmation = ({ navigation }) => {
       "coverage",
       `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`
     );
+    formData.append("paymentId", "0");
     formData.append("price", insurance?.selectedCoverage?.price);
     formData.append("name", userInfo.name);
     formData.append("surname", userInfo.surname);
     formData.append("phoneNumber", userInfo?.phoneNumber);
 
     // Append each attachment file to the formData
-    attachments.forEach((attachment, index) => {
-      formData.append(`attachment${index + 1}`, attachment);
-    });
+    // attachments.forEach((attachment, index) => {
+    //   formData.append(`attachment${index + 1}`, attachment);
+    // });
 
     submitSubscription(formData)
       .then((res) => {

@@ -37,7 +37,7 @@ const Confirmation = ({ navigation }) => {
     formData.append("name", userInfo.name);
     formData.append("surname", userInfo.surname);
     formData.append("phoneNumber", userInfo?.phoneNumber);
-
+    formData.append("paymentId", "0");
     // Append each attachment file to the formData
     // attachments.forEach((attachment, index) => {
     //   formData.append(`attachment${index + 1}`, attachment);

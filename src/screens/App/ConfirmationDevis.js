@@ -35,6 +35,7 @@ const Confirmation = ({}) => {
       "coverage",
       `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`
     );
+    formData.append("paymentId", "0");
     formData.append("price", insurance?.selectedCoverage?.price);
     formData.append("name", userInfo.name);
     formData.append("surname", userInfo.surname);
