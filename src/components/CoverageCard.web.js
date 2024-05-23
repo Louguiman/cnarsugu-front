@@ -6,6 +6,7 @@ import { COVERAGE_SCREEN } from "../navigation/routeNames";
 import getRandomColor, {
   getRandomColorFromTenthCHar,
 } from "../utils/getRandomColor";
+import { isTablet } from "../utils/Styles";
 
 const CoverageCard = ({
   selectedPack,
@@ -40,9 +41,7 @@ const CoverageCard = ({
       style={[styles.card, { backgroundColor }]}
       onPress={handleNav}
     >
-      <Text  style={[styles.text, { color: textColor }]}>
-        {category}
-      </Text>
+      <Text style={[styles.text, { color: textColor }]}>{category}</Text>
       <Image source={icon} resizeMode="contain" style={styles.img} />
       <View style={{ marginVertical: 10 }}>
         <Text style={[styles.textDesc, { color: textColor }]}></Text>
@@ -95,11 +94,11 @@ const styles = StyleSheet.create({
     right: 10,
   },
   img: {
-    width: 150,
-    height: 150,
+    width: !isTablet ? 100 : 150,
+    height: !isTablet ? 100 : 150,
     position: "absolute",
     alignSelf: "center",
-    right:20
+    right: 20,
   },
   pillContainer: {
     padding: 8,

@@ -14,10 +14,15 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons"; 
+import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
+import {
+  getPermissionAsync,
+  pickImage,
+  takePhoto,
+} from "../../utils/imagesUtils";
 
 const Header = ({ navigation }) => {
   return (
@@ -50,6 +55,7 @@ const VehicleDetails = ({ navigation }) => {
   const [vehicleNo, setVehicleNo] = React.useState("");
   const [image, setImage] = React.useState(null);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
@@ -61,45 +67,7 @@ const VehicleDetails = ({ navigation }) => {
   }, [image]);
 
   const snapPoints = useMemo(() => ["15%", "50%"], []);
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -108,8 +76,9 @@ const VehicleDetails = ({ navigation }) => {
       );
       return;
     }
-    updateUserInfo({ carteGrise: vehicleNo });
-
+    const extraData = { carteGrise: vehicleNo };
+    updateUserInfo({ extraData });
+    addAttachment(image);
     navigation.navigate(CHECKOUT_SCREEN);
   };
 
@@ -125,16 +94,10 @@ const VehicleDetails = ({ navigation }) => {
       >
         <Header navigation={navigation} />
         <View style={styles.banner}>
-          <Text
-            adjustsFontSizeToFitadjustsFontSizeToFit
-            style={styles.headerText}
-          >
+          <Text adjustsFontSizeToFit style={styles.headerText}>
             Vous y êtes presque!
           </Text>
-          <Text
-            adjustsFontSizeToFitadjustsFontSizeToFit
-            style={styles.subHeader}
-          >
+          <Text adjustsFontSizeToFit style={styles.subHeader}>
             Nous aurons besoin de la carte grise du véhicule.
           </Text>
         </View>
@@ -163,7 +126,7 @@ const VehicleDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image }}
+              source={{ uri: image.uri }}
             />
           )}
           <Button
@@ -211,7 +174,7 @@ const VehicleDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={takePhoto}
+            onPress={() => takePhoto(setImage)}
           >
             <AntDesign name="camerao" size={48} color="black" />
             <Text style={styles.quickBtnText}>Prendre une photo</Text>
@@ -219,7 +182,7 @@ const VehicleDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={pickImage}
+            onPress={() => pickImage(setImage)}
           >
             <AntDesign name="picture" size={48} color="black" />
             <Text style={styles.quickBtnText}>Choisir une image</Text>

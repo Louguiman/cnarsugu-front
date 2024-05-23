@@ -15,47 +15,16 @@ import { isIphone } from "../../utils";
 import { useStoreState } from "easy-peasy";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
-import { submitSubscription } from "../../utils/queries";
+import { useSubmitSubscription } from "../../utils/queries";
 import { default as Responsive } from "./ConfirmationDevis.js";
 
 const ConfirmationDevis = ({ navigation }) => {
-  const { insurance, userInfo } = useStoreState((state) => state);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const isLoading = useStoreState((state) => state.isLoading);
   const [refreshPage, setRefreshPage] = useState(false);
+  const { submitSubscription, error } = useSubmitSubscription();
 
-  const handleSubmit = () => {
-    setIsLoading(true);
-
-    // Assuming 'attachments' is an array of attachment files
-    const formData = new FormData();
-    formData.append("insurance", insurance.selectedPack.title);
-    formData.append("paymentId", "0");
-    formData.append(
-      "coverage",
-      `${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`
-    );
-    formData.append("price", insurance?.selectedCoverage?.price);
-    formData.append("paymentId", "0");
-    formData.append("name", userInfo.name);
-    formData.append("surname", userInfo.surname);
-    formData.append("phoneNumber", userInfo?.phoneNumber);
-
-    // Append each attachment file to the formData
-    // attachments.forEach((attachment, index) => {
-    //   formData.append(`attachment${index + 1}`, attachment);
-    // });
-
-    submitSubscription(formData)
-      .then((res) => {
-        console.log("res :", res);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const handleSubmit = async () => {
+    await submitSubscription();
   };
 
   if (!isTablet) return <Responsive />;
@@ -63,18 +32,8 @@ const ConfirmationDevis = ({ navigation }) => {
   useEffect(() => {
     handleSubmit();
 
-    return () => {
-      setIsLoading(true);
-    };
+    return () => {};
   }, []);
-
-  useEffect(() => {
-    handleSubmit();
-
-    return () => {
-      setIsLoading(true);
-    };
-  }, [refreshPage]);
 
   return (
     <SafeAreaView style={styles.container}>

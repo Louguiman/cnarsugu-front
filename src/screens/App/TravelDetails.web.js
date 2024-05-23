@@ -18,10 +18,17 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import { CHECKOUT_SCREEN, CONFIRMATION_SCREEN } from "../../navigation/routeNames";
-import { default as Responsive } from './TravelDetails.js'
+import {
+  CHECKOUT_SCREEN,
+  CONFIRMATION_SCREEN,
+} from "../../navigation/routeNames";
+import { default as Responsive } from "./TravelDetails.js";
 import { isTablet } from "../../utils/Styles.js";
-
+import {
+  getPermissionAsync,
+  pickImage,
+  takePhoto,
+} from "../../utils/imagesUtils";
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -53,50 +60,12 @@ const TravelDetails = ({ navigation }) => {
   const [duree, setDuree] = React.useState("");
   const [image, setImage] = React.useState(null);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
   }, []);
 
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -105,9 +74,9 @@ const TravelDetails = ({ navigation }) => {
       );
       return;
     }
-    updateUserInfo({ destination });
-    updateUserInfo({ duree });
-
+    const extraData = { destination, duree };
+    updateUserInfo({ extraData });
+    addAttachment(image);
     navigation.navigate(CONFIRMATION_SCREEN);
   };
 
@@ -122,16 +91,10 @@ const TravelDetails = ({ navigation }) => {
         <Layout
           left={
             <View style={styles.banner}>
-              <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
-                style={styles.headerText}
-              >
+              <Text adjustsFontSizeToFit style={styles.headerText}>
                 Vous y êtes presque!
               </Text>
-              <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
-                style={styles.subHeader}
-              >
+              <Text adjustsFontSizeToFit style={styles.subHeader}>
                 Nous aurons besoin des informations de voyage.
               </Text>
               <Image
@@ -153,13 +116,13 @@ const TravelDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image }}
+                    source={{ uri: image.uri }}
                   />
                 </View>
               )}
               <Button
                 title="Télécharger le Passeport"
-                onPress={pickImage}
+                onPress={() => pickImage(setImage)}
                 style={{ marginTop: 20 }}
               />
             </View>

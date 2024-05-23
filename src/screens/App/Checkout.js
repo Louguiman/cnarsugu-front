@@ -17,7 +17,7 @@ import CreditCardPayment from "../../views/payment/CreditCardPayment";
 import MobileMoneyPayment from "../../views/payment/MobileMoneyPayment";
 import { isIphone, makePhoneCall } from "../../utils";
 import { PAYMENT_METHOD_DATA } from "../../utils/constants";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { requestPayment } from "../../utils/queries";
 import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
 import Toast from "react-native-root-toast";
@@ -71,6 +71,7 @@ const Checkout = ({ navigation }) => {
   const [selectedId, setSelectedId] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
 
   const onNumberChange = (text) => setPhoneNumber(text);
   const renderPaymentComponent = (selectedOption) => {
@@ -133,6 +134,7 @@ const Checkout = ({ navigation }) => {
               "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
               { duration: Toast.durations.LONG }
             );
+            updateUserInfo({ paymentId: res.data.idFromClient });
             navigation.navigate(CONFIRMATION_SCREEN);
           } else {
             throw new Error("Verifies vos infos, et Re-essayez!");

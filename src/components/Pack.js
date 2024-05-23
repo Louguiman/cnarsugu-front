@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     color: "white",
   },
   img: {
-    width: 150,
-    height: 150,
+    width: !classicStyles.isTablet ? 100 : 150,
+    height: !classicStyles.isTablet ? 100 : 150,
     position: "absolute",
     right: 0,
     bottom: 8,

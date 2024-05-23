@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import Toast from "react-native-root-toast";
 import { COLORS } from "../../utils/data";
 import PaypalPayment from "../../views/payment/PaypalPayment";
@@ -22,7 +22,7 @@ import Layout from "../../components/layout/Layout";
 import { PAYMENT_METHOD_DATA } from "../../utils/constants";
 import { requestPayment } from "../../utils/queries";
 import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
-import { default as Responsive } from './Checkout.js'
+import { default as Responsive } from "./Checkout.js";
 import { isTablet } from "../../utils/Styles.js";
 
 const Item = ({
@@ -74,6 +74,7 @@ const Checkout = ({ navigation }) => {
   const [selectedId, setSelectedId] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
 
   const onNumberChange = (text) => setPhoneNumber(text);
 
@@ -132,10 +133,7 @@ const Checkout = ({ navigation }) => {
         console.log("res : ", res);
         if (res) {
           if (res.status === 201) {
-            // Toast.show(
-            //   "Suivez les instructions qui vuous seront envoyes pour proceder au paiement",
-            //   { duration: Toast.durations.LONG }
-            // );
+            updateUserInfo({ paymentId: res.data.idFromClient });
             navigation.navigate(CONFIRMATION_SCREEN);
           } else {
             throw new Error("Verifies vos infos, et Re-essayez!");

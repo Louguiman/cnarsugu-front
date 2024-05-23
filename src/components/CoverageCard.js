@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { isIphone } from "../utils";
 import { COVERAGE_SCREEN } from "../navigation/routeNames";
 import { getRandomColorFromTenthCHar } from "../utils/getRandomColor";
+import { isTablet } from "../utils/Styles";
 
 const CoverageCard = ({
   selectedPack,
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
     right: 10,
   },
   img: {
-    width: 150,
-    height: 150,
+    width: !isTablet ? 100 : 150,
+    height: !isTablet ? 100 : 150,
     position: "absolute",
     right: 20,
     alignSelf: "center",
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 8,
-    bottom:0,
+    bottom: 0,
     elevation: 4,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,

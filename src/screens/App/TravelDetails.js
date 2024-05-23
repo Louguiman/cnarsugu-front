@@ -22,7 +22,11 @@ import {
   CHECKOUT_SCREEN,
   CONFIRMATION_SCREEN,
 } from "../../navigation/routeNames";
-
+import {
+  getPermissionAsync,
+  pickImage,
+  takePhoto,
+} from "../../utils/imagesUtils";
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -55,6 +59,7 @@ const TravelDetails = ({ navigation }) => {
   const [duree, setDuree] = React.useState("");
   const [image, setImage] = React.useState(null);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
@@ -66,45 +71,7 @@ const TravelDetails = ({ navigation }) => {
   }, [image]);
 
   const snapPoints = useMemo(() => ["15%", "50%"], []);
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -113,8 +80,9 @@ const TravelDetails = ({ navigation }) => {
       );
       return;
     }
-    updateUserInfo({ destination });
-    updateUserInfo({ duree });
+    const extraData = { destination, duree };
+    updateUserInfo({ extraData });
+    addAttachment(image);
 
     navigation.navigate(CONFIRMATION_SCREEN);
   };
@@ -184,7 +152,7 @@ const TravelDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image }}
+              source={{ uri: image.uri }}
             />
           )}
           <Button title="Télécharger le Passeport" onPress={handleOpenPress} />
@@ -196,10 +164,7 @@ const TravelDetails = ({ navigation }) => {
               style={styles.nextBtn}
               onPress={handleNext}
             >
-              <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
-                style={styles.btnText}
-              >
+              <Text adjustsFontSizeToFit style={styles.btnText}>
                 Suivant
               </Text>
               <View style={styles.btnIconBox}>
@@ -225,7 +190,7 @@ const TravelDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={takePhoto}
+            onPress={() => takePhoto(setImage)}
           >
             <AntDesign name="camerao" size={48} color="black" />
             <Text style={styles.quickBtnText}>Prendre une photo</Text>
@@ -233,7 +198,7 @@ const TravelDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={pickImage}
+            onPress={() => pickImage(setImage)}
           >
             <AntDesign name="picture" size={48} color="black" />
             <Text style={styles.quickBtnText}>Choisir une image</Text>

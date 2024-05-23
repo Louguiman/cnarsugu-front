@@ -11,16 +11,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image as ExpoImage } from "expo-image";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
+
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import { CHECKOUT_SCREEN, CONFIRMATION_SCREEN } from "../../navigation/routeNames";
-import { default as Responsive } from './TransportationDetails.js'
-import { isTablet } from "../../utils/Styles.js";
-
+import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import { getPermissionAsync, pickImage } from "../../utils/imagesUtils";
 
 const Header = ({ navigation }) => {
   return (
@@ -50,51 +47,12 @@ const Header = ({ navigation }) => {
 
 const TransportationDetails = ({ navigation }) => {
   const [image, setImage] = React.useState(null);
-  const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
   }, []);
 
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -103,7 +61,7 @@ const TransportationDetails = ({ navigation }) => {
       );
       return;
     }
-
+    addAttachment(image);
     navigation.navigate(CONFIRMATION_SCREEN);
   };
   // if (!isTablet) return <Responsive navigation={navigation} />
@@ -118,10 +76,7 @@ const TransportationDetails = ({ navigation }) => {
         <Layout
           left={
             <View style={styles.banner}>
-              <Text
-                adjustsFontSizeToFitadjustsFontSizeToFit
-                style={styles.headerText}
-              >
+              <Text adjustsFontSizeToFit style={styles.headerText}>
                 Vous y êtes presque!
               </Text>
               <Text
@@ -131,10 +86,10 @@ const TransportationDetails = ({ navigation }) => {
                 Nous aurons besoin des documents supplementaires (Facture ou
                 Assurance voyage).
               </Text>
-              <Image
+              {/* <Image
                 style={styles.imgBg}
                 source={require("../../../assets/car2.png")}
-              />
+              /> */}
             </View>
           }
           rightStyle={styles.content}
@@ -150,13 +105,13 @@ const TransportationDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image }}
+                    source={{ uri: image.uri }}
                   />
                 </View>
               )}
               <Button
                 title="Télécharger Document"
-                onPress={pickImage}
+                onPress={() => pickImage(setImage)}
                 style={{ marginTop: 20 }}
               />
             </View>
@@ -239,8 +194,6 @@ const styles = StyleSheet.create({
     maxWidth: 150,
     justifyContent: "space-evenly",
     alignItems: "center",
-    position: "absolute",
-    bottom: 30,
     right: 60,
   },
   btnText: {

@@ -17,10 +17,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
 import {
-  CHECKOUT_SCREEN,
-  CONFIRMATION_SCREEN,
-} from "../../navigation/routeNames";
+  getPermissionAsync,
+  pickImage,
+  takePhoto,
+} from "../../utils/imagesUtils";
 
 const Header = ({ navigation }) => {
   return (
@@ -51,7 +53,7 @@ const Header = ({ navigation }) => {
 const TransportationDetails = ({ navigation }) => {
   const bottomSheetRef = useRef(null);
   const [image, setImage] = React.useState(null);
-  const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
@@ -63,45 +65,7 @@ const TransportationDetails = ({ navigation }) => {
   }, [image]);
 
   const snapPoints = useMemo(() => ["15%", "50%"], []);
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -110,7 +74,7 @@ const TransportationDetails = ({ navigation }) => {
       );
       return;
     }
-
+    addAttachment(image);
     navigation.navigate(CONFIRMATION_SCREEN);
   };
 
@@ -144,7 +108,7 @@ const TransportationDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image }}
+              source={{ uri: image.uri }}
             />
           )}
           <Button title="Télécharger Document" onPress={handleOpenPress} />
@@ -186,7 +150,7 @@ const TransportationDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={takePhoto}
+            onPress={() => takePhoto(setImage)}
           >
             <AntDesign name="camerao" size={48} color="black" />
             <Text style={styles.quickBtnText}>Prendre une photo</Text>
@@ -194,7 +158,7 @@ const TransportationDetails = ({ navigation }) => {
           <TouchableOpacity
             style={styles.quickBtn}
             activeOpacity={0.6}
-            onPress={pickImage}
+            onPress={() => pickImage(setImage)}
           >
             <AntDesign name="picture" size={48} color="black" />
             <Text style={styles.quickBtnText}>Choisir une image</Text>

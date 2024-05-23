@@ -19,8 +19,9 @@ import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
 import { CHECKOUT_SCREEN } from "../../navigation/routeNames";
-import { default as Responsive } from './VehicleDetails.js'
+import { default as Responsive } from "./VehicleDetails.js";
 import { isTablet } from "../../utils/Styles.js";
+import { getPermissionAsync, pickImage } from "../../utils/imagesUtils";
 
 const Header = ({ navigation }) => {
   return (
@@ -52,50 +53,12 @@ const VehicleDetails = ({ navigation }) => {
   const [vehicleNo, setVehicleNo] = React.useState("");
   const [image, setImage] = React.useState(null);
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
+  const addAttachment = useStoreActions((actions) => actions.addAttachment);
 
   useEffect(() => {
     getPermissionAsync();
   }, []);
 
-  const getPermissionAsync = async () => {
-    if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission required",
-          "Please allow access to your camera roll."
-        );
-      }
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
   const handleNext = () => {
     if (!image) {
       Alert.alert(
@@ -104,11 +67,11 @@ const VehicleDetails = ({ navigation }) => {
       );
       return;
     }
-    updateUserInfo({ carteGrise: vehicleNo });
-
+    const extraData = { carteGrise: vehicleNo };
+    updateUserInfo({ extraData });
+    addAttachment(image);
     navigation.navigate(CHECKOUT_SCREEN);
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,16 +84,10 @@ const VehicleDetails = ({ navigation }) => {
         <Layout
           left={
             <View style={styles.banner}>
-              <Text
-                adjustsFontSizeToFit
-                style={styles.headerText}
-              >
+              <Text adjustsFontSizeToFit style={styles.headerText}>
                 Vous y êtes presque!
               </Text>
-              <Text
-                adjustsFontSizeToFit
-                style={styles.subHeader}
-              >
+              <Text adjustsFontSizeToFit style={styles.subHeader}>
                 Nous aurons besoin de la carte grise du véhicule.
               </Text>
               {/* <Image
@@ -152,13 +109,13 @@ const VehicleDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image }}
+                    source={{ uri: image.uri }}
                   />
                 </View>
               )}
               <Button
                 title="Télécharger ma carte grise"
-                onPress={pickImage}
+                onPress={() => pickImage(setImage)}
                 style={{ marginTop: 20 }}
               />
             </View>
@@ -236,7 +193,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     maxWidth: 150,
     justifyContent: "space-evenly",
-    alignItems: "center", marginTop: 20,
+    alignItems: "center",
+    marginTop: 20,
     bottom: 0,
     right: 10,
   },
