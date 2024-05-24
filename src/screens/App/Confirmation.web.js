@@ -1,20 +1,42 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Button,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { height, isTablet } from "../../utils/Styles";
 import { isIphone } from "../../utils";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useSubmitSubscription } from "../../utils/queries";
 import { default as Responsive } from "./Confirmation.js";
+import ReceiptModal from "../../components/ReceiptModal.js";
 
 const Confirmation = ({ navigation }) => {
   const [refreshPage, setRefreshPage] = useState(false);
   const isLoading = useStoreState((state) => state.isLoading);
-  const { submitSubscription, error } = useSubmitSubscription();
+  const {
+    submitSubscription,
+    error,
+    closeModal,
+    handleDownloadReceipt,
+    isModalOpen,
+    openModal,
+  } = useSubmitSubscription();
+
+  const { userInfo, insurance, attachments } = useStoreState((state) => ({
+    userInfo: state.userInfo,
+    insurance: state.insurance,
+    attachments: state.attachments,
+  }));
+  const resetState = useStoreActions((actions) => actions.resetState);
 
   const handleSubmit = async () => {
     await submitSubscription();
@@ -72,6 +94,21 @@ const Confirmation = ({ navigation }) => {
           `}
               Merci pour la confiance!
             </Text>
+            <Button
+              title="Voir le reçu"
+              onPress={openModal}
+              variant="contained"
+            />
+            {error && (
+              <Text style={{ color: "red" }}>Erreur: {error.message}</Text>
+            )}
+            <ReceiptModal
+              open={isModalOpen}
+              onClose={closeModal}
+              userInfo={userInfo}
+              insurance={insurance}
+              handleDownload={handleDownloadReceipt}
+            />
           </>
         )}
       </View>
@@ -79,7 +116,10 @@ const Confirmation = ({ navigation }) => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.nextBtn}
-          onPress={() => navigation.navigate(STEP1_SCREEN)}
+          onPress={() => {
+            resetState();
+            navigation.navigate(STEP1_SCREEN);
+          }}
         >
           <Text adjustsFontSizeToFit style={styles.btnText}>
             Retour à l'Accueil

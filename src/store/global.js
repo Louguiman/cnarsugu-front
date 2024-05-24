@@ -1,6 +1,7 @@
 import { createStore, action } from "easy-peasy";
 
 const globalModel = {
+  isModalOpen: false,
   insurance: { selectedPack: null, selectedCoverage: null },
   userInfo: { name: "", surname: "" },
   attachments: [],
@@ -16,6 +17,9 @@ const globalModel = {
   }),
   addAttachment: action((state, payload) => {
     state.attachments.push(payload);
+  }),
+  setModalOpen: action((state, payload) => {
+    state.isModalOpen = payload;
   }),
   removeAttachment: action((state, payload) => {
     state.attachments = state.attachments.filter(
