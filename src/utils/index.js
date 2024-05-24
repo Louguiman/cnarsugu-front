@@ -84,3 +84,14 @@ const openUrlExternal = async (url) => {
 };
 
 export { Base64, isIphone, makePhoneCall, openUrlExternal };
+
+export const arrangeAttachmentsForSent = (attachments) => {
+  return attachments.map((attachment, index) => ({
+    uri:
+      Platform.OS === "ios"
+        ? attachment.uri.replace("file://", "")
+        : attachment.uri,
+    type: attachment.type,
+    name: `attachment_${index}`,
+  }));
+};

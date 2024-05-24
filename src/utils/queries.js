@@ -3,6 +3,7 @@ import apiClient from "./httpclient";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { Platform } from "react-native";
 import { useState } from "react";
+import { arrangeAttachmentsForSent } from ".";
 
 export function authUser(data) {
   return axios("https://corpmali-backend.herokuapp.com/api/auth/signin", {
@@ -90,17 +91,9 @@ export const useSubmitSubscription = () => {
     formData.append("paymentId ", hasPaid ? userInfo.paymentId : null);
     formData.append("surname", userInfo.surname);
     formData.append("phoneNumber", userInfo?.phoneNumber);
-
-    attachments.forEach((attachment, index) => {
-      formData.append("attachments", {
-        uri:
-          Platform.OS === "ios"
-            ? attachment.uri.replace("file://", "")
-            : attachment.uri,
-        type: attachment.type,
-        name: `attachment_${index}`,
-      });
-    });
+    if (attachments && attachments.length > 0) {
+      formData.append("attachments", arrangeAttachmentsForSent(attachments));
+    }
 
     try {
       setLoading(true);
