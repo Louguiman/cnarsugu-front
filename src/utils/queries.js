@@ -94,16 +94,38 @@ export const useSubmitSubscription = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${apiUrl}/subscription`, {
-        method: "POST",
-        body: formData,
-      });
-      const result = await response.json();
-      console.log("response:", result);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${apiUrl}/subscription`, true);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentCompleted = (event.loaded / event.total) * 100;
+          setProgress(percentCompleted / 100);
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 201) {
+          const result = JSON.parse(xhr.response);
+          console.log("response:", result);
+        } else {
+          console.error("Error:", xhr.responseText);
+          setError(xhr.responseText);
+        }
+        setLoading(false);
+      };
+
+      xhr.onerror = () => {
+        console.error("Error:", xhr.responseText);
+        setError(xhr.responseText);
+        setLoading(false);
+      };
+
+      xhr.send(formData);
     } catch (error) {
       console.error("Error:", error);
       setError(error);
-    } finally {
       setLoading(false);
     }
   };
@@ -115,5 +137,6 @@ export const useSubmitSubscription = () => {
     handleDownloadReceipt,
     submitSubscription,
     error,
+    progress,
   };
 };

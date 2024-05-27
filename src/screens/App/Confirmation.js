@@ -6,6 +6,7 @@ import {
   Image,
   Alert,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +15,7 @@ import { COLORS } from "../../utils/data";
 import { height } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { ActivityIndicator } from "react-native";
+import * as Progress from "react-native-progress";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useSubmitSubscription } from "../../utils/queries";
 import ReceiptModal from "../../components/ReceiptModal";
@@ -30,6 +31,7 @@ const Confirmation = ({ navigation }) => {
     handleDownloadReceipt,
     isModalOpen,
     openModal,
+    progress,
   } = useSubmitSubscription();
   const { userInfo, insurance, attachments } = useStoreState((state) => ({
     userInfo: state.userInfo,
@@ -75,6 +77,7 @@ const Confirmation = ({ navigation }) => {
           `}
               Veuillez patienter!
             </Text>
+            {progress > 0 && <Progress.Bar progress={progress} width={200} />}
           </View>
         ) : (
           <>

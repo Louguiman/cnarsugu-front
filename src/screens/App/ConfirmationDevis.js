@@ -18,6 +18,7 @@ import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useNavigation } from "@react-navigation/core";
 import { useSubmitSubscription } from "../../utils/queries";
 import ReceiptModal from "../../components/ReceiptModal";
+import * as Progress from "react-native-progress";
 
 const Confirmation = ({}) => {
   const [refreshPage, setRefreshPage] = useState(false);
@@ -30,6 +31,7 @@ const Confirmation = ({}) => {
     handleDownloadReceipt,
     isModalOpen,
     openModal,
+    progress,
   } = useSubmitSubscription();
   const { userInfo, insurance, attachments } = useStoreState((state) => ({
     userInfo: state.userInfo,
@@ -73,7 +75,8 @@ const Confirmation = ({}) => {
               {`
           `}
               Veuillez patienter!
-            </Text>
+            </Text>{" "}
+            {progress > 0 && <Progress.Bar progress={progress} width={200} />}
           </View>
         ) : (
           <>

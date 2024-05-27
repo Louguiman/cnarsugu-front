@@ -18,6 +18,7 @@ import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useSubmitSubscription } from "../../utils/queries";
 import { default as Responsive } from "./Confirmation.js";
 import ReceiptModal from "../../components/ReceiptModal.js";
+import * as Progress from "react-native-progress";
 
 const Confirmation = ({ navigation }) => {
   const [refreshPage, setRefreshPage] = useState(false);
@@ -29,6 +30,7 @@ const Confirmation = ({ navigation }) => {
     handleDownloadReceipt,
     isModalOpen,
     openModal,
+    progress,
   } = useSubmitSubscription();
 
   const { userInfo, insurance, attachments } = useStoreState((state) => ({
@@ -73,6 +75,7 @@ const Confirmation = ({ navigation }) => {
             <Text adjustsFontSizeToFit style={styles.subHeader}>
               Votre demande est en cours de traitement.{"\n"}Veuillez patienter!
             </Text>
+            {progress > 0 && <Progress.Bar progress={progress} width={200} />}
           </View>
         ) : (
           <>
