@@ -8,27 +8,17 @@ import {
   ScrollView,
   Button,
   Image,
-  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image as ExpoImage } from "expo-image";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import {
-  CHECKOUT_SCREEN,
-  CONFIRMATION_SCREEN,
-} from "../../navigation/routeNames";
+import { DEVIS_SCREEN } from "../../navigation/routeNames";
 import { default as Responsive } from "./TravelDetails.js";
 import { isTablet } from "../../utils/Styles.js";
-import {
-  getPermissionAsync,
-  pickImage,
-  takePhoto,
-} from "../../utils/imagesUtils";
+import { getPermissionAsync, pickImage } from "../../utils/imagesUtils";
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -77,7 +67,7 @@ const TravelDetails = ({ navigation }) => {
     const extraData = { destination, duree };
     updateUserInfo({ extraData });
     addAttachment(image);
-    navigation.navigate(CONFIRMATION_SCREEN);
+    navigation.navigate(DEVIS_SCREEN);
   };
 
   return (
@@ -116,7 +106,7 @@ const TravelDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image.uri }}
+                    source={{ uri: image }}
                   />
                 </View>
               )}

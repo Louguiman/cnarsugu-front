@@ -11,22 +11,18 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { TextInput, defaultTheme } from "@react-native-material/core";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
-import { useStoreActions, useStoreState } from "easy-peasy";
-import {
-  CHECKOUT_SCREEN,
-  CONFIRMATION_SCREEN,
-} from "../../navigation/routeNames";
+import { useStoreActions } from "easy-peasy";
+import { DEVIS_SCREEN } from "../../navigation/routeNames";
 import {
   getPermissionAsync,
   pickImage,
   takePhoto,
 } from "../../utils/imagesUtils";
+
 const Header = ({ navigation }) => {
   return (
     <View style={styles.header}>
@@ -84,7 +80,7 @@ const TravelDetails = ({ navigation }) => {
     updateUserInfo({ extraData });
     addAttachment(image);
 
-    navigation.navigate(CONFIRMATION_SCREEN);
+    navigation.navigate(DEVIS_SCREEN);
   };
 
   const handleClosePress = () => bottomSheetRef.current.close();
@@ -99,16 +95,10 @@ const TravelDetails = ({ navigation }) => {
       >
         <Header navigation={navigation} />
         <View style={styles.banner}>
-          <Text
-            adjustsFontSizeToFitadjustsFontSizeToFit
-            style={styles.headerText}
-          >
+          <Text adjustsFontSizeToFit style={styles.headerText}>
             Vous y êtes presque!
           </Text>
-          <Text
-            adjustsFontSizeToFitadjustsFontSizeToFit
-            style={styles.subHeader}
-          >
+          <Text adjustsFontSizeToFit style={styles.subHeader}>
             Nous aurons besoin des informations de voyage.
           </Text>
         </View>
@@ -152,7 +142,7 @@ const TravelDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image.uri }}
+              source={{ uri: image }}
             />
           )}
           <Button title="Télécharger le Passeport" onPress={handleOpenPress} />

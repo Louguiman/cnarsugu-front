@@ -16,7 +16,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
 import { useStoreActions } from "easy-peasy";
 import Layout from "../../components/layout/Layout";
-import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import { DEVIS_SCREEN } from "../../navigation/routeNames";
 import { getPermissionAsync, pickImage } from "../../utils/imagesUtils";
 
 const Header = ({ navigation }) => {
@@ -62,7 +62,7 @@ const TransportationDetails = ({ navigation }) => {
       return;
     }
     addAttachment(image);
-    navigation.navigate(CONFIRMATION_SCREEN);
+    navigation.navigate(DEVIS_SCREEN);
   };
   // if (!isTablet) return <Responsive navigation={navigation} />
   return (
@@ -105,7 +105,7 @@ const TransportationDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image.uri }}
+                    source={{ uri: image }}
                   />
                 </View>
               )}

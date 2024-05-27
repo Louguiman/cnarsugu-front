@@ -126,7 +126,7 @@ const VehicleDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image.uri }}
+              source={{ uri: image }}
             />
           )}
           <Button

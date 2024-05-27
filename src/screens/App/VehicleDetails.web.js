@@ -109,7 +109,7 @@ const VehicleDetails = ({ navigation }) => {
                       borderRadius: 4,
                       marginVertical: 20,
                     }}
-                    source={{ uri: image.uri }}
+                    source={{ uri: image }}
                   />
                 </View>
               )}

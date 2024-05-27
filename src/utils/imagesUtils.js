@@ -24,7 +24,7 @@ export const pickImage = async (setImage) => {
   });
 
   if (!result.canceled) {
-    setImage(result.assets[0]);
+    setImage(result.assets[0].uri);
   }
 };
 
@@ -37,6 +37,6 @@ export const takePhoto = async (setImage) => {
   });
 
   if (!result.canceled) {
-    setImage(result.assets[0]);
+    setImage(result.assets[0].uri);
   }
 };

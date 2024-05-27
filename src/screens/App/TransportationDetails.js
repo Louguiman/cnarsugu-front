@@ -10,14 +10,12 @@ import {
   Button,
 } from "react-native";
 import { Image } from "expo-image";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../utils/data";
-import { useStoreActions, useStoreState } from "easy-peasy";
-import { CONFIRMATION_SCREEN } from "../../navigation/routeNames";
+import { useStoreActions } from "easy-peasy";
+import { DEVIS_SCREEN } from "../../navigation/routeNames";
 import {
   getPermissionAsync,
   pickImage,
@@ -75,7 +73,7 @@ const TransportationDetails = ({ navigation }) => {
       return;
     }
     addAttachment(image);
-    navigation.navigate(CONFIRMATION_SCREEN);
+    navigation.navigate(DEVIS_SCREEN);
   };
 
   const handleClosePress = () => bottomSheetRef.current.close();
@@ -108,7 +106,7 @@ const TransportationDetails = ({ navigation }) => {
                 borderRadius: 4,
                 marginVertical: 10,
               }}
-              source={{ uri: image.uri }}
+              source={{ uri: image }}
             />
           )}
           <Button title="Télécharger Document" onPress={handleOpenPress} />

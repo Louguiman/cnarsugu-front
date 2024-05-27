@@ -19,11 +19,7 @@ const ReceiptModal = ({
   const currentDate = new Date().toLocaleDateString();
 
   return (
-    <Modal
-      visible={open}
-      transparent={Platform.OS === "web" ? false : true}
-      animationType="slide"
-    >
+    <Modal visible={open} transparent={true} animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Image
@@ -31,7 +27,7 @@ const ReceiptModal = ({
             style={styles.logo}
           />
           <Text style={styles.date}>{currentDate}</Text>
-          <Text style={styles.title}>Reçu de la souscription</Text>
+          <Text style={styles.title}>Résumé de la transaction</Text>
           {userInfo?.name && (
             <Text style={styles.text}>Nom: {userInfo.name}</Text>
           )}
@@ -60,7 +56,7 @@ const ReceiptModal = ({
             </Text>
           )}
           <TouchableOpacity style={styles.button} onPress={handleDownload}>
-            <Text style={styles.buttonText}>Télécharger le reçu</Text>
+            <Text style={styles.buttonText}>Télécharger</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={onClose}>
             <Text style={styles.buttonText}>Fermer</Text>

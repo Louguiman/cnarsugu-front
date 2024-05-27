@@ -63,7 +63,7 @@ const Item = ({
   </TouchableOpacity>
 );
 
-const Enrolment = ({ }) => {
+const Enrolment = ({}) => {
   const [clientTypes, setClientTypes] = useState(null);
   const [name, setName] = React.useState("");
   const [surname, setSurname] = React.useState("");
@@ -72,7 +72,7 @@ const Enrolment = ({ }) => {
   const [address, setAddress] = useState("");
   const [activity, setActivity] = useState("");
   const [owner, setOwner] = useState("");
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const { insurance } = useStoreState((state) => state);
   const { selectedCoverage, selectedPack } = insurance;
   const updateUserInfo = useStoreActions((actions) => actions.updateUserInfo);
@@ -126,7 +126,7 @@ const Enrolment = ({ }) => {
       );
       return;
     }
-    updateUserInfo({ name, surname });
+    updateUserInfo({ name: selectedId === 1 ? name : companyName, surname });
     navigation.navigate(CONTACT_SCREEN);
   }, [selectedId, companyName, address, name, surname]);
 

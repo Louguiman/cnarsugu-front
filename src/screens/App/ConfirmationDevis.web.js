@@ -93,11 +93,20 @@ const ConfirmationDevis = ({ navigation }) => {
           `}
               Merci pour votre confiance!
             </Text>
-            <Button
-              title="Voir le reçu"
-              onPress={openModal}
-              variant="contained"
-            />
+            <View
+              style={{
+                position: "absolute",
+                bottom: 20,
+                alignSelf: "center",
+                width: "50%",
+              }}
+            >
+              <Button
+                title="Consultez le résumé "
+                onPress={openModal}
+                variant="contained"
+              />
+            </View>
             {error && (
               <Text style={{ color: "red" }}>Erreur: {error.message}</Text>
             )}
@@ -179,6 +188,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     marginLeft: 4,
     textAlign: "center",
+    marginBottom: 20,
   },
   nextBtn: {
     flexDirection: "row",
