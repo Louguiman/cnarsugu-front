@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,10 +14,9 @@ import { COLORS } from "../../utils/data";
 import { height, isTablet } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useSubmitSubscription } from "../../utils/queries";
-import { default as Responsive } from "./ConfirmationDevis.js";
+import Responsive from "./ConfirmationDevis.js";
 import ReceiptModal from "../../components/ReceiptModal.js";
 import * as Progress from "react-native-progress";
 
@@ -48,8 +48,6 @@ const ConfirmationDevis = ({ navigation }) => {
 
   useEffect(() => {
     handleSubmit();
-
-    return () => {};
   }, []);
 
   return (
@@ -105,7 +103,7 @@ const ConfirmationDevis = ({ navigation }) => {
               }}
             >
               <Button
-                title="Consultez le résumé "
+                title="Consultez le résumé"
                 onPress={openModal}
                 variant="contained"
               />
@@ -220,7 +218,6 @@ const styles = StyleSheet.create({
     width: 280,
     height: 280,
     resizeMode: "contain",
-    position: "absolute",
     bottom: 60,
     alignSelf: "center",
     zIndex: -10,
@@ -229,8 +226,6 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     resizeMode: "contain",
-    position: "absolute",
-    bottom: 40,
     alignSelf: "center",
     zIndex: -10,
   },

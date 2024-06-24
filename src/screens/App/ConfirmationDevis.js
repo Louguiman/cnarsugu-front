@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,14 +14,13 @@ import { COLORS } from "../../utils/data";
 import { height } from "../../utils/Styles";
 import { isIphone } from "../../utils";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { ActivityIndicator } from "react-native";
 import { STEP1_SCREEN } from "../../navigation/routeNames";
 import { useNavigation } from "@react-navigation/core";
 import { useSubmitSubscription } from "../../utils/queries";
 import ReceiptModal from "../../components/ReceiptModal";
 import * as Progress from "react-native-progress";
 
-const Confirmation = ({}) => {
+const Confirmation = () => {
   const [refreshPage, setRefreshPage] = useState(false);
   const navigation = useNavigation();
   const isLoading = useStoreState((state) => state.isLoading);
@@ -46,8 +46,6 @@ const Confirmation = ({}) => {
 
   useEffect(() => {
     handleSubmit();
-
-    return () => {};
   }, []);
 
   return (
@@ -69,13 +67,10 @@ const Confirmation = ({}) => {
               alignItems: "center",
             }}
           >
-            <ActivityIndicator size={"large"} />
+            <ActivityIndicator size="large" />
             <Text adjustsFontSizeToFit style={styles.subHeader}>
-              Votre demande est en cours de traitement.
-              {`
-          `}
-              Veuillez patienter!
-            </Text>{" "}
+              Votre demande est en cours de traitement.{"\n"}Veuillez patienter!
+            </Text>
             {progress > 0 && <Progress.Bar progress={progress} width={200} />}
           </View>
         ) : (
@@ -91,12 +86,9 @@ const Confirmation = ({}) => {
               source={require("../../../assets/check.png")}
             />
             <Text adjustsFontSizeToFit style={styles.subHeader}>
-              Félicitations, votre souscription a été prise en compte, merci de
-              confirmer votre paiement en mettant votre code secret via le SMS
-              reçu. Un de nos agents vous contactera.
-              {`
-          `}
-              Merci pour la confiance!
+              Félicitations, votre demande a été prise en compte. Un de nos
+              agents vous contactera pour établir le devis.{"\n"}
+              Merci pour votre confiance!
             </Text>
             <View
               style={{
@@ -107,7 +99,7 @@ const Confirmation = ({}) => {
               }}
             >
               <Button
-                title="Consultez le résumé "
+                title="Consultez le résumé"
                 onPress={openModal}
                 variant="contained"
               />

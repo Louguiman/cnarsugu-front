@@ -5,8 +5,6 @@ import { Platform } from "react-native";
 import { useState } from "react";
 import { jsPDF } from "jspdf";
 
-const LogoCnar = require("../../assets/logocnar.png");
-
 export function authUser(data) {
   return axios("https://corpmali-backend.herokuapp.com/api/auth/signin", {
     method: "POST",
@@ -40,6 +38,7 @@ export const useSubmitSubscription = () => {
   const setLoading = useStoreActions((actions) => actions.setLoading);
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
+  const LogoCnar = require("../../assets/logocnar.png");
 
   const openModal = () => {
     setModalOpen(true);
@@ -56,18 +55,21 @@ export const useSubmitSubscription = () => {
   }));
 
   const handleDownloadReceipt = () => {
-    const doc = new jsPDF();
-    // doc.addImage(LogoCnar);
-    doc.text(`Nom: ${userInfo.name}`, 10, 10);
-    doc.text(`Prénom: ${userInfo.surname}`, 10, 20);
-    doc.text(`Numéro de téléphone: ${userInfo.phoneNumber}`, 10, 30);
-    doc.text(`Assurance: ${insurance.selectedPack.title}`, 10, 40);
+    const doc = new jsPDF("p", "px", "letter");
+    const image = new Image();
+    image.src = "../../assets/logocnar.png";
+    doc.addImage(LogoCnar, "png", 100, 10, 100, 31);
+    doc.text(`Nom: ${userInfo.name}`, 10, 60);
+    doc.text(`Prénom: ${userInfo.surname}`, 10, 80);
+    doc.text(`Numéro de téléphone: ${userInfo.phoneNumber}`, 10, 100);
+    doc.text(`Assurance: ${insurance.selectedPack.title}`, 10, 120);
     doc.text(
       `Couverture: ${insurance.selectedCoverage?.category} ${insurance.selectedCoverage?.type}`,
       10,
-      50
+      140
     );
-    doc.text(`Prix: ${insurance.selectedCoverage?.price}`, 10, 60);
+    doc.text(`Prix: ${insurance.selectedCoverage?.price}`, 10, 160);
+    doc.text(`call center: (+ 223) 20 23 57 57`, 10, 210);
     doc.save("receipt.pdf");
   };
 

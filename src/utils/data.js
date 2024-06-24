@@ -616,7 +616,7 @@ const COVERAGES_MULTI = [
       "Responsabilité civile",
     ],
     clientType: 2,
-    price: "95 000 FCFA",
+    price: "50 000 FCFA",
     extraFields: ["shop"],
     description:
       "Assurance multirisque complète pour les boutiques. Protégez votre commerce, vos produits et votre activité contre les incidents inattendus. Offrez à vos clients une expérience d'achat en toute sécurité.",
